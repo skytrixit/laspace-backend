@@ -1,0 +1,220 @@
+/* ── A1. Hero — split, arch portrait ──────────────────────────────────── */
+.about-hero {
+  padding: 80px 0 0; /* the fixed 80px navbar sits above */
+  background: var(--black);
+  border-bottom: 1px solid var(--rule-section);
+}
+.about-hero__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  align-items: stretch;
+}
+.about-hero__text {
+  padding: clamp(60px, 9vw, 110px) clamp(24px, 5vw, 48px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.about-hero__text .eyebrow {
+  margin-bottom: 34px;
+}
+.about-hero h1 {
+  font-size: clamp(42px, 5vw, 78px);
+  line-height: 1.1;
+  color: var(--cream);
+  text-wrap: balance;
+}
+.about-hero__lead {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 2;
+  color: var(--taupe);
+  max-width: 34em;
+  margin-top: 36px;
+}
+.about-hero__media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(40px, 7vw, 70px) clamp(24px, 5vw, 48px);
+}
+
+/* ── A2. Story — two alternating blocks ───────────────────────────────── */
+.story__stack {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(64px, 10vw, 110px);
+}
+.story__block {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: clamp(40px, 6vw, 70px);
+  align-items: center;
+}
+/* Block 02 swaps the columns: image right, text left. */
+.story__block--flip .shot {
+  order: 2;
+}
+.story__block--flip .story__copy {
+  order: 1;
+}
+.story__copy .eyebrow {
+  margin-bottom: 26px;
+}
+.story__copy h2 {
+  font-size: clamp(30px, 3.2vw, 46px);
+  line-height: 1.25;
+  color: var(--cream);
+  margin-bottom: 26px;
+}
+.story__copy p {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 2;
+  color: var(--taupe);
+  max-width: 36em;
+}
+
+/* ── A3. Founder ──────────────────────────────────────────────────────── */
+.founder__grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: clamp(40px, 6vw, 70px);
+  align-items: center;
+}
+.founder__card {
+  justify-self: center;
+  width: min(380px, 100%);
+}
+.founder__caption {
+  text-align: center;
+  margin-top: 28px;
+}
+.founder__name {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 30px;
+  color: var(--cream);
+}
+.founder__role {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 10px;
+}
+.founder__copy .eyebrow {
+  margin-bottom: 26px;
+}
+.founder__copy h2 {
+  font-size: clamp(30px, 3.4vw, 48px);
+  line-height: 1.25;
+  color: var(--cream);
+}
+.founder__copy p {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 2.05;
+  color: var(--taupe);
+  max-width: 38em;
+}
+.founder__copy p:first-of-type {
+  margin-top: 32px;
+}
+.founder__copy p + p {
+  margin-top: 18px;
+}
+.founder__closing {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 20px;
+  color: var(--cream);
+  max-width: 32em;
+  margin-top: 30px;
+}
+
+/* ── A4. Why La Space — bordered grid ─────────────────────────────────── */
+.why__title {
+  font-size: clamp(36px, 4.6vw, 64px);
+  line-height: 1.1;
+  color: var(--cream);
+  margin-bottom: 70px;
+}
+.why__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  /* No gap: the cells are separated by their own borders. */
+  border-top: 1px solid var(--rule-list);
+  border-left: 1px solid var(--rule-list);
+}
+.why__cell {
+  padding: 44px 34px;
+  border-right: 1px solid var(--rule-list);
+  border-bottom: 1px solid var(--rule-list);
+  transition: background 0.35s ease;
+}
+.why__cell:hover {
+  background: var(--off-black);
+}
+.why__no {
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  margin-bottom: 20px;
+}
+.why__cell h3 {
+  font-size: 26px;
+  color: var(--cream);
+  margin-bottom: 14px;
+}
+.why__cell p {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 13.5px;
+  line-height: 1.85;
+  color: var(--taupe);
+}
+
+/* ── A5. Closing CTA ──────────────────────────────────────────────────── */
+.about-cta {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(84px, 12vw, 150px) 28px;
+  text-align: center;
+}
+.about-cta__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.about-cta__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+}
+.about-cta__inner {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.about-cta h2 {
+  font-size: clamp(36px, 4.6vw, 64px);
+  line-height: 1.15;
+  color: var(--cream);
+}
+.about-cta .btn {
+  padding: 20px clamp(26px, 7vw, 50px);
+  font-size: 13px;
+  white-space: nowrap;
+  margin-top: 52px;
+}

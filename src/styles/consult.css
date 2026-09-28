@@ -1,0 +1,141 @@
+/* ── Consultation modal ───────────────────────────────────────────────── */
+.consult {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.consult__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+.consult__panel {
+  position: relative;
+  width: min(560px, 100%);
+  max-height: 88vh;
+  overflow-y: auto;
+  background: var(--off-black);
+  /* The hairline is the whole frame — no radius, no shadow. */
+  border: 1px solid var(--rule-close);
+  padding: clamp(32px, 5vw, 54px);
+  box-sizing: border-box;
+  /* Same rise and easing as the scroll reveal and the mobile menu, so the
+     popup reads as part of the same family of motion. */
+  animation: consultIn 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes consultIn {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.consult__close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: 1px solid var(--rule-close);
+  color: var(--gold);
+  font-size: 15px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+.consult__close:hover {
+  background: var(--gold);
+  color: var(--black);
+}
+
+.consult__eyebrow {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0 0 22px;
+}
+
+.consult__title {
+  font-size: clamp(30px, 4vw, 44px);
+  line-height: 1.15;
+  color: var(--cream);
+  margin-bottom: 14px;
+}
+
+.consult__intro {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--taupe);
+  max-width: 36em;
+  margin-bottom: 40px;
+}
+
+.consult__form {
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+}
+
+.consult__submit {
+  align-self: center;
+  /* 46px as specified once there is room; shrinks on a narrow panel so
+     "Request My Consultation" stays on one line. */
+  padding: 19px clamp(22px, 6vw, 46px);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.consult__alt {
+  display: block;
+  text-align: center;
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold);
+  transition: color 0.3s ease;
+}
+.consult__alt:hover {
+  color: var(--gold-dark);
+}
+
+/* Replaces the form, never stacks under it. */
+.consult__done {
+  border-top: 1px solid var(--rule-list);
+  padding-top: 40px;
+  text-align: center;
+}
+.consult__done h3 {
+  font-size: 30px;
+  color: var(--cream);
+  margin-bottom: 14px;
+}
+.consult__done p {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--taupe);
+}

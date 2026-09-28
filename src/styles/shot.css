@@ -1,0 +1,53 @@
+/* ── Shot: the signature image device ─────────────────────────────────────
+   A curved silhouette wrapped in an offset gold outline frame that echoes
+   the same radius. Per-instance geometry comes in as custom properties so
+   there is one rule rather than one per shape.
+   ----------------------------------------------------------------------- */
+.shot {
+  position: relative;
+  justify-self: center;
+  /* Reserve room for the offset frame (inset -20/-22px plus its border), so
+     the outline stays intact instead of being clipped on a narrow column.
+     No effect wherever the column is wide enough for the full --shot-w. */
+  width: min(var(--shot-w, 460px), calc(100% - 48px));
+}
+
+.shot__frame {
+  position: absolute;
+  inset: var(--shot-inset, -20px);
+  border: 1px solid var(--shot-frame, rgba(194, 157, 98, 0.3));
+  border-radius: var(--shot-r);
+  pointer-events: none;
+}
+
+.shot__clip {
+  display: block;
+  overflow: hidden;
+  border-radius: var(--shot-r);
+}
+
+.shot__clip img {
+  display: block;
+  width: 100%;
+  height: var(--shot-h);
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.shot:hover .shot__clip img {
+  transform: scale(1.05);
+}
+
+/* Placeholder variant — holds the monogram until real photography arrives. */
+.shot__clip--placeholder {
+  height: var(--shot-h);
+  background: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.shot__clip--placeholder img {
+  width: 200px;
+  height: auto;
+  opacity: 0.9;
+}

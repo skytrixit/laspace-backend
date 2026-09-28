@@ -1,0 +1,73 @@
+/* ── Underline-only form controls ─────────────────────────────────────────
+   Shared by the Contact page form and the consultation modal. Declared once
+   here and loaded wherever a form appears — do not redeclare per page.
+   ----------------------------------------------------------------------- */
+.ct-field {
+  position: relative;
+}
+
+.ct-field input,
+.ct-field select,
+.ct-field textarea {
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--rule-frame);
+  color: var(--cream);
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 15px;
+  letter-spacing: 0.05em;
+  padding: 14px 2px;
+  outline: none;
+  transition: border-color 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 0;
+}
+.ct-field input:focus,
+.ct-field select:focus,
+.ct-field textarea:focus {
+  border-bottom-color: var(--gold);
+}
+.ct-field textarea {
+  line-height: 1.9;
+  resize: vertical;
+}
+.ct-field select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+/* The native dropdown paints on a light background. */
+.ct-field option {
+  color: #000;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--taupe-muted);
+}
+/* `required` + an unchosen first option keeps a select looking like a
+   placeholder rather than live text. */
+select:invalid {
+  color: var(--taupe-muted);
+}
+
+.ct-field {
+  position: relative;
+}
+/* Taken out of flow so a message can never change the layout height, however
+   long it runs; the 44px row gap leaves room for it to sit under the input. */
+.ct-error {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  top: 100%;
+  margin-top: 6px;
+  min-height: 18px;
+  font-family: var(--sans);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: var(--gold);
+}

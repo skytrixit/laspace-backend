@@ -1,0 +1,23 @@
+{
+  "name": "la-space-interiors",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "LA Space Interiors \u2014 bespoke interior design studio in Visakhapatnam.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "images": "node scripts/images.mjs"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "sharp": "^0.35.4",
+    "vite": "^5.4.11"
+  }
+}

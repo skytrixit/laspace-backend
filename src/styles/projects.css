@@ -1,0 +1,136 @@
+/* ── A1. Hero — type only ─────────────────────────────────────────────── */
+.pj-hero {
+  padding: clamp(140px, 20vw, 210px) 28px clamp(56px, 9vw, 90px);
+  background: var(--black);
+  /* No bottom hairline — the filter bar's own top border serves that role. */
+}
+.pj-hero__inner {
+  max-width: var(--container);
+  margin: 0 auto;
+}
+.pj-hero .eyebrow {
+  margin-bottom: 30px;
+}
+.pj-hero h1 {
+  font-size: clamp(44px, 6vw, 92px);
+  line-height: 1.06;
+  max-width: 12em;
+  color: var(--cream);
+  text-wrap: balance;
+}
+
+/* ── A2. Filter bar ───────────────────────────────────────────────────── */
+.pj-work {
+  background: var(--black);
+  padding: 0 28px clamp(72px, 11vw, 130px);
+}
+.pj-work__inner {
+  max-width: var(--container);
+  margin: 0 auto;
+}
+
+.pj-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 36px;
+  border-top: 1px solid var(--rule-list);
+  border-bottom: 1px solid var(--rule-list);
+  padding: 6px 0;
+  margin-bottom: clamp(44px, 7vw, 70px);
+}
+.pj-filter {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  padding: 16px 2px;
+  color: var(--cream);
+  /* Transparent, not absent, so nothing shifts when the active state moves. */
+  border-bottom: 1px solid transparent;
+  transition: color 0.3s ease;
+}
+.pj-filter:hover {
+  color: var(--gold);
+}
+.pj-filter[aria-pressed='true'] {
+  color: var(--gold);
+  border-bottom: 1px solid var(--gold);
+}
+
+/* ── A3. Grid — shaped cards with hover reveal ────────────────────────── */
+.pj-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+  gap: 52px 40px;
+}
+
+.pj-card {
+  display: block;
+  color: var(--cream); /* must not change on hover */
+}
+
+.pj-card__media {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--card-r);
+}
+.pj-card__media img {
+  display: block;
+  width: 100%;
+  height: var(--card-h);
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.pj-card:hover .pj-card__media img {
+  transform: scale(1.05);
+}
+
+/* Inside the shaped wrapper, so the curve clips it. */
+.pj-card__overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
+  padding: 46px 24px 20px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all 0.45s ease;
+}
+.pj-card:hover .pj-card__overlay,
+.pj-card:focus-visible .pj-card__overlay {
+  opacity: 1;
+  transform: translateY(0);
+}
+.pj-card__cta {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.pj-card__name {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 27px;
+  margin: 24px 0 8px;
+  color: var(--cream);
+}
+.pj-card__meta {
+  font-family: var(--sans);
+  font-size: 11.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--taupe);
+}
+
+.pj-empty {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 15px;
+  color: var(--taupe);
+}

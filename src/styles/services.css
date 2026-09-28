@@ -1,0 +1,130 @@
+/* ── B1. Hero — type only ─────────────────────────────────────────────── */
+.svc-hero {
+  padding: clamp(140px, 20vw, 210px) 28px clamp(64px, 10vw, 110px);
+  background: var(--black);
+  border-bottom: 1px solid var(--rule-section);
+}
+.svc-hero__inner {
+  max-width: var(--container);
+  margin: 0 auto;
+}
+.svc-hero .eyebrow {
+  margin-bottom: 30px;
+}
+.svc-hero h1 {
+  font-size: clamp(44px, 6vw, 92px);
+  line-height: 1.06;
+  max-width: 11em;
+  color: var(--cream);
+  text-wrap: balance;
+}
+.svc-hero__lead {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 2;
+  color: var(--taupe);
+  max-width: 38em;
+  margin-top: 36px;
+}
+
+/* ── B2. Six service blocks ───────────────────────────────────────────── */
+.svc-blocks {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.svc-block {
+  padding: clamp(64px, 10vw, 110px) 0;
+  border-bottom: 1px solid var(--rule-section);
+}
+
+.svc-block__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: clamp(40px, 6vw, 70px);
+  align-items: center;
+}
+/* Even blocks swap columns. `direction` is restored on both children so no
+   text ever renders right-to-left, and a single-column (mobile) grid is
+   unaffected — every block still stacks image-first. */
+.svc-block--flip .svc-block__grid {
+  direction: rtl;
+}
+.svc-block--flip .svc-block__grid > * {
+  direction: ltr;
+}
+
+.svc-block__copy .eyebrow {
+  margin-bottom: 26px;
+}
+.svc-block__copy h2 {
+  font-size: clamp(32px, 3.6vw, 52px);
+  line-height: 1.15;
+  color: var(--cream);
+  margin-bottom: 24px;
+}
+.svc-block__desc {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 2;
+  color: var(--taupe);
+  max-width: 36em;
+  margin-bottom: 36px;
+}
+
+.svc-scope {
+  display: flex;
+  flex-direction: column;
+  max-width: 520px;
+  border-top: 1px solid var(--rule-list);
+}
+.svc-scope li {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 14px 4px;
+  border-bottom: 1px solid var(--rule-menu);
+}
+.svc-scope__dash {
+  font-family: var(--sans);
+  font-size: 11px;
+  color: var(--gold);
+  flex: none;
+}
+.svc-scope__item {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  color: var(--cream);
+}
+
+.svc-block__link {
+  margin-top: 40px;
+}
+
+/* ── B3. Closing CTA — flat ───────────────────────────────────────────── */
+.svc-cta {
+  background: var(--off-black);
+  padding: clamp(72px, 11vw, 130px) 28px;
+  text-align: center;
+}
+.svc-cta__inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.svc-cta h2 {
+  font-size: clamp(34px, 4.2vw, 58px);
+  line-height: 1.2;
+  color: var(--cream);
+  text-wrap: balance;
+}
+.svc-cta .btn {
+  padding: 20px clamp(26px, 7vw, 50px);
+  font-size: 13px;
+  white-space: nowrap;
+  margin-top: 50px;
+}
