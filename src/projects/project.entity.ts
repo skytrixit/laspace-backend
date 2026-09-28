@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
@@ -29,6 +30,10 @@ export class Project {
   /** A project may sit under several filters — Kitchen and Residential. */
   @Column({ type: 'json' })
   categories!: string[]
+
+  /** The label on the card — "Modular Kitchen", "Walk-in Closet". Not a filter. */
+  @Column({ name: 'type_label', type: 'varchar', length: 60, nullable: true })
+  typeLabel!: string | null
 
   @Column({ type: 'varchar', length: 120 })
   location!: string
@@ -67,8 +72,9 @@ export class Project {
   @Column({ name: 'published_at', type: 'datetime', precision: 3, nullable: true })
   publishedAt!: Date | null
 
+  /** Soft delete: a deleted project keeps its slug and can be restored. */
   @Index('idx_project_deleted')
-  @Column({ name: 'deleted_at', type: 'datetime', precision: 3, nullable: true })
+  @DeleteDateColumn({ name: 'deleted_at', type: 'datetime', precision: 3, nullable: true })
   deletedAt!: Date | null
 
   @CreateDateColumn({ name: 'created_at', type: 'datetime', precision: 3, default: () => 'CURRENT_TIMESTAMP(3)' })

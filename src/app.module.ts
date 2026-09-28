@@ -6,7 +6,13 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { LoggerModule } from 'nestjs-pino'
 import { AuthModule } from './auth/auth.module'
+import { BrandsModule } from './brands/brands.module'
 import { EnquiriesModule } from './enquiries/enquiries.module'
+import { FaqsModule } from './faqs/faqs.module'
+import { ProjectsModule } from './projects/projects.module'
+import { ServicesModule } from './services/services.module'
+import { SettingsModule } from './settings/settings.module'
+import { TestimonialsModule } from './testimonials/testimonials.module'
 import { SessionGuard } from './common/guards/session.guard'
 import { Env, validateEnv } from './config/env'
 import { dataSourceOptions } from './database/data-source'
@@ -57,6 +63,12 @@ const isDev = process.env.NODE_ENV !== 'production'
 
     AuthModule,
     EnquiriesModule,
+    ServicesModule,
+    ProjectsModule,
+    TestimonialsModule,
+    BrandsModule,
+    FaqsModule,
+    SettingsModule,
     HealthModule,
   ],
   providers: [

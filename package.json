@@ -20,12 +20,15 @@
     "migration:show": "npm run -s typeorm -- migration:show",
     "migration:run:prod": "typeorm -d dist/database/typeorm.config.js migration:run",
     "admin": "ts-node -r reflect-metadata src/cli/admin.ts",
-    "admin:prod": "node dist/cli/admin.js"
+    "admin:prod": "node dist/cli/admin.js",
+    "seed": "ts-node -r reflect-metadata src/database/seed.ts",
+    "seed:prod": "node dist/database/seed.js"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.0",
     "@nestjs/config": "^4.0.0",
     "@nestjs/core": "^11.0.0",
+    "@nestjs/mapped-types": "^2.1.1",
     "@nestjs/platform-express": "^11.0.0",
     "@nestjs/throttler": "^6.7.1",
     "@nestjs/typeorm": "^11.0.3",

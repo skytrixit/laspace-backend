@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
@@ -46,8 +47,9 @@ export class Service {
   @Column({ name: 'display_order', type: 'int', default: 0 })
   displayOrder!: number
 
+  /** Soft delete: a deleted service keeps its slug and can be restored. */
   @Index('idx_service_deleted')
-  @Column({ name: 'deleted_at', type: 'datetime', precision: 3, nullable: true })
+  @DeleteDateColumn({ name: 'deleted_at', type: 'datetime', precision: 3, nullable: true })
   deletedAt!: Date | null
 
   @CreateDateColumn({ name: 'created_at', type: 'datetime', precision: 3, default: () => 'CURRENT_TIMESTAMP(3)' })
