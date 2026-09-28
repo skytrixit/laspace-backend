@@ -1,5 +1,6 @@
 import { plainToInstance, Transform } from 'class-transformer'
 import {
+  IsBoolean,
   IsEmail,
   IsEnum,
   IsInt,
@@ -68,6 +69,10 @@ export class Env {
 
   @toInt() @IsInt() @Min(1) @Max(365)
   SESSION_TTL_DAYS = 30
+
+  /* Set true only behind a reverse proxy that sets X-Forwarded-For. */
+  @IsOptional() @IsBoolean() @Transform(({ value }) => value === true || value === 'true' || value === '1')
+  TRUST_PROXY = false
 
   @IsOptional() @IsString()
   SMTP_HOST?: string

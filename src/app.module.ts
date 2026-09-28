@@ -1,8 +1,12 @@
 import { randomUUID } from 'node:crypto'
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
+import { APP_GUARD } from '@nestjs/core'
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { LoggerModule } from 'nestjs-pino'
+import { AuthModule } from './auth/auth.module'
+import { SessionGuard } from './common/guards/session.guard'
 import { Env, validateEnv } from './config/env'
 import { dataSourceOptions } from './database/data-source'
 import { HealthModule } from './health/health.module'
@@ -46,7 +50,17 @@ const isDev = process.env.NODE_ENV !== 'production'
         ),
     }),
 
+    /* A generous ceiling on everything; login and the enquiry form set
+       their own much lower limits with @Throttle. */
+    ThrottlerModule.forRoot([{ name: 'default', ttl: 60 * 1000, limit: 120 }]),
+
+    AuthModule,
     HealthModule,
+  ],
+  providers: [
+    /* Order matters: the cheap rate limit runs before the database lookup. */
+    { provide: APP_GUARD, useClass: ThrottlerGuard },
+    { provide: APP_GUARD, useClass: SessionGuard },
   ],
 })
 export class AppModule {}

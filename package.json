@@ -2,7 +2,7 @@
   "name": "la-space-studio-api",
   "private": true,
   "version": "0.1.0",
-  "description": "LA Space Interiors — studio API (NestJS + TypeORM + MySQL).",
+  "description": "LA Space Interiors \u2014 studio API (NestJS + TypeORM + MySQL).",
   "engines": {
     "node": ">=20"
   },
@@ -18,14 +18,18 @@
     "migration:run": "npm run -s typeorm -- migration:run",
     "migration:revert": "npm run -s typeorm -- migration:revert",
     "migration:show": "npm run -s typeorm -- migration:show",
-    "migration:run:prod": "typeorm -d dist/database/typeorm.config.js migration:run"
+    "migration:run:prod": "typeorm -d dist/database/typeorm.config.js migration:run",
+    "admin": "ts-node -r reflect-metadata src/cli/admin.ts",
+    "admin:prod": "node dist/cli/admin.js"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.0",
     "@nestjs/config": "^4.0.0",
     "@nestjs/core": "^11.0.0",
     "@nestjs/platform-express": "^11.0.0",
+    "@nestjs/throttler": "^6.7.1",
     "@nestjs/typeorm": "^11.0.3",
+    "argon2": "^0.45.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "helmet": "^8.0.0",

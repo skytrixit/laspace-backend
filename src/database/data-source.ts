@@ -41,3 +41,16 @@ export function dataSourceOptions(env: DbEnv, role: DbRole): DataSourceOptions {
     logging: false,
   }
 }
+
+/** The DbEnv the CLI tools read straight off process.env (the API goes through ConfigService). */
+export function dbEnvFromProcess(env: NodeJS.ProcessEnv = process.env): DbEnv {
+  return {
+    DB_HOST: env.DB_HOST ?? '127.0.0.1',
+    DB_PORT: Number(env.DB_PORT ?? 3306),
+    DB_NAME: env.DB_NAME ?? 'laspace',
+    DB_USERNAME: env.DB_USERNAME ?? '',
+    DB_PASSWORD: env.DB_PASSWORD ?? '',
+    DB_MIGRATE_USERNAME: env.DB_MIGRATE_USERNAME || undefined,
+    DB_MIGRATE_PASSWORD: env.DB_MIGRATE_PASSWORD || undefined,
+  }
+}
