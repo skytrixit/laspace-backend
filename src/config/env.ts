@@ -117,7 +117,10 @@ export class Env {
 
 /** ConfigModule `validate` hook. Throws with every failure listed. */
 export function validateEnv(raw: Record<string, unknown>): Env {
-  const env = plainToInstance(Env, raw, { enableImplicitConversion: false })
+  /* A blank line in a .env file arrives as an empty string. Treat it as
+     unset, so optional settings can be left blank in the template. */
+  const present = Object.fromEntries(Object.entries(raw).filter(([, value]) => value !== ''))
+  const env = plainToInstance(Env, present, { enableImplicitConversion: false })
   const errors = validateSync(env, { skipMissingProperties: false, whitelist: true })
   if (errors.length > 0) {
     const lines = errors.map(

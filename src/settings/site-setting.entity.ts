@@ -54,6 +54,6 @@ export class SiteSetting {
   @Column({ name: 'stat_years', type: 'int', default: 0 })
   statYears!: number
 
-  @UpdateDateColumn({ name: 'updated_at', type: 'datetime', precision: 3 })
+  @UpdateDateColumn({ name: 'updated_at', type: 'datetime', precision: 3, default: () => 'CURRENT_TIMESTAMP(3)', onUpdate: 'CURRENT_TIMESTAMP(3)' })
   updatedAt!: Date
 }

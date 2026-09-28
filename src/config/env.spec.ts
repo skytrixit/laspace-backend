@@ -17,6 +17,13 @@ describe('validateEnv', () => {
     expect(env.DB_PORT).toBe(3306)
   })
 
+  it('treats blank values as unset, as a .env template leaves them', () => {
+    const env = validateEnv({ ...base, ALERT_TO: '', CDN_BASE_URL: '', DB_MIGRATE_USERNAME: '' })
+    expect(env.ALERT_TO).toBeUndefined()
+    expect(env.CDN_BASE_URL).toBeUndefined()
+    expect(env.DB_MIGRATE_USERNAME).toBeUndefined()
+  })
+
   it('coerces numeric strings', () => {
     expect(validateEnv({ ...base, PORT: '4100' }).PORT).toBe(4100)
   })

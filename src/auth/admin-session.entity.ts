@@ -36,7 +36,7 @@ export class AdminSession {
   @Column({ name: 'ip_hash', type: 'char', length: 64, nullable: true })
   ipHash!: string | null
 
-  @CreateDateColumn({ name: 'created_at', type: 'datetime', precision: 3 })
+  @CreateDateColumn({ name: 'created_at', type: 'datetime', precision: 3, default: () => 'CURRENT_TIMESTAMP(3)' })
   createdAt!: Date
 
   @ManyToOne(() => AdminUser, (user) => user.sessions, { onDelete: 'CASCADE' })
