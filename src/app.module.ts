@@ -6,6 +6,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { LoggerModule } from 'nestjs-pino'
 import { AuthModule } from './auth/auth.module'
+import { EnquiriesModule } from './enquiries/enquiries.module'
 import { SessionGuard } from './common/guards/session.guard'
 import { Env, validateEnv } from './config/env'
 import { dataSourceOptions } from './database/data-source'
@@ -55,6 +56,7 @@ const isDev = process.env.NODE_ENV !== 'production'
     ThrottlerModule.forRoot([{ name: 'default', ttl: 60 * 1000, limit: 120 }]),
 
     AuthModule,
+    EnquiriesModule,
     HealthModule,
   ],
   providers: [
