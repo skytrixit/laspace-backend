@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { site, contact, serviceOptions, budgetOptions } from '../../data/site'
+import { submitEnquiry } from '../../lib/api'
 
-const EMPTY = { name: '', phone: '', email: '', service: '', budget: '', message: '' }
+const EMPTY = { name: '', phone: '', email: '', service: '', budget: '', message: '', website: '' }
 
 function validate(values) {
   const errors = {}
@@ -15,14 +16,20 @@ function validate(values) {
 }
 
 /**
- * Front-end only. When `contact.formEndpoint` is set the enquiry is POSTed
- * there as JSON; until the client confirms a destination it falls back to
- * opening a pre-filled email, so the form still works on day one.
+ * Posts to the studio API (`contact.formEndpoint`). If the API does not
+ * accept the submission — offline, rate-limited, down — it falls back to
+ * opening a pre-filled email, so an enquiry is never lost.
+ *
+ * `website` is a honeypot: hidden from people, filled by bots, and any value
+ * in it makes the API discard the submission. `formTs` lets the API reject a
+ * form submitted faster than a person could read it.
  */
 export default function EnquiryForm() {
   const [values, setValues] = useState(EMPTY)
   const [errors, setErrors] = useState({})
   const [sent, setSent] = useState(false)
+  const [reference, setReference] = useState(null)
+  const startedAt = useRef(Date.now())
 
   const set = (field) => (e) => setValues((v) => ({ ...v, [field]: e.target.value }))
 
@@ -34,11 +41,12 @@ export default function EnquiryForm() {
 
     if (contact.formEndpoint) {
       try {
-        await fetch(contact.formEndpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(values),
+        const { referenceCode } = await submitEnquiry(contact.formEndpoint, {
+          ...values,
+          source: 'website_form',
+          formTs: startedAt.current,
         })
+        setReference(referenceCode)
       } catch {
         /* fall through to the mail client so the enquiry is never lost */
         openMailFallback(values)
@@ -55,6 +63,12 @@ export default function EnquiryForm() {
         <strong>Thank you — your enquiry is on its way.</strong>
         We reply to every enquiry within one working day. For anything urgent,
         call {site.phone} or message the studio on WhatsApp.
+        {reference && (
+          <>
+            {' '}
+            Your reference is <strong>{reference}</strong>.
+          </>
+        )}
       </p>
     )
   }
@@ -154,6 +168,20 @@ export default function EnquiryForm() {
           onChange={set('message')}
         />
       </Field>
+
+      {/* Honeypot — out of the accessibility tree and the tab order. */}
+      <div className="sr-only" aria-hidden="true">
+        <label htmlFor="website">Leave this empty</label>
+        <input
+          id="website"
+          name="website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={values.website}
+          onChange={set('website')}
+        />
+      </div>
 
       <button type="submit" className="btn btn--primary">
         Send Enquiry

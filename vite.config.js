@@ -233,7 +233,7 @@ function structuredData() {
 function cleanUrls() {
   const middleware = (req, _res, next) => {
     const [pathname, query = ''] = req.url.split('?')
-    if (/\.[a-z0-9]+$/i.test(pathname) || pathname === '/') return next()
+    if (/\.[a-z0-9]+$/i.test(pathname) || pathname === '/' || pathname.startsWith('/api/')) return next()
     const candidate = `${pathname.replace(/\/+$/, '')}.html`
     req.url = query ? `${candidate}?${query}` : candidate
     next()
@@ -248,6 +248,8 @@ function cleanUrls() {
 
 export default defineConfig({
   plugins: [react(), structuredData(), cleanUrls()],
+  // Same-origin /api in the browser, forwarded to the studio API in dev.
+  server: { proxy: { '/api': 'http://localhost:4000' } },
   build: {
     target: 'es2019',
     cssCodeSplit: false,

@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { site, contact, serviceOptions } from '../data/site'
+import { submitEnquiry } from '../lib/api'
 import { lockScroll, unlockScroll } from '../lib/scrollLock'
 import '../styles/fields.css'
 import '../styles/consult.css'
 
-const EMPTY = { name: '', phone: '', service: '', message: '' }
+const EMPTY = { name: '', phone: '', service: '', message: '', website: '' }
 const CTA_TEXT = /book\s+(a\s+)?(private\s+)?consultation/i
 const FOCUSABLE =
   'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'
@@ -30,6 +31,8 @@ export default function ConsultationModal() {
   const [values, setValues] = useState(EMPTY)
   const [errors, setErrors] = useState({})
   const [sent, setSent] = useState(false)
+  const [reference, setReference] = useState(null)
+  const openedAt = useRef(0)
 
   const panelRef = useRef(null)
   const firstFieldRef = useRef(null)
@@ -63,6 +66,8 @@ export default function ConsultationModal() {
       setValues(EMPTY)
       setErrors({})
       setSent(false)
+      setReference(null)
+      openedAt.current = Date.now()
       setOpen(true)
       // The mobile menu, if it was the source, closes underneath.
       window.dispatchEvent(new CustomEvent('consultation:open'))
@@ -123,14 +128,15 @@ export default function ConsultationModal() {
     setErrors(found)
     if (Object.keys(found).length > 0) return
 
-    // Same destination as the Contact page form; see contact.formEndpoint.
+    // Same destination and same fallback as the Contact page form.
     if (contact.formEndpoint) {
       try {
-        await fetch(contact.formEndpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ...values, source: 'consultation-modal' }),
+        const { referenceCode } = await submitEnquiry(contact.formEndpoint, {
+          ...values,
+          source: 'consultation_modal',
+          formTs: openedAt.current,
         })
+        setReference(referenceCode)
       } catch {
         openMailFallback(values)
       }
@@ -168,7 +174,15 @@ export default function ConsultationModal() {
         {sent ? (
           <div className="consult__done" role="status">
             <h3>Thank you.</h3>
-            <p>Your enquiry is with our studio. We will be in touch shortly.</p>
+            <p>
+              Your enquiry is with our studio. We will be in touch shortly.
+              {reference && (
+                <>
+                  {' '}
+                  Your reference is <strong>{reference}</strong>.
+                </>
+              )}
+            </p>
           </div>
         ) : (
           <form className="consult__form" onSubmit={handleSubmit} noValidate>
@@ -236,6 +250,20 @@ export default function ConsultationModal() {
                 onChange={set('message')}
               />
             </Field>
+
+            {/* Honeypot — out of the accessibility tree and the tab order. */}
+            <div className="sr-only" aria-hidden="true">
+              <label htmlFor="consult-website">Leave this empty</label>
+              <input
+                id="consult-website"
+                name="website"
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+                value={values.website}
+                onChange={set('website')}
+              />
+            </div>
 
             <button type="submit" className="btn btn--primary consult__submit">
               Request My Consultation

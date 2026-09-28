@@ -510,10 +510,10 @@ export const contact = {
   hours: 'Mon – Sat, 10:00 – 19:00',
   // Replace with the studio's real Google Maps listing URL.
   mapsUrl: 'https://www.google.com/maps/search/?api=1&query=LA+Space+Interiors+Visakhapatnam',
-  // Where the enquiry form posts. Leave null until the client confirms a
-  // destination (inbox, CRM or WhatsApp handoff); the form then falls back to
-  // opening a pre-filled email so it still works on day one.
-  formEndpoint: null,
+  // Where both enquiry forms post — the studio API, same origin. Set to null
+  // to fall back to a pre-filled email; the forms also do that on their own
+  // whenever the API does not accept a submission.
+  formEndpoint: '/api/enquiries',
 }
 
 export const serviceOptions = [
