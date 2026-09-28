@@ -1,0 +1,272 @@
+// ── LA Space Studio API — schema ──────────────────────────────────────────
+// Eleven tables, per the implementation plan (§25). Table and column names
+// are snake_case in MySQL; the Prisma client exposes camelCase.
+//
+// Ordered string lists that belong wholly to one row (inclusions, categories)
+// are JSON columns: nothing queries across them, and the admin writes each
+// list whole. Media derivatives are JSON for the same reason.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Admin ──────────────────────────────────────────────────────────────────
+
+enum AdminRole {
+  owner
+}
+
+model AdminUser {
+  id           Int       @id @default(autoincrement()) @db.UnsignedInt
+  email        String    @unique @db.VarChar(190)
+  passwordHash String    @map("password_hash") @db.VarChar(255)
+  displayName  String    @map("display_name") @db.VarChar(120)
+  initials     String    @db.Char(2)
+  role         AdminRole @default(owner)
+  isActive     Boolean   @default(true) @map("is_active")
+  lastLoginAt  DateTime? @map("last_login_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  sessions AdminSession[]
+
+  @@map("admin_user")
+}
+
+/// One row per live bearer token. The token itself is never stored — only
+/// its SHA-256 — so a database read cannot yield a usable credential.
+model AdminSession {
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
+  adminUserId Int       @map("admin_user_id") @db.UnsignedInt
+  tokenHash   String    @unique @map("token_hash") @db.Char(64)
+  expiresAt   DateTime  @map("expires_at")
+  revokedAt   DateTime? @map("revoked_at")
+  userAgent   String?   @map("user_agent") @db.VarChar(255)
+  ipHash      String?   @map("ip_hash") @db.Char(64)
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  user AdminUser @relation(fields: [adminUserId], references: [id], onDelete: Cascade)
+
+  @@index([adminUserId])
+  @@index([expiresAt])
+  @@map("admin_session")
+}
+
+// ── Enquiries ──────────────────────────────────────────────────────────────
+
+enum EnquirySource {
+  website_form
+  consultation_modal
+  instagram
+  referral
+  google
+  whatsapp
+  other
+}
+
+/// The one visitor-generated table. Service and budget are kept as the
+/// labels the visitor actually chose; email is nullable because the
+/// consultation modal does not collect it.
+model Enquiry {
+  id            Int           @id @default(autoincrement()) @db.UnsignedInt
+  referenceCode String        @unique @map("reference_code") @db.Char(10)
+  name          String        @db.VarChar(120)
+  phone         String        @db.VarChar(32)
+  email         String?       @db.VarChar(190)
+  serviceLabel  String        @map("service_label") @db.VarChar(120)
+  budgetLabel   String?       @map("budget_label") @db.VarChar(60)
+  message       String?       @db.Text
+  source        EnquirySource
+  isHandled     Boolean       @default(false) @map("is_handled")
+  handledAt     DateTime?     @map("handled_at")
+  notifiedAt    DateTime?     @map("notified_at")
+  ipHash        String?       @map("ip_hash") @db.Char(64)
+  userAgent     String?       @map("user_agent") @db.VarChar(255)
+  submittedAt   DateTime      @default(now()) @map("submitted_at")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+
+  @@index([isHandled, submittedAt(sort: Desc)])
+  @@index([submittedAt(sort: Desc)])
+  @@index([phone])
+  @@map("enquiry")
+}
+
+// ── Media ──────────────────────────────────────────────────────────────────
+
+enum MediaStatus {
+  processing
+  ready
+  failed
+}
+
+/// One uploaded image. Width and height are read at upload time (cheap —
+/// header only) so they are never null; the derivative set is filled in by
+/// the worker and `status` flips to `ready` when it is done.
+model MediaAsset {
+  id               Int         @id @default(autoincrement()) @db.UnsignedInt
+  storageKey       String      @unique @map("storage_key") @db.VarChar(255)
+  originalFilename String      @map("original_filename") @db.VarChar(255)
+  mime             String      @db.VarChar(64)
+  byteSize         Int         @map("byte_size") @db.UnsignedInt
+  width            Int         @db.UnsignedInt
+  height           Int         @db.UnsignedInt
+  altText          String?     @map("alt_text") @db.VarChar(255)
+  lqipColor        String?     @map("lqip_color") @db.Char(7)
+  status           MediaStatus @default(processing)
+  derivatives      Json?
+  createdAt        DateTime    @default(now()) @map("created_at")
+  updatedAt        DateTime    @updatedAt @map("updated_at")
+
+  serviceImages    Service[]
+  projectCovers    Project[]      @relation("ProjectCover")
+  galleryEntries   ProjectMedia[]
+  testimonialPhotos Testimonial[] @relation("TestimonialPhoto")
+  brandLogos       Brand[]        @relation("BrandLogo")
+
+  @@index([status])
+  @@map("media_asset")
+}
+
+// ── Content ────────────────────────────────────────────────────────────────
+
+model Service {
+  id               Int       @id @default(autoincrement()) @db.UnsignedInt
+  slug             String    @unique @db.VarChar(120)
+  name             String    @db.VarChar(120)
+  shortDescription String    @map("short_description") @db.VarChar(500)
+  fullDescription  String?   @map("full_description") @db.Text
+  /// string[] — the "What's included" list, written whole by the admin.
+  inclusions       Json
+  imageId          Int?      @map("image_id") @db.UnsignedInt
+  isPublished      Boolean   @default(false) @map("is_published")
+  displayOrder     Int       @default(0) @map("display_order")
+  deletedAt        DateTime? @map("deleted_at")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  image MediaAsset? @relation(fields: [imageId], references: [id], onDelete: SetNull)
+
+  @@index([isPublished, displayOrder])
+  @@index([deletedAt])
+  @@map("service")
+}
+
+model Project {
+  id               Int       @id @default(autoincrement()) @db.UnsignedInt
+  slug             String    @unique @db.VarChar(120)
+  title            String    @db.VarChar(160)
+  /// string[] — a project may sit under several filters (Kitchen + Residential).
+  categories       Json
+  location         String    @db.VarChar(120)
+  areaLabel        String?   @map("area_label") @db.VarChar(60)
+  yearLabel        String?   @map("year_label") @db.VarChar(10)
+  shortDescription String    @map("short_description") @db.VarChar(500)
+  fullDescription  String?   @map("full_description") @db.Text
+  coverId          Int?      @map("cover_id") @db.UnsignedInt
+  isFeatured       Boolean   @default(false) @map("is_featured")
+  isPublished      Boolean   @default(false) @map("is_published")
+  displayOrder     Int       @default(0) @map("display_order")
+  publishedAt      DateTime? @map("published_at")
+  deletedAt        DateTime? @map("deleted_at")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  cover   MediaAsset?    @relation("ProjectCover", fields: [coverId], references: [id], onDelete: SetNull)
+  gallery ProjectMedia[]
+
+  @@index([isPublished, displayOrder])
+  @@index([isFeatured, isPublished, displayOrder])
+  @@index([deletedAt])
+  @@map("project")
+}
+
+/// The ordered gallery of renders on a project.
+model ProjectMedia {
+  projectId Int @map("project_id") @db.UnsignedInt
+  mediaId   Int @map("media_id") @db.UnsignedInt
+  position  Int @default(0)
+
+  project Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  media   MediaAsset @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+
+  @@id([projectId, mediaId])
+  @@index([projectId, position])
+  @@map("project_media")
+}
+
+model Testimonial {
+  id           Int      @id @default(autoincrement()) @db.UnsignedInt
+  customerName String   @map("customer_name") @db.VarChar(120)
+  /// Location or project reference, free text.
+  attribution  String?  @db.VarChar(160)
+  quote        String   @db.Text
+  photoId      Int?     @map("photo_id") @db.UnsignedInt
+  isPublished  Boolean  @default(false) @map("is_published")
+  displayOrder Int      @default(0) @map("display_order")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  photo MediaAsset? @relation("TestimonialPhoto", fields: [photoId], references: [id], onDelete: SetNull)
+
+  @@index([isPublished, displayOrder])
+  @@map("testimonial")
+}
+
+model Brand {
+  id           Int      @id @default(autoincrement()) @db.UnsignedInt
+  name         String   @db.VarChar(120)
+  websiteUrl   String?  @map("website_url") @db.VarChar(255)
+  logoId       Int?     @map("logo_id") @db.UnsignedInt
+  isPublished  Boolean  @default(false) @map("is_published")
+  displayOrder Int      @default(0) @map("display_order")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  logo MediaAsset? @relation("BrandLogo", fields: [logoId], references: [id], onDelete: SetNull)
+
+  @@index([isPublished, displayOrder])
+  @@map("brand")
+}
+
+model Faq {
+  id           Int      @id @default(autoincrement()) @db.UnsignedInt
+  question     String   @db.VarChar(255)
+  answer       String   @db.Text
+  isPublished  Boolean  @default(false) @map("is_published")
+  displayOrder Int      @default(0) @map("display_order")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@index([isPublished, displayOrder])
+  @@map("faq")
+}
+
+/// Exactly one row, id = 1, enforced by the settings service (upsert only).
+model SiteSetting {
+  id           Int      @id @default(1)
+  phone        String   @db.VarChar(32)
+  phoneHref    String   @map("phone_href") @db.VarChar(40)
+  whatsappHref String   @map("whatsapp_href") @db.VarChar(255)
+  email        String   @db.VarChar(190)
+  addressLine1 String   @map("address_line1") @db.VarChar(160)
+  addressLine2 String?  @map("address_line2") @db.VarChar(160)
+  addressLine3 String?  @map("address_line3") @db.VarChar(160)
+  hours        String   @db.VarChar(120)
+  mapsUrl      String?  @map("maps_url") @db.VarChar(500)
+  instagramUrl String?  @map("instagram_url") @db.VarChar(255)
+  facebookUrl  String?  @map("facebook_url") @db.VarChar(255)
+  youtubeUrl   String?  @map("youtube_url") @db.VarChar(255)
+  statProjects Int      @default(0) @map("stat_projects")
+  statFamilies Int      @default(0) @map("stat_families")
+  statConcepts Int      @default(0) @map("stat_concepts")
+  statYears    Int      @default(0) @map("stat_years")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("site_setting")
+}

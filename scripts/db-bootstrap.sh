@@ -19,7 +19,7 @@ ARGS=(-u "${DB_ADMIN_USER:-root}" -h "${DB_HOST:-127.0.0.1}" -P "${DB_PORT:-3306
 
 "$MYSQL" "${ARGS[@]}" <<SQL
 CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\`
-  CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;  -- matches the collation Prisma writes on every table
 
 CREATE USER IF NOT EXISTS '${DB_APP_USER}'@'${DB_USER_HOST:-localhost}'
   IDENTIFIED BY '${DB_APP_PASSWORD}';
