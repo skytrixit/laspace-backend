@@ -1,7 +1,7 @@
 # LA Space Studio API
 
 The backend for the LA Space Interiors website and studio admin: NestJS,
-Prisma and MySQL 8. The architecture and phase plan live in the project's
+TypeORM and MySQL 8. The architecture and phase plan live in the project's
 implementation document; this file covers only getting a machine ready.
 
 ## Phase 0 — local environment
@@ -19,7 +19,34 @@ Two database users exist on purpose. The application connects as
 `laspace_migrate` during deploy, so a compromised app process can never
 alter the schema.
 
-The Nest project itself arrives in Phase 1.
+## Running it
+
+```bash
+npm install
+npm run migration:run     # applies src/database/migrations as the migrate user
+npm run start:dev         # http://localhost:4000/health
+npm test                  # unit tests, no database needed
+npm run test:e2e          # boots the real app against the .env database
+```
+
+## Schema changes
+
+Edit the entity, then generate a migration by diffing against the live
+database — no shadow database, no `synchronize`:
+
+```bash
+npm run migration:generate -- AddProjectVideo   # writes src/database/migrations/<ts>-AddProjectVideo.ts
+npm run migration:run
+```
+
+Review the generated file before running it. `synchronize` is off
+everywhere and stays off: what runs in production is exactly what was
+reviewed. In production, run migrations from the compiled output:
+`npm run migration:run:prod`.
+
+Entities live beside the module that owns them (`src/enquiries/enquiry.entity.ts`,
+`src/projects/project.entity.ts`, …) and are listed once in
+`src/database/entities.ts`.
 
 ## Environments
 

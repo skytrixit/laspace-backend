@@ -6,12 +6,12 @@ import {
   HttpStatus,
   Logger,
 } from '@nestjs/common'
-import { Prisma } from '@prisma/client'
 import type { Request, Response } from 'express'
+import { EntityNotFoundError, QueryFailedError } from 'typeorm'
 
 /* ── Error shape ───────────────────────────────────────────────────────────
    Every error leaves the API as { statusCode, code, message, fields? }.
-   Nothing else — no stack, no Prisma text, no SQL. Unexpected errors are
+   Nothing else — no stack, no ORM text, no SQL. Unexpected errors are
    logged with the request id and answered with a generic 500.
    ------------------------------------------------------------------------ */
 
@@ -71,11 +71,20 @@ export class AppExceptionFilter implements ExceptionFilter {
       }
     }
 
-    if (exception instanceof Prisma.PrismaClientKnownRequestError) {
-      if (exception.code === 'P2002')
+    if (exception instanceof EntityNotFoundError) {
+      return { statusCode: 404, code: 'not_found', message: 'Not found.' }
+    }
+
+    /* MySQL error codes surface on the driver error; only the ones a user can
+       cause by ordinary input get a specific answer. */
+    if (exception instanceof QueryFailedError) {
+      const code = (exception.driverError as { code?: string } | undefined)?.code
+      if (code === 'ER_DUP_ENTRY')
         return { statusCode: 409, code: 'conflict', message: 'That value is already in use.' }
-      if (exception.code === 'P2025')
-        return { statusCode: 404, code: 'not_found', message: 'Not found.' }
+      if (code === 'ER_ROW_IS_REFERENCED_2')
+        return { statusCode: 409, code: 'conflict', message: 'Something else still refers to this.' }
+      if (code === 'ER_NO_REFERENCED_ROW_2')
+        return { statusCode: 409, code: 'conflict', message: 'The referenced record does not exist.' }
     }
 
     return {

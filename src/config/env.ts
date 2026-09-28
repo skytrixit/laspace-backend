@@ -45,10 +45,26 @@ export class Env {
   ADMIN_ORIGIN!: string
 
   @IsString() @MinLength(1)
-  DATABASE_URL!: string
+  DB_HOST = '127.0.0.1'
+
+  @toInt() @IsInt() @Min(1) @Max(65535)
+  DB_PORT = 3306
+
+  @IsString() @MinLength(1)
+  DB_NAME!: string
+
+  @IsString() @MinLength(1)
+  DB_USERNAME!: string
+
+  @IsString()
+  DB_PASSWORD!: string
+
+  /* Optional second user for schema changes; falls back to DB_USERNAME. */
+  @IsOptional() @IsString()
+  DB_MIGRATE_USERNAME?: string
 
   @IsOptional() @IsString()
-  MIGRATE_DATABASE_URL?: string
+  DB_MIGRATE_PASSWORD?: string
 
   @toInt() @IsInt() @Min(1) @Max(365)
   SESSION_TTL_DAYS = 30

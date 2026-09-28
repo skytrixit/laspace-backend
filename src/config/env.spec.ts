@@ -3,7 +3,9 @@ import { validateEnv } from './env'
 const base = {
   PUBLIC_ORIGIN: 'http://localhost:5173',
   ADMIN_ORIGIN: 'http://localhost:5174',
-  DATABASE_URL: 'mysql://u:p@127.0.0.1:3306/laspace',
+  DB_NAME: 'laspace',
+  DB_USERNAME: 'laspace_app',
+  DB_PASSWORD: 'secret',
 }
 
 describe('validateEnv', () => {
@@ -12,6 +14,7 @@ describe('validateEnv', () => {
     expect(env.PORT).toBe(4000)
     expect(env.SESSION_TTL_DAYS).toBe(30)
     expect(env.MEDIA_DRIVER).toBe('local')
+    expect(env.DB_PORT).toBe(3306)
   })
 
   it('coerces numeric strings', () => {
@@ -19,7 +22,7 @@ describe('validateEnv', () => {
   })
 
   it('lists every failure at once', () => {
-    expect(() => validateEnv({ PORT: 'abc' })).toThrow(/PORT[\s\S]*PUBLIC_ORIGIN[\s\S]*DATABASE_URL/)
+    expect(() => validateEnv({ PORT: 'abc' })).toThrow(/PORT[\s\S]*PUBLIC_ORIGIN[\s\S]*DB_USERNAME/)
   })
 
   it('requires the S3 settings when the s3 driver is chosen', () => {

@@ -1,10 +1,11 @@
 import { randomUUID } from 'node:crypto'
 import { Module } from '@nestjs/common'
-import { ConfigModule } from '@nestjs/config'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import { TypeOrmModule } from '@nestjs/typeorm'
 import { LoggerModule } from 'nestjs-pino'
-import { validateEnv } from './config/env'
+import { Env, validateEnv } from './config/env'
+import { dataSourceOptions } from './database/data-source'
 import { HealthModule } from './health/health.module'
-import { PrismaModule } from './prisma/prisma.module'
 
 const isDev = process.env.NODE_ENV !== 'production'
 
@@ -29,7 +30,22 @@ const isDev = process.env.NODE_ENV !== 'production'
       },
     }),
 
-    PrismaModule,
+    /* The API connects as the app user — rows only, never schema. */
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService<Env, true>) =>
+        dataSourceOptions(
+          {
+            DB_HOST: config.get('DB_HOST'),
+            DB_PORT: config.get('DB_PORT'),
+            DB_NAME: config.get('DB_NAME'),
+            DB_USERNAME: config.get('DB_USERNAME'),
+            DB_PASSWORD: config.get('DB_PASSWORD'),
+          },
+          'app',
+        ),
+    }),
+
     HealthModule,
   ],
 })

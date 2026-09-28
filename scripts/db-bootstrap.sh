@@ -19,19 +19,19 @@ ARGS=(-u "${DB_ADMIN_USER:-root}" -h "${DB_HOST:-127.0.0.1}" -P "${DB_PORT:-3306
 
 "$MYSQL" "${ARGS[@]}" <<SQL
 CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\`
-  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;  -- matches the collation Prisma writes on every table
+  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;  -- the collation every migration writes on its tables
 
-CREATE USER IF NOT EXISTS '${DB_APP_USER}'@'${DB_USER_HOST:-localhost}'
-  IDENTIFIED BY '${DB_APP_PASSWORD}';
+CREATE USER IF NOT EXISTS '${DB_USERNAME}'@'${DB_USER_HOST:-localhost}'
+  IDENTIFIED BY '${DB_PASSWORD}';
 GRANT SELECT, INSERT, UPDATE, DELETE
-  ON \`${DB_NAME}\`.* TO '${DB_APP_USER}'@'${DB_USER_HOST:-localhost}';
+  ON \`${DB_NAME}\`.* TO '${DB_USERNAME}'@'${DB_USER_HOST:-localhost}';
 
-CREATE USER IF NOT EXISTS '${DB_MIGRATE_USER}'@'${DB_USER_HOST:-localhost}'
+CREATE USER IF NOT EXISTS '${DB_MIGRATE_USERNAME}'@'${DB_USER_HOST:-localhost}'
   IDENTIFIED BY '${DB_MIGRATE_PASSWORD}';
 GRANT ALL PRIVILEGES
-  ON \`${DB_NAME}\`.* TO '${DB_MIGRATE_USER}'@'${DB_USER_HOST:-localhost}';
+  ON \`${DB_NAME}\`.* TO '${DB_MIGRATE_USERNAME}'@'${DB_USER_HOST:-localhost}';
 
 FLUSH PRIVILEGES;
 SQL
 
-echo "Database '${DB_NAME}' and users '${DB_APP_USER}', '${DB_MIGRATE_USER}' are ready."
+echo "Database '${DB_NAME}' and users '${DB_USERNAME}', '${DB_MIGRATE_USERNAME}' are ready."
