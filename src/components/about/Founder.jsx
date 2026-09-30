@@ -1,6 +1,6 @@
 import Section from '../Section'
 import Shot from '../Shot'
-import { founder } from '../../data/site'
+import { founder } from '../../data/content'
 
 export default function Founder() {
   return (

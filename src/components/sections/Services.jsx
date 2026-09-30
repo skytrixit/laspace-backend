@@ -1,5 +1,5 @@
 import Section from '../Section'
-import { services } from '../../data/site'
+import { services } from '../../data/content'
 
 export default function Services() {
   return (

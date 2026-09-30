@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import Img from '../components/Img'
-import { projectFilters, portfolioProjects } from '../data/site'
+import { projectFilters, portfolioProjects } from '../data/content'
 
 /* Shapes cycle by grid position (index mod 6), so the rhythm survives
    filtering rather than being pinned to a particular project. */
@@ -74,6 +74,7 @@ export default function Projects() {
                   <div className="pj-card__media">
                     <Img
                       src={project.image}
+                      media={project.media}
                       sizes="(min-width: 1300px) 25vw, (min-width: 920px) 33vw, 100vw"
                       alt={`${project.name} — ${project.type} in ${project.location}`}
                       loading={i < 2 ? 'eager' : 'lazy'}

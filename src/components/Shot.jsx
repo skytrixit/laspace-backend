@@ -9,6 +9,7 @@ import Img from './Img'
  */
 export default function Shot({
   src,
+  media,
   alt = '',
   radius,
   width = '460px',
@@ -30,10 +31,11 @@ export default function Shot({
   return (
     <div className={`shot ${className}`} style={style}>
       <div className="shot__frame" aria-hidden="true" />
-      {src ? (
+      {src || media ? (
         <div className="shot__clip">
           <Img
             src={src}
+            media={media}
             alt={alt}
             loading={loading}
             fetchPriority={fetchPriority}

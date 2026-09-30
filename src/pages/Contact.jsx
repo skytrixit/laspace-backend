@@ -1,5 +1,5 @@
 import EnquiryForm from '../components/contact/EnquiryForm'
-import { site, contact } from '../data/site'
+import { site, contact } from '../data/content'
 
 export default function Contact() {
   const rows = [

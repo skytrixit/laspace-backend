@@ -1,4 +1,4 @@
-import { site, nav, services } from '../data/site'
+import { site, nav, services } from '../data/content'
 import { useIsMobile } from '../hooks/useMediaQuery'
 import '../styles/footer.css'
 

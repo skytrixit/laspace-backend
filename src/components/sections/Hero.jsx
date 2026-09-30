@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Img from '../Img'
-import { heroSlides } from '../../data/site'
+import { heroSlides } from '../../data/content'
 import { usePrefersReducedMotion } from '../../hooks/useMediaQuery'
 
 const INTERVAL = 6000

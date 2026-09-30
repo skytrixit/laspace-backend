@@ -1,6 +1,6 @@
 import Section from '../Section'
 import Shot from '../Shot'
-import { aboutStory } from '../../data/site'
+import { aboutStory } from '../../data/content'
 
 export default function Story() {
   return (

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { site, contact, serviceOptions } from '../data/site'
+import { site, contact, serviceOptions } from '../data/content'
 import { submitEnquiry } from '../lib/api'
 import { lockScroll, unlockScroll } from '../lib/scrollLock'
 import '../styles/fields.css'

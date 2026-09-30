@@ -1,6 +1,6 @@
 import ServiceBlock from '../components/services/ServiceBlock'
 import { useReveal } from '../hooks/useReveal'
-import { servicesHero, serviceBlocks } from '../data/site'
+import { servicesHero, serviceBlocks } from '../data/content'
 
 export default function Services() {
   const ctaRef = useReveal(0.08)

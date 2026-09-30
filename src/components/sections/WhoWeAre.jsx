@@ -1,6 +1,6 @@
 import Section from '../Section'
 import Img from '../Img'
-import { whoWeAreImage } from '../../data/site'
+import { whoWeAreImage } from '../../data/content'
 
 export default function WhoWeAre() {
   return (

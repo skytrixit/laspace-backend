@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { nav } from '../data/site'
+import { nav } from '../data/content'
 import { useIsMobile } from '../hooks/useMediaQuery'
 import { lockScroll, unlockScroll } from '../lib/scrollLock'
 import '../styles/navbar.css'

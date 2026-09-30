@@ -1,6 +1,6 @@
 import Img from '../Img'
 import { useReveal } from '../../hooks/useReveal'
-import { ctaImage } from '../../data/site'
+import { ctaImage } from '../../data/content'
 
 export default function FinalCta() {
   const ref = useReveal()

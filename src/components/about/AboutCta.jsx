@@ -1,6 +1,6 @@
 import Img from '../Img'
 import { useReveal } from '../../hooks/useReveal'
-import { aboutCta } from '../../data/site'
+import { aboutCta } from '../../data/content'
 
 export default function AboutCta() {
   const ref = useReveal()

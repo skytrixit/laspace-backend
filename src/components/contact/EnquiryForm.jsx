@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { site, contact, serviceOptions, budgetOptions } from '../../data/site'
+import { site, contact, serviceOptions, budgetOptions } from '../../data/content'
 import { submitEnquiry } from '../../lib/api'
 
 const EMPTY = { name: '', phone: '', email: '', service: '', budget: '', message: '', website: '' }

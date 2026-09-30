@@ -1,6 +1,6 @@
 import Section from '../Section'
 import Img from '../Img'
-import { projects } from '../../data/site'
+import { projects } from '../../data/content'
 
 export default function Portfolio() {
   return (
@@ -26,6 +26,7 @@ export default function Portfolio() {
                   <span className="project__media">
                     <Img
                       src={project.src}
+                      media={project.media}
                       alt={project.alt}
                       sizes="(min-width: 1300px) 33vw, (min-width: 920px) 50vw, 100vw"
                     />

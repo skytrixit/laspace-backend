@@ -1,5 +1,5 @@
 import Shot from '../Shot'
-import { aboutHero } from '../../data/site'
+import { aboutHero } from '../../data/content'
 
 export default function AboutHero() {
   return (

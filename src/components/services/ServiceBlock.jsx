@@ -16,8 +16,9 @@ export default function ServiceBlock({ service, index }) {
     >
       <div className="svc-block__grid">
         <Shot
-          src={service.image.src}
-          alt={service.image.alt}
+          src={service.image ? service.image.src : undefined}
+          media={service.image ? service.image.media : undefined}
+          alt={service.image ? service.image.alt : ''}
           radius={service.radius}
           width="480px"
           height="clamp(340px, 76vw, 540px)"
@@ -28,6 +29,15 @@ export default function ServiceBlock({ service, index }) {
           <p className="eyebrow">{service.eyebrow}</p>
           <h2 id={`${service.id}-title`}>{service.name}</h2>
           <p className="svc-block__desc">{service.description}</p>
+          {service.body &&
+            service.body
+              .split(/\n{2,}/)
+              .filter(Boolean)
+              .map((para, i) => (
+                <p className="svc-block__desc" key={i}>
+                  {para}
+                </p>
+              ))}
 
           <ul className="svc-scope">
             {service.scope.map((item) => (

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Section from '../Section'
-import { testimonials } from '../../data/site'
+import { testimonials } from '../../data/content'
 
 export default function Testimonials() {
   const [index, setIndex] = useState(0)
@@ -24,7 +24,8 @@ export default function Testimonials() {
             {current.quote}
           </blockquote>
           <figcaption className="quote__author">
-            {current.author} — {current.role}
+            {current.author}
+            {current.role ? ` — ${current.role}` : ''}
           </figcaption>
         </figure>
 

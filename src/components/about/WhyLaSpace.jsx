@@ -1,5 +1,5 @@
 import Section from '../Section'
-import { whyLaSpace } from '../../data/site'
+import { whyLaSpace } from '../../data/content'
 
 export default function WhyLaSpace() {
   return (

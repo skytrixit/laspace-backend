@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { stats } from '../../data/site'
+import { stats } from '../../data/content'
 import { useReveal } from '../../hooks/useReveal'
 
 const DURATION = 1600

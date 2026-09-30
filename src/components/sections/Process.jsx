@@ -1,5 +1,5 @@
 import Section from '../Section'
-import { processSteps } from '../../data/site'
+import { processSteps } from '../../data/content'
 
 export default function Process() {
   return (

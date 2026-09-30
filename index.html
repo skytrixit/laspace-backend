@@ -63,77 +63,7 @@
       crossorigin
     />
 
-    <!-- Structured data: organisation / local business -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "InteriorDesignBusiness",
-        "@id": "https://www.laspaceinteriors.com/#business",
-        "name": "LA Space Interiors",
-        "url": "https://www.laspaceinteriors.com/",
-        "logo": "https://www.laspaceinteriors.com/brand/logo.svg",
-        "image": "https://www.laspaceinteriors.com/images/og-cover.jpg",
-        "description": "Bespoke interior design and turnkey execution studio in Visakhapatnam — full home interiors, modular kitchens, wardrobes, false ceilings and commercial interiors.",
-        "telephone": "+91-90000-00000",
-        "email": "hello@laspaceinteriors.com",
-        "priceRange": "$$$",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "Door No. 1-2-3, Beach Road",
-          "addressLocality": "Visakhapatnam",
-          "addressRegion": "Andhra Pradesh",
-          "postalCode": "530017",
-          "addressCountry": "IN"
-        },
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": 17.7231,
-          "longitude": 83.3239
-        },
-        "areaServed": [
-          { "@type": "City", "name": "Visakhapatnam" },
-          { "@type": "State", "name": "Andhra Pradesh" }
-        ],
-        "openingHoursSpecification": [
-          {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-            "opens": "10:00",
-            "closes": "19:00"
-          }
-        ],
-        "sameAs": [
-          "https://www.instagram.com/laspaceinteriors",
-          "https://www.facebook.com/laspaceinteriors",
-          "https://www.youtube.com/@laspaceinteriors"
-        ],
-        "hasOfferCatalog": {
-          "@type": "OfferCatalog",
-          "name": "Interior design services",
-          "itemListElement": [
-            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Full Home Interiors" } },
-            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Modular Kitchens" } },
-            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Wardrobes & Walk-in Closets" } },
-            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Living Spaces" } },
-            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "False Ceilings" } },
-            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Commercial Interiors" } }
-          ]
-        }
-      }
-    </script>
-
-    <!-- Structured data: website -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "@id": "https://www.laspaceinteriors.com/#website",
-        "url": "https://www.laspaceinteriors.com/",
-        "name": "LA Space Interiors",
-        "publisher": { "@id": "https://www.laspaceinteriors.com/#business" },
-        "inLanguage": "en-IN"
-      }
-    </script>
+    <!-- Structured data (organisation, website, FAQ, lists) is injected by the studio API. -->
   </head>
   <body>
     <div id="root">
