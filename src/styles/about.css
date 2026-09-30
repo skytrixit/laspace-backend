@@ -159,8 +159,10 @@
   border-bottom: 1px solid var(--rule-list);
   transition: background 0.35s ease;
 }
-.why__cell:hover {
-  background: var(--off-black);
+@media (hover: hover) and (pointer: fine) {
+  .why__cell:hover {
+    background: var(--off-black);
+  }
 }
 .why__no {
   font-family: var(--sans);

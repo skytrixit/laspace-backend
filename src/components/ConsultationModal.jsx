@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { site, contact, serviceOptions } from '../data/content'
 import { submitEnquiry } from '../lib/api'
+import { track } from '../lib/analytics'
 import { lockScroll, unlockScroll } from '../lib/scrollLock'
 import '../styles/fields.css'
 import '../styles/consult.css'
@@ -137,11 +138,14 @@ export default function ConsultationModal() {
           formTs: openedAt.current,
         })
         setReference(referenceCode)
+        track('generate_lead', { source: 'consultation_modal', service: values.service })
       } catch {
         openMailFallback(values)
+        track('enquiry_fallback', { source: 'consultation_modal', service: values.service })
       }
     } else {
       openMailFallback(values)
+      track('enquiry_fallback', { source: 'consultation_modal', service: values.service })
     }
     setSent(true)
   }

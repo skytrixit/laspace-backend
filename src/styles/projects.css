@@ -84,9 +84,6 @@
   object-fit: cover;
   transition: transform 0.6s ease;
 }
-.pj-card:hover .pj-card__media img {
-  transform: scale(1.05);
-}
 
 /* Inside the shaped wrapper, so the curve clips it. */
 .pj-card__overlay {
@@ -100,10 +97,28 @@
   transform: translateY(8px);
   transition: all 0.45s ease;
 }
-.pj-card:hover .pj-card__overlay,
 .pj-card:focus-visible .pj-card__overlay {
   opacity: 1;
   transform: translateY(0);
+}
+/* Hover is a reveal only where a pointer can hover. */
+@media (hover: hover) and (pointer: fine) {
+  .pj-card:hover .pj-card__media img {
+    transform: scale(1.05);
+  }
+  .pj-card:hover .pj-card__overlay {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Touch has no hover: the caption is always there, so the card reads as a link. */
+@media (hover: none), (pointer: coarse) {
+  .pj-card__overlay {
+    opacity: 1;
+    transform: none;
+    padding-top: 34px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0));
+  }
 }
 .pj-card__cta {
   font-family: var(--sans);

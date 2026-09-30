@@ -1,11 +1,12 @@
 import EnquiryForm from '../components/contact/EnquiryForm'
 import { site, contact } from '../data/content'
+import { track } from '../lib/analytics'
 
 export default function Contact() {
   const rows = [
-    { label: 'Phone', value: site.phone, href: site.phoneHref },
+    { label: 'Phone', value: site.phone, href: site.phoneHref, channel: 'phone' },
     { label: 'Email', value: site.email, href: site.emailHref },
-    { label: 'WhatsApp', value: 'Message the Studio →', href: site.whatsappHref, external: true },
+    { label: 'WhatsApp', value: 'Message the Studio →', href: site.whatsappHref, external: true, channel: 'whatsapp' },
     { label: 'Hours', value: contact.hours },
   ]
 
@@ -30,6 +31,11 @@ export default function Contact() {
                       {...(row.external
                         ? { target: '_blank', rel: 'noopener noreferrer' }
                         : {})}
+                      onClick={
+                        row.channel
+                          ? () => track('contact_click', { channel: row.channel, placement: 'contact_page' })
+                          : undefined
+                      }
                     >
                       {row.value}
                     </a>

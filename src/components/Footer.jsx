@@ -1,5 +1,6 @@
 import { site, nav, services } from '../data/content'
 import { useIsMobile } from '../hooks/useMediaQuery'
+import { track } from '../lib/analytics'
 import '../styles/footer.css'
 
 export default function Footer() {
@@ -60,9 +61,16 @@ export default function Footer() {
                     </span>
                   ))}
                 </address>
-                <a href={site.phoneHref}>{site.phone}</a>
+                <a href={site.phoneHref} onClick={() => track('contact_click', { channel: 'phone', placement: 'footer' })}>
+                  {site.phone}
+                </a>
                 <a href={site.emailHref}>{site.email}</a>
-                <a href={site.whatsappHref} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={site.whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => track('contact_click', { channel: 'whatsapp', placement: 'footer' })}
+                >
                   WhatsApp Us →
                 </a>
                 <div className="footer__social">
@@ -88,7 +96,11 @@ export default function Footer() {
 
       {isMobile && (
         <div className="action-bar">
-          <a className="action-bar__call" href={site.phoneHref}>
+          <a
+            className="action-bar__call"
+            href={site.phoneHref}
+            onClick={() => track('contact_click', { channel: 'phone', placement: 'action_bar' })}
+          >
             Call
           </a>
           <a
@@ -96,6 +108,7 @@ export default function Footer() {
             href={site.whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => track('contact_click', { channel: 'whatsapp', placement: 'action_bar' })}
           >
             WhatsApp
           </a>

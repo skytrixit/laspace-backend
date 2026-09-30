@@ -227,6 +227,14 @@ ol {
   opacity: 1;
   transform: none;
 }
+/* Phones and tablets: shorter travel, quicker settle — the eye is closer to
+   the screen and a long rise reads as lag. */
+@media (max-width: 919.98px) {
+  .reveal {
+    transform: translateY(14px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   html {

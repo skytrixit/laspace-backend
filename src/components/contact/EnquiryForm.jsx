@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { site, contact, serviceOptions, budgetOptions } from '../../data/content'
 import { submitEnquiry } from '../../lib/api'
+import { track } from '../../lib/analytics'
 
 const EMPTY = { name: '', phone: '', email: '', service: '', budget: '', message: '', website: '' }
 
@@ -47,12 +48,15 @@ export default function EnquiryForm() {
           formTs: startedAt.current,
         })
         setReference(referenceCode)
+        track('generate_lead', { source: 'website_form', service: values.service })
       } catch {
         /* fall through to the mail client so the enquiry is never lost */
         openMailFallback(values)
+        track('enquiry_fallback', { source: 'website_form', service: values.service })
       }
     } else {
       openMailFallback(values)
+      track('enquiry_fallback', { source: 'website_form', service: values.service })
     }
     setSent(true)
   }
