@@ -101,6 +101,10 @@ export class Env {
   @toInt() @IsInt() @Min(1) @Max(200)
   MEDIA_MAX_UPLOAD_MB = 40
 
+  /* AVIF encoding is CPU heavy and this process also serves pages: keep it low. */
+  @toInt() @IsInt() @Min(1) @Max(4)
+  MEDIA_WORKER_CONCURRENCY = 1
+
   @IsOptional() @IsString()
   S3_ENDPOINT?: string
 

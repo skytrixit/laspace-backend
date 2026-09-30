@@ -33,9 +33,11 @@ export class MediaUrlService {
 
   view(asset: MediaAsset | null | undefined): MediaView | null {
     if (!asset) return null
+    const jpegs = (asset.derivatives ?? []).filter((d) => d.format === 'jpeg').sort((a, b) => b.width - a.width)
     return {
       id: asset.id,
-      src: this.url(asset.storageKey),
+      /* The largest JPEG once ready — what a plain <img src> should get; the original until then. */
+      src: this.url(asset.status === 'ready' && jpegs[0] ? jpegs[0].key : asset.storageKey),
       width: asset.width,
       height: asset.height,
       alt: asset.altText,

@@ -1,5 +1,7 @@
+import path from 'node:path'
 import { INestApplication, ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { static as serveStatic } from 'express'
 import helmet from 'helmet'
 import { AppExceptionFilter } from './common/filters/app-exception.filter'
 import { validationExceptionFactory } from './common/validation'
@@ -23,6 +25,22 @@ export function configureApp(app: INestApplication) {
   express.set('trust proxy', config.get('TRUST_PROXY') ? 1 : false)
 
   app.use(helmet())
+
+  /* Local driver only: uploads are files on disk, served here. Derivative
+     keys never change, so they are cached for a year; images must be
+     embeddable from the admin and the site, hence the CORP override. */
+  if (config.get('MEDIA_DRIVER') === 'local') {
+    express.use(
+      '/media',
+      serveStatic(path.resolve(config.get('MEDIA_LOCAL_PATH'), 'media'), {
+        immutable: true,
+        maxAge: '365d',
+        index: false,
+        fallthrough: false,
+        setHeaders: (res) => res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin'),
+      }),
+    )
+  }
 
   /* Bearer tokens, not cookies, so no credentials flag — but the admin's
      Authorization header has to be allowed through explicitly. */
