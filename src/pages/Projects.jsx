@@ -74,6 +74,7 @@ export default function Projects() {
                   <div className="pj-card__media">
                     <Img
                       src={project.image}
+                      sizes="(min-width: 1300px) 25vw, (min-width: 920px) 33vw, 100vw"
                       alt={`${project.name} — ${project.type} in ${project.location}`}
                       loading={i < 2 ? 'eager' : 'lazy'}
                     />

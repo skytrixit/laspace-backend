@@ -24,7 +24,11 @@ export default function Portfolio() {
               <a href={project.href}>
                 <figure style={{ margin: 0 }}>
                   <span className="project__media">
-                    <Img src={project.src} alt={project.alt} />
+                    <Img
+                      src={project.src}
+                      alt={project.alt}
+                      sizes="(min-width: 1300px) 33vw, (min-width: 920px) 50vw, 100vw"
+                    />
                   </span>
                   <figcaption>
                     <h3 className="project__name">{project.name}</h3>

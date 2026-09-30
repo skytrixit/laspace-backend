@@ -32,7 +32,13 @@ export default function Shot({
       <div className="shot__frame" aria-hidden="true" />
       {src ? (
         <div className="shot__clip">
-          <Img src={src} alt={alt} loading={loading} fetchPriority={fetchPriority} />
+          <Img
+            src={src}
+            alt={alt}
+            loading={loading}
+            fetchPriority={fetchPriority}
+            sizes="(min-width: 920px) 480px, 100vw"
+          />
         </div>
       ) : (
         <div className="shot__clip shot__clip--placeholder">
