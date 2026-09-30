@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 import { execFileSync } from 'node:child_process'
-import { readFileSync, statSync } from 'node:fs'
+import { existsSync, readFileSync, statSync } from 'node:fs'
 import path from 'node:path'
 import { DataSource, type Repository } from 'typeorm'
 import { Brand } from '../brands/brand.entity'
@@ -53,7 +53,7 @@ function loadSite(): SiteData {
   return JSON.parse(json) as SiteData
 }
 
-const imageMeta = (): Record<string, { w: number; h: number }> =>
+const imageMeta = (): Record<string, { w: number; h: number; widths?: number[]; color?: string }> =>
   JSON.parse(readFileSync(path.join(WEBSITE_DIR, 'src', 'data', 'imageMeta.json'), 'utf8'))
 
 /** The card meta on the home page: "Visakhapatnam • Full Home Interiors". */
@@ -84,9 +84,21 @@ function plan(site: SiteData): Plan {
     if (!media.has(key)) {
       const dims = meta[file]
       if (!dims) throw new Error(`No dimensions for ${file} in imageMeta.json — run "npm run images" in the website first`)
-      const jpgBytes = statSync(path.join(WEBSITE_DIR, 'public', 'images', file)).size
-      const webp = file.replace(/\.jpe?g$/i, '.webp')
-      const webpBytes = statSync(path.join(WEBSITE_DIR, 'public', 'images', webp)).size
+      const imagesDir = path.join(WEBSITE_DIR, 'public', 'images')
+      const jpgBytes = statSync(path.join(imagesDir, file)).size
+      const stem = file.replace(/\.jpe?g$/i, '')
+      /* The same ladder scripts/images.mjs wrote for the static site — <stem>.w<width>.<ext> — so the
+         pages served from the database pick the right size, exactly as the static pages did. */
+      const derivatives: MediaAsset['derivatives'] = []
+      for (const width of dims.widths ?? [dims.w]) {
+        const height = Math.round((dims.h * width) / dims.w)
+        for (const [format, ext] of [['avif', 'avif'], ['webp', 'webp'], ['jpeg', 'jpg']] as const) {
+          const name = `${stem}.w${width}.${ext}`
+          if (!existsSync(path.join(imagesDir, name))) continue
+          derivatives.push({ format, width, height, key: `images/${name}`, bytes: statSync(path.join(imagesDir, name)).size })
+        }
+      }
+      if (!derivatives.length) derivatives.push({ format: 'jpeg', width: dims.w, height: dims.h, key, bytes: jpgBytes })
       media.set(key, {
         storageKey: key,
         originalFilename: file,
@@ -95,12 +107,9 @@ function plan(site: SiteData): Plan {
         width: dims.w,
         height: dims.h,
         altText: alt || null,
-        lqipColor: null,
+        lqipColor: dims.color ?? null,
         status: 'ready',
-        derivatives: [
-          { format: 'jpeg', width: dims.w, height: dims.h, key, bytes: jpgBytes },
-          { format: 'webp', width: dims.w, height: dims.h, key: `images/${webp}`, bytes: webpBytes },
-        ],
+        derivatives,
       })
     }
     return key

@@ -26,8 +26,32 @@ npm install
 npm run migration:run     # applies src/database/migrations as the migrate user
 npm run start:dev         # http://localhost:4000/health
 npm test                  # unit tests, no database needed
-npm run test:e2e          # boots the real app against the .env database
+npm run test:e2e          # boots the real app against the .env database (needs a site build, below)
 ```
+
+## Public site
+
+The API is also the web server. It serves the website's build from
+`SITE_DIST` (default `../la_space_website/dist`): the hashed assets and
+images as static files, and the six pages through `src/pages`, which
+injects the published rows as a `<script id="__DATA__">` block and builds
+the JSON-LD graphs and `/sitemap.xml` from the same rows. Anything an
+admin saves clears the rendered-page cache, so it is on the site at the
+next request.
+
+```bash
+(cd ../la_space_website && npm run build)   # dist/ — pages, assets, site-data.json
+npm run start:dev                           # http://localhost:4000/ is the website
+```
+
+Routes: `/`, `/about`, `/services`, `/projects`, `/projects/:slug`,
+`/contact`, `/sitemap.xml`; `/<page>.html` redirects to the clean URL.
+`SITE_URL` is the canonical origin written into the structured data and
+the sitemap. Without a build the pages answer 503 and the API still runs.
+
+The site's own dev server (`vite dev`, port 5173) has no `__DATA__`
+block and falls back to the static copy in `src/data/site.js` — use it
+for design work; use the API for anything content-related.
 
 ## Schema changes
 

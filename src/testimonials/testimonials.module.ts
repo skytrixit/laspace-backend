@@ -9,5 +9,6 @@ import { TestimonialsService } from './testimonials.service'
   imports: [TypeOrmModule.forFeature([Testimonial]), MediaModule],
   controllers: [PublicTestimonialsController, AdminTestimonialsController],
   providers: [TestimonialsService],
+  exports: [TestimonialsService],
 })
 export class TestimonialsModule {}

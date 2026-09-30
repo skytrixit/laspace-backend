@@ -122,6 +122,15 @@ export class Env {
 
   @IsOptional() @IsUrl({ require_tld: false })
   CDN_BASE_URL?: string
+
+  /* ── Public site ─────────────────────────────────────────────────────── */
+  /** The website's built output; the API serves its pages and assets. */
+  @IsString()
+  SITE_DIST = '../la_space_website/dist'
+
+  /** Canonical origin for JSON-LD, sitemap and social meta. */
+  @IsUrl({ require_tld: false })
+  SITE_URL = 'https://www.laspaceinteriors.com'
 }
 
 /** ConfigModule `validate` hook. Throws with every failure listed. */

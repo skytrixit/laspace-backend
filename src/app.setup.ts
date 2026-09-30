@@ -1,6 +1,8 @@
+import { existsSync } from 'node:fs'
 import path from 'node:path'
 import { INestApplication, ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import compression from 'compression'
 import { static as serveStatic } from 'express'
 import helmet from 'helmet'
 import { AppExceptionFilter } from './common/filters/app-exception.filter'
@@ -15,16 +17,25 @@ import type { Env } from './config/env'
 export function configureApp(app: INestApplication) {
   const config = app.get(ConfigService<Env, true>)
 
-  /* /api/... for everything except the health probe (and, later, the public pages). */
-  app.setGlobalPrefix('api', { exclude: ['health'] })
-
   const express = app.getHttpAdapter().getInstance()
   express.disable('x-powered-by')
   /* Behind nginx or a load balancer the client IP arrives in X-Forwarded-For;
      without a proxy that header would be spoofable, so it is opt-in. */
   express.set('trust proxy', config.get('TRUST_PROXY') ? 1 : false)
 
-  app.use(helmet())
+  app.use(helmet({ contentSecurityPolicy: false }))
+  /* Pages carry the content block and the API answers JSON: both compress well. */
+  app.use(compression())
+
+  /* The website's build: hashed assets cached for a year, everything else a
+     day. Its .html files are never served raw — the pages controller injects
+     the content — so they fall through to Nest. */
+  const dist = path.resolve(config.get('SITE_DIST'))
+  if (existsSync(dist)) {
+    express.use('/assets', serveStatic(path.join(dist, 'assets'), { immutable: true, maxAge: '365d', fallthrough: false }))
+    const site = serveStatic(dist, { index: false, maxAge: '1d', fallthrough: true, setHeaders: (res) => res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin') })
+    express.use((req: { path: string }, res: unknown, next: () => void) => (req.path.endsWith('.html') ? next() : site(req as never, res as never, next)))
+  }
 
   /* Local driver only: uploads are files on disk, served here. Derivative
      keys never change, so they are cached for a year; images must be

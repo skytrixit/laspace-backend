@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto'
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
-import { APP_GUARD } from '@nestjs/core'
+import { APP_GUARD, RouterModule } from '@nestjs/core'
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { LoggerModule } from 'nestjs-pino'
@@ -9,6 +9,8 @@ import { AuthModule } from './auth/auth.module'
 import { BrandsModule } from './brands/brands.module'
 import { EnquiriesModule } from './enquiries/enquiries.module'
 import { FaqsModule } from './faqs/faqs.module'
+import { MediaModule } from './media/media.module'
+import { PagesModule } from './pages/pages.module'
 import { ProjectsModule } from './projects/projects.module'
 import { ServicesModule } from './services/services.module'
 import { SettingsModule } from './settings/settings.module'
@@ -69,6 +71,11 @@ const isDev = process.env.NODE_ENV !== 'production'
     BrandsModule,
     FaqsModule,
     SettingsModule,
+    /* The API lives under /api; the public pages (PagesModule) and the health probe sit at the root. */
+    RouterModule.register([
+      { path: 'api', children: [AuthModule, EnquiriesModule, ServicesModule, ProjectsModule, TestimonialsModule, BrandsModule, FaqsModule, SettingsModule, MediaModule] },
+    ]),
+    PagesModule,
     HealthModule,
   ],
   providers: [

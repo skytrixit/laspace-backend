@@ -8,5 +8,6 @@ import { FaqsService } from './faqs.service'
   imports: [TypeOrmModule.forFeature([Faq])],
   controllers: [PublicFaqsController, AdminFaqsController],
   providers: [FaqsService],
+  exports: [FaqsService],
 })
 export class FaqsModule {}
