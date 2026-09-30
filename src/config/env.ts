@@ -1,17 +1,5 @@
 import { plainToInstance, Transform } from 'class-transformer'
-import {
-  IsBoolean,
-  IsEmail,
-  IsEnum,
-  IsInt,
-  IsOptional,
-  IsString,
-  IsUrl,
-  Max,
-  Min,
-  MinLength,
-  validateSync,
-} from 'class-validator'
+import { IsBoolean, IsEmail, IsEnum, IsInt, IsOptional, IsString, IsUrl, Matches, Max, Min, MinLength, validateSync } from 'class-validator'
 
 /* ── Environment ───────────────────────────────────────────────────────────
    Every variable the API reads, validated once at boot. A bad or missing
@@ -131,6 +119,15 @@ export class Env {
   /** Canonical origin for JSON-LD, sitemap and social meta. */
   @IsUrl({ require_tld: false })
   SITE_URL = 'https://www.laspaceinteriors.com'
+
+  /* ── Tracking ────────────────────────────────────────────────────────── */
+  /** GA4 measurement ID. Pages carry the gtag snippet only when this is set. */
+  @IsOptional() @Matches(/^G-[A-Z0-9]{4,}$/)
+  GA4_MEASUREMENT_ID?: string
+
+  /** Search Console "HTML tag" verification token, rendered as a meta tag when set. */
+  @IsOptional() @IsString()
+  GOOGLE_SITE_VERIFICATION?: string
 }
 
 /** ConfigModule `validate` hook. Throws with every failure listed. */

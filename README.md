@@ -49,6 +49,12 @@ Routes: `/`, `/about`, `/services`, `/projects`, `/projects/:slug`,
 `SITE_URL` is the canonical origin written into the structured data and
 the sitemap. Without a build the pages answer 503 and the API still runs.
 
+Tracking: set `GA4_MEASUREMENT_ID` and the pages carry the gtag snippet
+(gtag.js is fetched after the window load event, so it never competes
+with the images); set `GOOGLE_SITE_VERIFICATION` and they carry the
+Search Console meta tag. Unset, neither is rendered. The website fires a
+`generate_lead` event on every accepted enquiry.
+
 The site's own dev server (`vite dev`, port 5173) has no `__DATA__`
 block and falls back to the static copy in `src/data/site.js` — use it
 for design work; use the API for anything content-related.

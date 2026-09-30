@@ -7,11 +7,12 @@ export const scriptJson = (value: unknown) =>
 export const escapeHtml = (text: string) =>
   text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 
-/** Inserts the data block and the JSON-LD graphs just before </head>; fills any __TOKEN__ in the template. */
-export function injectHead(template: string, data: unknown, graphs: unknown[], tokens: Record<string, string> = {}) {
+/** Inserts the data block, the JSON-LD graphs and any extra head tags just before </head>; fills any __TOKEN__ in the template. */
+export function injectHead(template: string, data: unknown, graphs: unknown[], tokens: Record<string, string> = {}, extra: string[] = []) {
   const blocks = [
     `<script id="__DATA__" type="application/json">${scriptJson(data)}</script>`,
     ...graphs.map((g) => `<script type="application/ld+json">${scriptJson(g)}</script>`),
+    ...extra,
   ].join('\n    ')
   let html = template.replace('</head>', `    ${blocks}\n  </head>`)
   for (const [token, value] of Object.entries(tokens)) html = html.split(`__${token}__`).join(escapeHtml(value))
@@ -24,4 +25,27 @@ export const summary = (text: string, max = 160) => {
   if (clean.length <= max) return clean
   const cut = clean.slice(0, max)
   return `${cut.slice(0, Math.max(cut.lastIndexOf(' '), 80))}…`
+}
+
+/**
+ * The tracking tags: the Search Console verification meta and the GA4 snippet.
+ * Nothing at all until the IDs are configured, so a page never carries a dead
+ * script. gtag.js (≈150 KB) is fetched only after the window load event and
+ * an idle moment — loaded at head time it cost the projects page 15 Lighthouse
+ * points on mobile, competing with the card images for bandwidth. Events fired
+ * before it arrives queue in dataLayer, so nothing is lost; only a visitor who
+ * leaves before the page has loaded goes uncounted.
+ */
+export function trackingHead(opts: { ga4Id?: string; siteVerification?: string }): string[] {
+  const parts: string[] = []
+  if (opts.siteVerification) parts.push(`<meta name="google-site-verification" content="${escapeHtml(opts.siteVerification)}">`)
+  if (opts.ga4Id) {
+    const id = escapeHtml(opts.ga4Id)
+    parts.push(
+      `<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${id}');` +
+        `(function(){var l=function(){var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=${id}';document.head.appendChild(s)};` +
+        `if(document.readyState==='complete'){l()}else{window.addEventListener('load',function(){'requestIdleCallback'in window?requestIdleCallback(l,{timeout:2000}):setTimeout(l,1)})}})();</script>`,
+    )
+  }
+  return parts
 }

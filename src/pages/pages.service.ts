@@ -9,7 +9,7 @@ import { ProjectsService, type ProjectView } from '../projects/projects.service'
 import { ServicesService } from '../services/services.service'
 import { SettingsService } from '../settings/settings.service'
 import { TestimonialsService } from '../testimonials/testimonials.service'
-import { injectHead, escapeHtml, summary } from './html'
+import { injectHead, escapeHtml, summary, trackingHead } from './html'
 import { PagesCache } from './pages-cache'
 import { graphsFor, type PageContent, type StaticSiteData } from './structured-data'
 
@@ -38,6 +38,7 @@ export class PagesService implements OnModuleInit {
   private staticData: StaticSiteData = FALLBACK_STATIC
   readonly dist: string
   readonly url: string
+  private readonly tracking: string[]
 
   constructor(
     config: ConfigService<Env, true>,
@@ -51,6 +52,8 @@ export class PagesService implements OnModuleInit {
   ) {
     this.dist = path.resolve(config.get('SITE_DIST'))
     this.url = config.get('SITE_URL').replace(/\/+$/, '')
+    this.tracking = trackingHead({ ga4Id: config.get('GA4_MEASUREMENT_ID'), siteVerification: config.get('GOOGLE_SITE_VERIFICATION') })
+    if (this.tracking.length) this.log.log(`tracking tags on: ${[config.get('GA4_MEASUREMENT_ID') && 'GA4', config.get('GOOGLE_SITE_VERIFICATION') && 'site verification'].filter(Boolean).join(', ')}`)
   }
 
   onModuleInit() {
@@ -106,7 +109,7 @@ export class PagesService implements OnModuleInit {
     if (!template) return { status: 404, html: this.notFound() }
 
     const content = await this.content()
-    const html = injectHead(template, content, graphsFor(page, { url: this.url, data: this.staticData, content }))
+    const html = injectHead(template, content, graphsFor(page, { url: this.url, data: this.staticData, content }), {}, this.tracking)
     this.cache.set(key, 200, html)
     return { status: 200, html }
   }
@@ -134,7 +137,7 @@ export class PagesService implements OnModuleInit {
       PROJECT_DESCRIPTION: summary(project.fullDescription ?? project.shortDescription),
       PROJECT_URL: `${this.url}/projects/${project.slug}`,
       PROJECT_IMAGE: image,
-    })
+    }, this.tracking)
     this.cache.set(key, 200, html)
     return { status: 200, html }
   }

@@ -67,6 +67,16 @@ describe('public pages', () => {
     expect(faq.mainEntity).toHaveLength(d.faqs.length)
   })
 
+  it('carries the tracking tags only when they are configured', async () => {
+    const res = await request(app.getHttpServer()).get('/').expect(200)
+    const id = process.env.GA4_MEASUREMENT_ID
+    if (id) expect(res.text).toContain(`gtag/js?id=${id}`)
+    else expect(res.text).not.toContain('googletagmanager')
+    const token = process.env.GOOGLE_SITE_VERIFICATION
+    if (token) expect(res.text).toContain(`<meta name="google-site-verification" content="${token}">`)
+    else expect(res.text).not.toContain('google-site-verification')
+  })
+
   it.each(['/about', '/services', '/projects', '/contact'])('serves %s', async (path) => {
     const res = await request(app.getHttpServer()).get(path).expect(200)
     expect(res.text).toContain('id="__DATA__"')
