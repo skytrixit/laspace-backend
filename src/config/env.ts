@@ -120,6 +120,10 @@ export class Env {
   @IsUrl({ require_tld: false })
   SITE_URL = 'https://www.laspaceinteriors.com'
 
+  /** The admin panel's build, served at /admin with the SPA fallback. */
+  @IsString()
+  ADMIN_DIST = '../la_space_admin/dist'
+
   /* ── Tracking ────────────────────────────────────────────────────────── */
   /** GA4 measurement ID. Pages carry the gtag snippet only when this is set. */
   @IsOptional() @Matches(/^G-[A-Z0-9]{4,}$/)

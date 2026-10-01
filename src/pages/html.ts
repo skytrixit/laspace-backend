@@ -40,12 +40,21 @@ export function trackingHead(opts: { ga4Id?: string; siteVerification?: string }
   const parts: string[] = []
   if (opts.siteVerification) parts.push(`<meta name="google-site-verification" content="${escapeHtml(opts.siteVerification)}">`)
   if (opts.ga4Id) {
-    const id = escapeHtml(opts.ga4Id)
-    parts.push(
-      `<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${id}');` +
-        `(function(){var l=function(){var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=${id}';document.head.appendChild(s)};` +
-        `if(document.readyState==='complete'){l()}else{window.addEventListener('load',function(){'requestIdleCallback'in window?requestIdleCallback(l,{timeout:2000}):setTimeout(l,1)})}})();</script>`,
-    )
+    parts.push(`<script>${trackingScript(opts.ga4Id)}</script>`)
   }
   return parts
 }
+
+/** The inline GA4 loader, exported so the Content-Security-Policy can allow exactly this text by hash. */
+export function trackingScript(ga4Id: string): string {
+  const id = escapeHtml(ga4Id)
+  return (
+    `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${id}');` +
+    `(function(){var l=function(){var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=${id}';document.head.appendChild(s)};` +
+    `if(document.readyState==='complete'){l()}else{window.addEventListener('load',function(){'requestIdleCallback'in window?requestIdleCallback(l,{timeout:2000}):setTimeout(l,1)})}})();`
+  )
+}
+
+/** The error/holding page's stylesheet — inline, allowed by hash in the CSP. */
+export const SHELL_CSS =
+  "body{margin:0;min-height:100vh;display:grid;place-items:center;background:#000;color:#f2ede6;font:300 17px/1.7 Jost,Helvetica,Arial,sans-serif;text-align:center}h1{font:500 40px/1.1 'Cormorant Garamond',Garamond,serif;margin:0 0 12px}a{color:#c29d62;text-decoration:none;letter-spacing:.2em;text-transform:uppercase;font-size:12px}p{color:#c4ad93;margin:0 0 28px}"

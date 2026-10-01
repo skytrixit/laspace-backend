@@ -9,7 +9,7 @@ import { ProjectsService, type ProjectView } from '../projects/projects.service'
 import { ServicesService } from '../services/services.service'
 import { SettingsService } from '../settings/settings.service'
 import { TestimonialsService } from '../testimonials/testimonials.service'
-import { injectHead, escapeHtml, summary, trackingHead } from './html'
+import { injectHead, escapeHtml, summary, trackingHead, SHELL_CSS } from './html'
 import { PagesCache } from './pages-cache'
 import { graphsFor, type PageContent, type StaticSiteData } from './structured-data'
 
@@ -170,7 +170,7 @@ export class PagesService implements OnModuleInit {
   }
 
   private shell(title: string, body: string) {
-    return `<!doctype html><html lang="en-IN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>${escapeHtml(title)}</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#000;color:#f2ede6;font:300 17px/1.7 Jost,Helvetica,Arial,sans-serif;text-align:center}h1{font:500 40px/1.1 'Cormorant Garamond',Garamond,serif;margin:0 0 12px}a{color:#c29d62;text-decoration:none;letter-spacing:.2em;text-transform:uppercase;font-size:12px}p{color:#c4ad93;margin:0 0 28px}</style></head><body><main><h1>${escapeHtml(title)}</h1><p>${escapeHtml(body)}</p><a href="/">Back to LA Space Interiors →</a></main></body></html>`
+    return `<!doctype html><html lang="en-IN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>${escapeHtml(title)}</title><style>${SHELL_CSS}</style></head><body><main><h1>${escapeHtml(title)}</h1><p>${escapeHtml(body)}</p><a href="/">Back to LA Space Interiors →</a></main></body></html>`
   }
 
   private notFound(body = 'That page is not here.') {

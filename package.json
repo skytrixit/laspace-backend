@@ -22,7 +22,10 @@
     "admin": "ts-node -r reflect-metadata src/cli/admin.ts",
     "admin:prod": "node dist/cli/admin.js",
     "seed": "ts-node -r reflect-metadata src/database/seed.ts",
-    "seed:prod": "node dist/database/seed.js"
+    "seed:prod": "node dist/database/seed.js",
+    "backup": "scripts/backup.sh",
+    "restore": "scripts/restore.sh",
+    "restore:drill": "scripts/restore-drill.sh"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1143.0",

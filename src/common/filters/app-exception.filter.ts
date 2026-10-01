@@ -75,6 +75,13 @@ export class AppExceptionFilter implements ExceptionFilter {
       return { statusCode: 404, code: 'not_found', message: 'Not found.' }
     }
 
+    /* Errors raised by Express middleware (static files, body parsing) carry
+       their own status: a missing asset is a 404, an oversized body a 413. */
+    const status = (exception as { status?: unknown; statusCode?: unknown } | null)?.status ?? (exception as { statusCode?: unknown } | null)?.statusCode
+    if (typeof status === 'number' && status >= 400 && status < 500) {
+      return { statusCode: status, code: CODE_BY_STATUS[status] ?? 'error', message: status === 404 ? 'Not found.' : ((exception as { expose?: boolean; message?: string }).expose && (exception as { message?: string }).message) || 'Request refused.' }
+    }
+
     /* MySQL error codes surface on the driver error; only the ones a user can
        cause by ordinary input get a specific answer. */
     if (exception instanceof QueryFailedError) {

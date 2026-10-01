@@ -59,6 +59,25 @@ The site's own dev server (`vite dev`, port 5173) has no `__DATA__`
 block and falls back to the static copy in `src/data/site.js` — use it
 for design work; use the API for anything content-related.
 
+The admin panel's build (`ADMIN_DIST`, default `../la_space_admin/dist`)
+is served at `/admin` on the same origin, hashed assets immutable, with
+the SPA fallback so a deep link such as `/admin/projects/1` works on a
+fresh load. Every response carries a Content-Security-Policy that allows
+scripts only from this origin (plus Google's tag when GA4 is configured;
+the two inline blocks the server writes are allowed by hash) — see
+`src/security/csp.ts`.
+
+## Operations
+
+- `docs/RUNBOOK.md` — one page: what runs where, first deploy, each
+  release, routine commands, what to do when something is wrong.
+- `docs/RESTORE.md` — backups (`npm run backup`), the restore procedure
+  (`npm run restore`), and the rehearsal (`npm run restore:drill`).
+- `docs/LOCAL-CHECKS.md` — how to exercise all of this on one machine.
+- `.github/workflows/ci.yml` — typecheck, unit, e2e against MySQL, the
+  schema drift check and the Lighthouse budget; written before a remote
+  exists, so not yet exercised.
+
 ## Schema changes
 
 Edit the entity, then generate a migration by diffing against the live

@@ -6,3 +6,7 @@ dist
 storage/
 coverage
 .DS_Store
+backups/
+storage-drill/
+drill.log
+api.log

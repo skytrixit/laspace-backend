@@ -1,0 +1,112 @@
+# Continuous integration for the API. Written before a repository remote
+# exists, so it has not run yet — the first push will tell.
+#
+# The website and the admin panel live in their own repositories. Set the
+# repository variables WEBSITE_REPO and ADMIN_REPO (owner/name) and a
+# REPOS_TOKEN secret with read access to them, and the page tests, the seed
+# and the Lighthouse budget run too; without them those steps are skipped.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  api:
+    name: typecheck, tests, budget
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: laspace
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd "mysqladmin ping -h 127.0.0.1 -uroot -proot"
+          --health-interval 5s --health-timeout 5s --health-retries 30
+    env:
+      NODE_ENV: development
+      PORT: '4000'
+      PUBLIC_ORIGIN: http://localhost:5173
+      ADMIN_ORIGIN: http://localhost:5174
+      DB_HOST: 127.0.0.1
+      DB_PORT: '3306'
+      DB_NAME: laspace
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      MEDIA_DRIVER: local
+      MEDIA_LOCAL_PATH: ./storage
+      CDN_BASE_URL: http://localhost:4000
+      SITE_DIST: ../la_space_website/dist
+      ADMIN_DIST: ../la_space_admin/dist
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: la_space_backend
+
+      - uses: actions/checkout@v4
+        if: vars.WEBSITE_REPO != ''
+        with:
+          repository: ${{ vars.WEBSITE_REPO }}
+          token: ${{ secrets.REPOS_TOKEN }}
+          path: la_space_website
+
+      - uses: actions/checkout@v4
+        if: vars.ADMIN_REPO != ''
+        with:
+          repository: ${{ vars.ADMIN_REPO }}
+          token: ${{ secrets.REPOS_TOKEN }}
+          path: la_space_admin
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: la_space_backend/package-lock.json
+
+      - name: Website build (pages, image ladder, structured-data copy)
+        if: vars.WEBSITE_REPO != ''
+        working-directory: la_space_website
+        run: npm ci && npm run images && npm run build
+
+      - name: Admin build
+        if: vars.ADMIN_REPO != ''
+        working-directory: la_space_admin
+        run: npm ci && npm run build
+
+      - name: API install, typecheck, unit tests
+        working-directory: la_space_backend
+        run: npm ci && npm run typecheck && npm test
+
+      - name: Schema (and the seed, when the website is checked out)
+        working-directory: la_space_backend
+        run: |
+          npm run migration:run
+          if [ -d ../la_space_website ]; then npm run seed; fi
+
+      - name: Entities and migrations agree
+        working-directory: la_space_backend
+        run: |
+          npm run migration:generate -- CiDriftCheck || true
+          test -z "$(git status --porcelain -- src/database/migrations)" || { echo "Entity changes without a migration:"; git status --porcelain -- src/database/migrations; exit 1; }
+
+      - name: e2e against MySQL
+        working-directory: la_space_backend
+        run: npm run test:e2e
+
+      - name: Lighthouse budget, mobile, against the API-served site
+        if: vars.WEBSITE_REPO != ''
+        working-directory: la_space_backend
+        run: |
+          npm run build
+          node dist/main.js > api.log 2>&1 &
+          for i in $(seq 1 60); do curl -sf http://localhost:4000/health >/dev/null && break; sleep 1; done
+          (cd ../la_space_website && npm run budget -- http://localhost:4000)
+
+      - name: API log on failure
+        if: failure()
+        working-directory: la_space_backend
+        run: test -f api.log && tail -50 api.log || true
