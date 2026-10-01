@@ -9,7 +9,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint .",
-    "images": "node scripts/images.mjs"
+    "images": "node scripts/images.mjs",
+    "budget": "node scripts/lighthouse-budget.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",
