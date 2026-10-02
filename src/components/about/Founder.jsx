@@ -1,17 +1,24 @@
 import Section from '../Section'
 import Shot from '../Shot'
 import { founder } from '../../data/content'
+import imageMeta from '../../data/imageMeta.json'
 
 export default function Founder() {
+  /* Only once the photograph has been processed; otherwise Shot falls back to
+     the monogram rather than a broken image. */
+  const portrait = imageMeta[founder.portrait?.split('/').pop()]
+    ? founder.portrait
+    : null
+
   return (
     <Section tone="offblack" labelledBy="founder-title">
       <div className="container">
         <div className="founder__grid">
           <div className="founder__card">
             <Shot
-              src={founder.portrait}
+              src={portrait}
               alt={
-                founder.portrait
+                portrait
                   ? `${founder.name}, ${founder.role} of LA Space Interiors`
                   : ''
               }

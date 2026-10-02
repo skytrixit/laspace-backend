@@ -22,6 +22,16 @@ export const site = {
   ],
 }
 
+/**
+ * The entry loader on the home page (src/lib/preloader.js).
+ *   enabled     false → no loader at all; straight to the page (handy in development)
+ *   everyVisit  false → shown once per browser session, skipped on the next load
+ */
+export const preloader = {
+  enabled: true,
+  everyVisit: true,
+}
+
 export const nav = [
   { label: 'Home', href: '/' },
   { label: 'About', href: '/about' },
@@ -241,8 +251,9 @@ export const founder = {
   ],
   closing:
     'A home should look like the people in it — not like the studio that designed it.',
-  // Replace with the real portrait; until then the clip box holds the monogram.
-  portrait: null,
+  // The photograph lives at public/images/founder.jpg — see the README there.
+  // Until it has been through `npm run images` the clip box holds the monogram.
+  portrait: '/images/founder.jpg',
 }
 
 export const whyLaSpace = [

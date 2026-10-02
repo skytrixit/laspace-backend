@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { site, founder, whyLaSpace } from './src/data/site.js'
+import { site, founder, whyLaSpace, preloader } from './src/data/site.js'
 
 /**
  * The static copy the studio API needs when it injects JSON-LD — the studio
@@ -30,6 +30,21 @@ function emitStaticData() {
 }
 
 /**
+ * The entry loader's switches (src/data/site.js → `preloader`) applied to
+ * index.html: disabled → the overlay, its styles and its script are removed
+ * entirely; once per session → the head script is told so.
+ */
+function preloaderSwitches() {
+  return {
+    name: 'la-space-preloader',
+    transformIndexHtml(html) {
+      if (!preloader.enabled) return html.replace(/\s*<!-- preloader:start[\s\S]*?<!-- preloader:end -->/g, '').replace(' data-preloader="every"', '')
+      return html.replace('data-preloader="every"', `data-preloader="${preloader.everyVisit ? 'every' : 'once'}"`)
+    },
+  }
+}
+
+/**
  * Serves `/about` and `/services` in dev and preview the way a static host
  * does in production, so local URLs match the canonicals.
  */
@@ -50,7 +65,7 @@ function cleanUrls() {
 }
 
 export default defineConfig({
-  plugins: [react(), emitStaticData(), cleanUrls()],
+  plugins: [react(), emitStaticData(), preloaderSwitches(), cleanUrls()],
   // Same-origin /api in the browser, forwarded to the studio API in dev.
   // Same-origin /api and /media in the browser, forwarded to the studio API in dev.
   server: { proxy: { '/api': 'http://localhost:4000', '/media': 'http://localhost:4000' } },

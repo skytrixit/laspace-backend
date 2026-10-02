@@ -150,6 +150,7 @@ export const partners = D
 /* ── Static copy, unchanged ──────────────────────────────────────────────── */
 
 export const {
+  preloader,
   nav,
   heroSlides,
   whoWeAreImage,

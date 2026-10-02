@@ -5,6 +5,17 @@ import { usePrefersReducedMotion } from '../../hooks/useMediaQuery'
 
 const INTERVAL = 6000
 
+/* Each word rises out of its own mask when the entry loader leaves. */
+const HEADLINE = [
+  { text: 'Spaces' },
+  { text: 'you' },
+  { text: 'will' },
+  { text: 'love', em: true },
+  { text: 'to' },
+  { text: 'live' },
+  { text: 'in.' },
+]
+
 export default function Hero() {
   const [index, setIndex] = useState(0)
   const reduced = usePrefersReducedMotion()
@@ -41,7 +52,22 @@ export default function Hero() {
       <div className="hero__content">
         <p className="hero__eyebrow">Bespoke Interiors — Visakhapatnam</p>
         <h1 className="hero__title">
-          Spaces you will <em className="em-italic">love</em> to live in.
+          {HEADLINE.map((word, i) => (
+            <span key={word.text}>
+              <span className="hero__mask">
+                {word.em ? (
+                  <em className="em-italic hero__word" style={{ '--i': i }}>
+                    {word.text}
+                  </em>
+                ) : (
+                  <span className="hero__word" style={{ '--i': i }}>
+                    {word.text}
+                  </span>
+                )}
+              </span>
+              {i < HEADLINE.length - 1 ? ' ' : ''}
+            </span>
+          ))}
         </h1>
         <p className="hero__sub">Full home interiors · Modular kitchens · Turnkey execution</p>
 

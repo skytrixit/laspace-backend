@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en-IN">
+<html lang="en-IN" data-preloader="every">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -64,8 +64,19 @@
     />
 
     <!-- Structured data (organisation, website, FAQ, lists) is injected by the studio API. -->
+    <!-- preloader:start — the entry loader's first-paint essentials; the switches
+         live in src/data/site.js and are applied by the Vite plugin -->
+    <style>.preloader{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;background:#000}.preloader[hidden]{display:none}.preloader__mark{display:block;width:130px;height:auto}.preloader__counter{position:absolute;right:56px;bottom:44px;display:flex;align-items:baseline;gap:10px;font-family:Jost,'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:300;letter-spacing:.35em;line-height:1}.preloader__count{font-size:15px;color:#c29d62;font-variant-numeric:tabular-nums}.preloader__total{font-size:10px;color:#c4ad93}</style>
+    <script>(function(){var every=document.documentElement.getAttribute('data-preloader')!=='once';var seen=false;try{seen=!!sessionStorage.getItem('laspace_preloader')}catch(e){}if(every||!seen){document.documentElement.classList.add('has-preloader')}})();</script>
+    <!-- preloader:end -->
   </head>
   <body>
+    <!-- preloader:start -->
+    <div id="preloader" class="preloader" aria-hidden="true">
+      <img class="preloader__mark" src="/brand/monogram.png" alt="" width="130" height="130" decoding="sync" fetchpriority="high" />
+      <div class="preloader__counter"><span class="preloader__count">000</span><span class="preloader__total">/ 100</span></div>
+    </div>
+    <!-- preloader:end -->
     <div id="root">
       <!-- Crawler & no-JS fallback: the page's substance in plain HTML. -->
       <noscript>

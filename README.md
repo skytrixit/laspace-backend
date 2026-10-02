@@ -78,6 +78,24 @@ Do not substitute. Colours, sizes and timings are locked to the approved spec in
 cream `#F2EDE6`, taupe `#C4AD93`, black `#000000`, off-black `#0D0C0A`.
 Cormorant Garamond for display, Jost for UI. Single breakpoint: **920px**.
 
+## Entry loader
+
+The home page opens on a full-screen black overlay: the monogram dead
+centre, a `000 → 100` counter bottom-right that climbs in irregular steps
+(~1.5 s), a 400 ms pause, then the overlay slides up and off (1.1 s,
+`cubic-bezier(.77,0,.18,1)`) while the hero headline words rise out of their
+masks. The markup and its first-paint styles are inline in `index.html`, so
+it is on screen before any script runs; [preloader.js](src/lib/preloader.js)
+drives it and [preloader.css](src/styles/preloader.css) holds the rest. Two
+switches in `src/data/site.js`, applied to the HTML by the Vite plugin:
+
+| `preloader.enabled` | `false` removes the loader entirely — straight to the page (development) |
+| `preloader.everyVisit` | `false` shows it once per browser session and skips it on the next load |
+
+Reduced motion keeps the counter but drops the slide and the rise. The
+monogram is `public/brand/monogram.png` (transparent, 260 px, the mark
+without its disc).
+
 ## Motion
 
 All animation is CSS transitions plus `IntersectionObserver`:
