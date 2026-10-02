@@ -30,16 +30,15 @@ function emitStaticData() {
 }
 
 /**
- * The entry loader's switches (src/data/site.js → `preloader`) applied to
- * index.html: disabled → the overlay, its styles and its script are removed
- * entirely; once per session → the head script is told so.
+ * The entry loader's switch (src/data/site.js → `preloader.enabled`) applied
+ * to index.html: disabled → the overlay, its styles and its script are
+ * removed entirely.
  */
 function preloaderSwitches() {
   return {
     name: 'la-space-preloader',
     transformIndexHtml(html) {
-      if (!preloader.enabled) return html.replace(/\s*<!-- preloader:start[\s\S]*?<!-- preloader:end -->/g, '').replace(' data-preloader="every"', '')
-      return html.replace('data-preloader="every"', `data-preloader="${preloader.everyVisit ? 'every' : 'once'}"`)
+      return preloader.enabled ? html : html.replace(/\s*<!-- preloader:start[\s\S]*?<!-- preloader:end -->/g, '')
     },
   }
 }

@@ -23,13 +23,13 @@ export const site = {
 }
 
 /**
- * The entry loader on the home page (src/lib/preloader.js).
- *   enabled     false → no loader at all; straight to the page (handy in development)
- *   everyVisit  false → shown once per browser session, skipped on the next load
+ * The entry loader on the home page (src/lib/preloader.js). It shows when a
+ * visitor arrives from outside the site and on every reload of the home
+ * page — not when they move to the home page from another page of the site.
+ *   enabled  false → no loader at all; straight to the page (handy in development)
  */
 export const preloader = {
   enabled: true,
-  everyVisit: true,
 }
 
 export const nav = [
@@ -242,8 +242,9 @@ export const aboutStory = [
 
 export const founder = {
   eyebrow: '— 03 / The Vision Behind LA Space',
-  name: 'Balachandu',
-  role: 'Founder & CEO',
+  name: 'Thoti Balachandu',
+  role: 'Founder & Principal Designer',
+  company: 'LA Space Interiors Pvt. Ltd.',
   quote: '“Every client deserves a space that feels uniquely theirs.”',
   body: [
     'Balachandu founded LA Space after a decade on site — first as a draughtsman, then running execution for residential projects across Andhra Pradesh. That order matters: he learned how a home is built before he learned how to draw one, and it shows in drawings that fabricators can actually work from.',

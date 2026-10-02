@@ -22,14 +22,16 @@ export default function Founder() {
                   ? `${founder.name}, ${founder.role} of LA Space Interiors`
                   : ''
               }
-              radius="36px"
-              width="380px"
-              height="clamp(320px, 68vw, 460px)"
+              radius="400px 400px 32px 32px"
+              width="440px"
+              height="clamp(380px, 80vw, 580px)"
+              frameInset="-22px"
               frameOpacity={0.35}
             />
             <div className="founder__caption">
               <p className="founder__name">{founder.name}</p>
               <p className="founder__role">{founder.role}</p>
+              <p className="founder__company">{founder.company}</p>
             </div>
           </div>
 

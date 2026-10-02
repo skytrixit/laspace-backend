@@ -88,7 +88,7 @@
 }
 .founder__card {
   justify-self: center;
-  width: min(380px, 100%);
+  width: min(488px, 100%);
 }
 .founder__caption {
   text-align: center;
@@ -107,6 +107,14 @@
   text-transform: uppercase;
   color: var(--gold);
   margin-top: 10px;
+}
+.founder__company {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--taupe);
+  margin-top: 8px;
 }
 .founder__copy .eyebrow {
   margin-bottom: 26px;

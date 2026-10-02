@@ -86,11 +86,15 @@ centre, a `000 → 100` counter bottom-right that climbs in irregular steps
 `cubic-bezier(.77,0,.18,1)`) while the hero headline words rise out of their
 masks. The markup and its first-paint styles are inline in `index.html`, so
 it is on screen before any script runs; [preloader.js](src/lib/preloader.js)
-drives it and [preloader.css](src/styles/preloader.css) holds the rest. Two
-switches in `src/data/site.js`, applied to the HTML by the Vite plugin:
+drives it and [preloader.css](src/styles/preloader.css) holds the rest.
 
-| `preloader.enabled` | `false` removes the loader entirely — straight to the page (development) |
-| `preloader.everyVisit` | `false` shows it once per browser session and skips it on the next load |
+When it shows: on arrival from outside the site (typed URL, search result,
+link from elsewhere) and on every reload of the home page. Not when the
+visitor comes to the home page from another page of the site, and not on
+back/forward. The head script decides from the navigation type and the
+referrer. One switch in `src/data/site.js`, applied to the HTML by the
+Vite plugin: `preloader.enabled: false` removes the loader entirely —
+straight to the page (development).
 
 Reduced motion keeps the counter but drops the slide and the rise. The
 monogram is `public/brand/monogram.png` (transparent, 260 px, the mark

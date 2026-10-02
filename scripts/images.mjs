@@ -38,14 +38,21 @@ let kept = 0
 
 for (const file of files) {
   const src = path.join(DIR, file)
-  const input = sharp(src, { failOn: 'none' })
-  const { width, height } = await input.metadata()
+  const tags = await sharp(src, { failOn: 'none' }).metadata()
+  /* A phone photo stores its pixels sideways and leaves an EXIF orientation
+     tag to say so. Every read below applies it with .rotate(), so the
+     dimensions have to be the upright ones rather than the stored ones —
+     otherwise the master is rewritten landscape and the tag is lost with it. */
+  const turned = tags.orientation >= 5
+  const width = turned ? tags.height : tags.width
+  const height = turned ? tags.width : tags.height
   const longEdge = Math.max(width, height)
   const scale = longEdge > MAX_EDGE ? MAX_EDGE / longEdge : 1
   const w = Math.round(width * scale)
   const h = Math.round(height * scale)
 
-  const resized = () => sharp(src, { failOn: 'none' }).resize(w, h, { withoutEnlargement: true })
+  const resized = () =>
+    sharp(src, { failOn: 'none' }).rotate().resize(w, h, { withoutEnlargement: true })
 
   if (scale < 1) {
     const tmp = path.join(DIR, `.tmp-${file}`)
