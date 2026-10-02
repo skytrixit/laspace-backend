@@ -36,6 +36,10 @@ export function configureApp(app: INestApplication) {
   const ga4Id = config.get('GA4_MEASUREMENT_ID')
   app.use(
     helmet({
+      /* The browser's own default: the full referrer within the site (the home
+         page's entry loader needs it to tell an in-site visit from an arrival),
+         only the origin to other sites, nothing from HTTPS to HTTP. */
+      referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
       contentSecurityPolicy: {
         useDefaults: false,
         directives: cspDirectives({

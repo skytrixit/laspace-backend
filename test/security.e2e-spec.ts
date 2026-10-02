@@ -31,6 +31,7 @@ describe('security headers and the admin panel', () => {
     expect(csp).not.toMatch(/script-src[^;]*'unsafe-inline'/)
     expect(res.headers['strict-transport-security']).toContain('max-age=')
     expect(res.headers['x-content-type-options']).toBe('nosniff')
+    expect(res.headers['referrer-policy']).toBe('strict-origin-when-cross-origin')
     expect(res.headers['x-powered-by']).toBeUndefined()
   })
 
