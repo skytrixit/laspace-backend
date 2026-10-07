@@ -222,8 +222,8 @@ export const founder = {
   company: 'LA Space Interiors Pvt. Ltd.',
   quote: '“Every client deserves a space that feels uniquely theirs.”',
   body: [
-    'Balachandu founded LA Space after a decade on site — first as a draughtsman, then running execution for residential projects across Andhra Pradesh. That order matters: he learned how a home is built before he learned how to draw one, and it shows in drawings that fabricators can actually work from.',
-    'He still walks every site personally at three points — after civil work, at carcass installation, and the day before handover. It is the reason the studio takes on a deliberate number of homes a year rather than as many as it could sell.',
+    'Balachandu founded LA Space Interiors, a Visakhapatnam interior design studio, after ten years on construction sites across Andhra Pradesh. He began as a draughtsman and went on to run execution for residential interior projects, so he learned how modular kitchens, wardrobes and false ceilings are actually built before he began designing them. That is why a LA Space drawing is one a fabricator can work from, and why the studio’s turnkey home interiors in Vizag match the 3D design that was approved.',
+    'He still walks every project himself at the three points that decide a home’s finish: once civil work is complete, when the modular carcasses are installed, and the day before handover. Those visits are never delegated, which is why LA Space takes on a limited number of full home interiors and commercial interior projects in Visakhapatnam each year rather than every one it could sell.',
   ],
   closing:
     'A home should look like the people in it — not like the studio that designed it.',

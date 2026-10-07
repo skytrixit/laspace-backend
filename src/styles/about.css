@@ -67,18 +67,20 @@
   order: 1;
 }
 .story__copy .eyebrow {
-  margin-bottom: 26px;
+  margin-bottom: 30px;
 }
 .story__copy h2 {
-  font-size: clamp(21px, 3.2vw, 46px);
-  line-height: 1.25;
+  font-size: clamp(24px, 3.6vw, 54px);
+  line-height: 1.22;
   color: var(--cream);
-  margin-bottom: 26px;
+  margin-bottom: 30px;
 }
+/* Sized so the copy stands as tall as the photograph beside it on desktop,
+   rather than floating in the middle of the row. */
 .story__copy p {
   font-family: var(--sans);
   font-weight: 300;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 2;
   color: var(--taupe);
   max-width: 36em;
@@ -310,9 +312,19 @@
   .about-hero__lead {
     font-size: 17px;
   }
-  .story__copy p,
   .founder__copy p {
     font-size: 16px;
+  }
+  .story__copy p {
+    font-size: 19px;
+    line-height: 2.1;
+  }
+  .story__copy .eyebrow {
+    font-size: 13px;
+    margin-bottom: 36px;
+  }
+  .story__copy h2 {
+    margin-bottom: 36px;
   }
   .founder__closing {
     font-size: 22px;
@@ -355,6 +367,14 @@
   }
   .story__block .shot__clip img {
     height: 400px;
+  }
+  /* The copy stands exactly as tall as the photograph: eyebrow on its top
+     edge, paragraph on its bottom edge, whatever the heading's line count. */
+  .story__copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 400px;
   }
 
   .founder__grid {
