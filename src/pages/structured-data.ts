@@ -98,7 +98,7 @@ export function graphsFor(page: string, ctx: Ctx): unknown[] {
         ...common,
         { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: content.faqs.map((f) => ({ '@type': 'Question', name: f.question, acceptedAnswer: { '@type': 'Answer', text: f.answer } })) },
         crumbs(url, [{ name: 'Home', path: '/' }]),
-        { '@context': 'https://schema.org', '@type': 'ItemList', name: 'Interior design services', itemListElement: content.services.map((s, i) => ({ '@type': 'ListItem', position: i + 1, name: s.name, url: `${url}/services#${s.slug}` })) },
+        { '@context': 'https://schema.org', '@type': 'ItemList', name: 'Interior design services', itemListElement: content.services.map((s, i) => ({ '@type': 'ListItem', position: i + 1, name: s.name, url: `${url}/services#c${i}` })) },
         { '@context': 'https://schema.org', '@type': 'ItemList', name: 'Signature spaces', itemListElement: content.projects.filter((p) => p.isFeatured).map((p, i) => ({ '@type': 'ListItem', position: i + 1, name: p.title, url: `${url}/projects/${p.slug}` })) },
       ]
     case 'about':
@@ -122,7 +122,7 @@ export function graphsFor(page: string, ctx: Ctx): unknown[] {
             position: i + 1,
             item: {
               '@type': 'Service',
-              '@id': `${url}/services#${s.slug}`,
+              '@id': `${url}/services#c${i}`,
               name: s.name,
               description: s.shortDescription,
               serviceType: s.name,
