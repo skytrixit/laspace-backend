@@ -45,10 +45,10 @@ export default function Shot({
       ) : (
         <div className="shot__clip shot__clip--placeholder">
           <img
-            src="/brand/monogram.svg"
+            src="/brand/monogram.png"
             alt={alt}
-            width="200"
-            height="200"
+            width="512"
+            height="512"
             loading={loading}
             decoding="async"
           />

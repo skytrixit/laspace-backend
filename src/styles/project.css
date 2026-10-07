@@ -38,7 +38,7 @@
 .prj-hero__cover img {
   display: block;
   width: 100%;
-  height: clamp(240px, 62vw, 760px);
+  height: clamp(220px, 38vw, 460px);
   object-fit: cover;
 }
 
@@ -85,7 +85,7 @@
 .prj-gallery__item img {
   display: block;
   width: 100%;
-  height: clamp(200px, 42vw, 560px);
+  height: clamp(180px, 30vw, 380px);
   object-fit: cover;
 }
 

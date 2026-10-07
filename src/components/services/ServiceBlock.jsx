@@ -21,7 +21,7 @@ export default function ServiceBlock({ service, index }) {
           alt={service.image ? service.image.alt : ''}
           radius={service.radius}
           width="400px"
-          height="clamp(220px, 52vw, 400px)"
+          height="clamp(200px, 44vw, 340px)"
           loading={index === 0 ? 'eager' : 'lazy'}
         />
 

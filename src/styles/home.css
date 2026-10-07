@@ -188,7 +188,7 @@
 }
 .arch__clip img {
   width: 100%;
-  height: clamp(300px, 88vw, 620px);
+  height: clamp(260px, 64vw, 460px);
   object-fit: cover;
   transition: transform 0.6s ease;
 }
@@ -295,7 +295,7 @@
 }
 .project__media img {
   width: 100%;
-  height: clamp(240px, 62vw, 440px);
+  height: clamp(220px, 46vw, 340px);
   object-fit: cover;
   transition: transform 0.6s ease;
 }
@@ -379,6 +379,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: min(680px, 90%);
+  height: auto;
   opacity: 0.05;
   pointer-events: none;
 }

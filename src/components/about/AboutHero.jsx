@@ -19,7 +19,7 @@ export default function AboutHero() {
             alt={aboutHero.image.alt}
             radius="0"
             width="380px"
-            height="clamp(240px, 58vw, 440px)"
+            height="clamp(220px, 46vw, 360px)"
             frameInset="-22px"
             frameOpacity={0.35}
             loading="eager"

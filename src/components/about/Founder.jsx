@@ -24,8 +24,8 @@ export default function Founder() {
               }
               className="shot--circle"
               radius="50%"
-              width="300px"
-              height="300px"
+              width="260px"
+              height="260px"
               frameInset="-18px"
               frameOpacity={0.35}
             />

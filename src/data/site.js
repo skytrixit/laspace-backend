@@ -197,8 +197,8 @@ export const aboutStory = [
       alt: 'Early studio workspace with material samples, drawings and a drafting table',
     },
     radius: '0',
-    width: '400px',
-    height: 'clamp(220px, 52vw, 400px)',
+    width: '360px',
+    height: 'clamp(200px, 44vw, 340px)',
   },
   {
     eyebrow: '— 02 / How We Work',
@@ -209,8 +209,8 @@ export const aboutStory = [
       alt: 'Fitting crew installing finished modular cabinetry on site',
     },
     radius: '0',
-    width: '400px',
-    height: 'clamp(220px, 52vw, 400px)',
+    width: '360px',
+    height: 'clamp(200px, 44vw, 340px)',
     flip: true,
   },
 ]

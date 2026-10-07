@@ -18,7 +18,7 @@ export default function Footer() {
           <div className="footer__cols">
             <div>
               <div className="footer__seal">
-                <img src="/brand/monogram.svg" alt="" width="200" height="200" />
+                <img src="/brand/monogram.png" alt="" width="512" height="512" />
               </div>
               <p className="footer__tagline">Spaces you will love to live in.</p>
             </div>
@@ -97,7 +97,7 @@ export default function Footer() {
             <span>
               © {year} {site.name}. All rights reserved.
             </span>
-            <span>Designed &amp; built in Visakhapatnam</span>
+            <span>Designed &amp; built by Mahesh Software Solutions</span>
           </div>
         </div>
       </footer>

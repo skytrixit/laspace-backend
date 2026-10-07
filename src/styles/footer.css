@@ -44,6 +44,7 @@
 }
 .footer__seal img {
   width: 76px;
+  height: auto;
 }
 .footer__tagline {
   font-family: var(--sans);

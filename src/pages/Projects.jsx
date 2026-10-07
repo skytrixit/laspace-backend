@@ -8,7 +8,7 @@ import { projectFilters, portfolioProjects } from '../data/content'
 const SHAPES = ['0', '0', '0', '0', '0', '0']
 
 /* Heights alternate by position to break the grid line. */
-const HEIGHTS = ['clamp(300px, 62vw, 440px)', 'clamp(260px, 54vw, 380px)']
+const HEIGHTS = ['clamp(260px, 48vw, 340px)', 'clamp(230px, 42vw, 300px)']
 
 /* /projects?f=Kitchen opens on that filter; anything unknown is All. */
 const initialFilter = () => {

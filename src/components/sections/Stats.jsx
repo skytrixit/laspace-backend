@@ -66,11 +66,11 @@ export default function Stats() {
     >
       <img
         className="stats__watermark"
-        src="/brand/monogram.svg"
+        src="/brand/monogram.png"
         alt=""
         aria-hidden="true"
-        width="200"
-        height="200"
+        width="512"
+        height="512"
       />
       <div className="container">
         <dl className="stats__grid">

@@ -156,7 +156,7 @@ export default function Navbar({ currentPath = '/' }) {
 
       <div id="mobile-menu" className={`nav__panel${open ? ' is-open' : ''}`} aria-hidden={!open}>
         <div className="nav__panel-top">
-          <img src="/brand/monogram.svg" alt="" width="200" height="200" />
+          <img src="/brand/monogram.png" alt="" width="512" height="512" />
           <button
             type="button"
             className="nav__close"
