@@ -33,6 +33,9 @@ const tagline = (text) => {
 
 /* ── Studio details ──────────────────────────────────────────────────────── */
 
+/** Which settings field, if any, the studio uses for each channel. */
+const API_SOCIAL = { Instagram: 'instagramUrl', Facebook: 'facebookUrl', YouTube: 'youtubeUrl' }
+
 export const site = D
   ? {
       ...s.site,
@@ -42,13 +45,16 @@ export const site = D
       email: D.settings.email,
       emailHref: `mailto:${D.settings.email}`,
       address: [D.settings.addressLine1, D.settings.addressLine2, D.settings.addressLine3].filter(Boolean),
-      social: [
-        ['Instagram', D.settings.instagramUrl],
-        ['Facebook', D.settings.facebookUrl],
-        ['YouTube', D.settings.youtubeUrl],
-      ]
-        .filter(([, href]) => href)
-        .map(([label, href]) => ({ label, href })),
+      /* The studio stores three of the channels; the rest keep their
+         site.js address rather than vanishing when a page is served live.
+         A field the studio has and has cleared still wins, so a channel can
+         be taken down from the console. */
+      social: s.site.social
+        .map((c) => {
+          const key = API_SOCIAL[c.label]
+          return key && key in D.settings ? { ...c, href: D.settings[key] } : c
+        })
+        .filter((c) => c.href),
     }
   : s.site
 
@@ -68,11 +74,12 @@ export const stats = D
 /* ── Services ────────────────────────────────────────────────────────────── */
 
 export const services = D
-  ? D.services.map((x, i) => ({ no: pad(i), name: x.name, tag: tagline(x.shortDescription), href: `/services#${x.slug}` }))
+  ? D.services.map((x, i) => ({ no: pad(i), name: x.name, tag: tagline(x.shortDescription), href: `/services#c${i}` }))
   : s.services
 
-/* The curved silhouettes cycle by position, as the projects grid does. */
-const RADII = ['420px 420px 0 0', '0 240px 0 240px', '260px', '0 0 420px 420px', '240px 0 240px 0', '420px 420px 0 0']
+/* Every block is a plain rectangle; kept as a per-position list so a shaped
+   silhouette can be reintroduced without changing the mapping below. */
+const RADII = ['0', '0', '0', '0', '0', '0']
 
 export const serviceBlocks = D
   ? D.services.map((x, i) => ({

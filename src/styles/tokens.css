@@ -31,5 +31,5 @@
   --container: 1400px;
   --gutter: 28px;
   --nav-h: 80px;
-  --section-y: clamp(72px, 11vw, 130px);
+  --section-y: clamp(44px, 8.4vw, 104px);
 }

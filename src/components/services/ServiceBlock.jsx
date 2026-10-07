@@ -9,10 +9,10 @@ export default function ServiceBlock({ service, index }) {
 
   return (
     <section
-      id={service.id}
+      id={`c${index}`}
       ref={ref}
       className={`svc-block reveal${flip ? ' svc-block--flip' : ''}`}
-      aria-labelledby={`${service.id}-title`}
+      aria-labelledby={`c${index}-title`}
     >
       <div className="svc-block__grid">
         <Shot
@@ -20,14 +20,14 @@ export default function ServiceBlock({ service, index }) {
           media={service.image ? service.image.media : undefined}
           alt={service.image ? service.image.alt : ''}
           radius={service.radius}
-          width="480px"
-          height="clamp(340px, 76vw, 540px)"
+          width="400px"
+          height="clamp(220px, 52vw, 400px)"
           loading={index === 0 ? 'eager' : 'lazy'}
         />
 
         <div className="svc-block__copy">
           <p className="eyebrow">{service.eyebrow}</p>
-          <h2 id={`${service.id}-title`}>{service.name}</h2>
+          <h2 id={`c${index}-title`}>{service.name}</h2>
           <p className="svc-block__desc">{service.description}</p>
           {service.body &&
             service.body

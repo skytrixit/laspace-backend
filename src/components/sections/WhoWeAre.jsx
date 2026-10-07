@@ -24,7 +24,7 @@ export default function WhoWeAre() {
           </a>
         </div>
 
-        <figure className="arch" style={{ margin: 0 }}>
+        <figure className="arch">
           <span className="arch__frame" aria-hidden="true" />
           <span className="arch__clip">
             <Img src={whoWeAreImage.src} alt={whoWeAreImage.alt} sizes="(min-width: 920px) 50vw, 100vw" />

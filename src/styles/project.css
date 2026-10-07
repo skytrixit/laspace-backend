@@ -7,7 +7,7 @@
 .prj-hero__inner {
   max-width: var(--container);
   margin: 0 auto;
-  padding: calc(var(--nav-h) + 64px) var(--gutter) 44px;
+  padding: calc(var(--nav-h) + 48px) var(--gutter) 36px;
 }
 
 .prj-back {
@@ -29,17 +29,23 @@
   margin: 0;
 }
 
+.prj-hero__cover {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
 .prj-hero__cover img {
   display: block;
   width: 100%;
-  height: clamp(320px, 62vw, 760px);
+  height: clamp(240px, 62vw, 760px);
   object-fit: cover;
 }
 
 .prj-story {
   max-width: 780px;
   margin: 0 auto;
-  padding: clamp(56px, 8vw, 96px) var(--gutter);
+  padding: clamp(44px, 6.4vw, 76px) var(--gutter);
 }
 
 .prj-story p {
@@ -60,7 +66,7 @@
 
 .prj-gallery {
   background: var(--off-black);
-  padding: clamp(56px, 8vw, 96px) 0;
+  padding: clamp(44px, 6.4vw, 76px) 0;
 }
 
 .prj-gallery__grid {
@@ -79,14 +85,14 @@
 .prj-gallery__item img {
   display: block;
   width: 100%;
-  height: clamp(260px, 42vw, 560px);
+  height: clamp(200px, 42vw, 560px);
   object-fit: cover;
 }
 
 /* The closing call to action reuses the services page band. */
 .svc-cta {
   background: var(--black);
-  padding: clamp(72px, 10vw, 120px) var(--gutter);
+  padding: clamp(58px, 8vw, 96px) var(--gutter);
   text-align: center;
 }
 
@@ -97,4 +103,23 @@
 
 .svc-cta h2 {
   margin: 0 0 32px;
+}
+
+/* ── Mobile ───────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .prj-story p {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .prj-story p {
+    font-size: 18px;
+  }
+  .prj-hero__meta {
+    font-size: 14px;
+  }
+  .prj-tags {
+    font-size: 13px !important;
+  }
 }

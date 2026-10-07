@@ -1,8 +1,13 @@
 /* ── 3.1 Hero ─────────────────────────────────────────────────────────── */
 .hero {
   position: relative;
-  height: 100vh;
-  min-height: 640px;
+  /* Grows past the viewport when the content stack is taller than it, rather
+     than overflowing upward — a short screen scrolls instead of sliding the
+     eyebrow under the fixed navbar. The padding clears that 80px navbar with
+     room to spare; the slides and scrims are absolutely positioned, so they
+     still cover it. */
+  min-height: max(560px, 86vh);
+  padding-top: 104px;
   overflow: hidden;
   display: flex;
   align-items: flex-end;
@@ -56,7 +61,7 @@
 }
 
 .hero__title {
-  font-size: clamp(46px, 7.6vw, 112px);
+  font-size: clamp(28px, 7.6vw, 112px);
   line-height: 1.04;
   max-width: 12em;
   color: var(--cream);
@@ -153,10 +158,21 @@
 
 .arch {
   position: relative;
+  margin: 0; /* <figure> default, cleared here so the pull-in below can land */
   /* Room for the -22px offset frame, so it is never clipped on a narrow
      column. No effect wherever the column fits the full 460px. */
   width: min(460px, calc(100% - 48px));
   justify-self: center;
+}
+/* Two-up: the figure sits against the outer edge of its column, as the shots
+   on About and Services do. The -22px frame is the visual edge, so it is
+   pushed in by exactly that much and the outline lands on the container
+   line rather than floating 67px inside it. */
+@media (min-width: 920px) {
+  .arch {
+    justify-self: end;
+    margin-right: 22px;
+  }
 }
 .arch__frame {
   position: absolute;
@@ -172,7 +188,7 @@
 }
 .arch__clip img {
   width: 100%;
-  height: clamp(380px, 88vw, 620px);
+  height: clamp(300px, 88vw, 620px);
   object-fit: cover;
   transition: transform 0.6s ease;
 }
@@ -184,7 +200,7 @@
 
 /* ── 3.3 Services ─────────────────────────────────────────────────────── */
 .services__title {
-  margin-bottom: 70px;
+  margin-bottom: 56px;
 }
 
 .services__list {
@@ -217,7 +233,7 @@
   min-width: 220px;
   font-family: var(--serif);
   font-weight: 500;
-  font-size: clamp(24px, 2.6vw, 38px);
+  font-size: clamp(21px, 2.6vw, 38px);
   color: var(--cream);
   line-height: 1.2;
 }
@@ -257,7 +273,7 @@
   align-items: baseline;
   flex-wrap: wrap;
   gap: 18px;
-  margin-bottom: 70px;
+  margin-bottom: 56px;
 }
 .portfolio__head .eyebrow {
   margin-bottom: 22px;
@@ -265,19 +281,21 @@
 
 .portfolio__grid {
   display: grid;
-  /* 420px rather than 320px so desktop resolves to two columns: the card 2/4
-     `margin-top: 56px` stagger only reads as intended in a two-up rhythm. */
+  /* 420px rather than 320px so desktop resolves to two columns. */
   grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr));
   gap: 56px 44px;
+  align-items: start;
 }
 
 .project__media {
   display: block;
   overflow: hidden;
+  /* Every card carries the same softened silhouette. */
+  border-radius: 120px;
 }
 .project__media img {
   width: 100%;
-  height: clamp(300px, 62vw, 440px);
+  height: clamp(240px, 62vw, 440px);
   object-fit: cover;
   transition: transform 0.6s ease;
 }
@@ -287,27 +305,8 @@
   }
 }
 
-.project--arch .project__media {
-  border-radius: 300px 300px 0 0;
-}
-.project--inverted {
-  margin-top: 56px;
-}
-.project--inverted .project__media {
-  border-radius: 0 0 220px 220px;
-}
-.project--capsule .project__media {
-  border-radius: 220px;
-}
-.project--diagonal {
-  margin-top: 56px;
-}
-.project--diagonal .project__media {
-  border-radius: 0 300px 0 300px;
-}
-
 .project__name {
-  font-size: clamp(24px, 5.4vw, 30px);
+  font-size: clamp(21px, 5.4vw, 30px);
   margin: 26px 0 8px;
   color: var(--cream);
 }
@@ -398,7 +397,7 @@
 .stat__value {
   font-family: var(--serif);
   font-weight: 500;
-  font-size: clamp(56px, 6vw, 92px);
+  font-size: clamp(31px, 6vw, 92px);
   line-height: 1;
   color: var(--gold);
 }
@@ -430,7 +429,7 @@
   font-family: var(--serif);
   font-style: italic;
   font-weight: 400;
-  font-size: clamp(26px, 3.2vw, 44px);
+  font-size: clamp(19px, 3.2vw, 44px);
   line-height: 1.4;
   color: var(--cream);
   margin: 0;
@@ -468,7 +467,7 @@
 
 /* ── 3.8 Partner ribbon ───────────────────────────────────────────────── */
 .ribbon {
-  padding: clamp(56px, 9vw, 90px) 0;
+  padding: clamp(44px, 7.2vw, 72px) 0;
   border-bottom: 1px solid var(--rule-section);
   overflow: hidden;
 }
@@ -541,7 +540,7 @@
 .faq__q {
   font-family: var(--serif);
   font-weight: 500;
-  font-size: clamp(20px, 2vw, 26px);
+  font-size: clamp(17px, 2vw, 26px);
   color: var(--cream);
   line-height: 1.3;
 }
@@ -577,7 +576,7 @@
 .final-cta {
   position: relative;
   overflow: hidden;
-  padding: clamp(90px, 14vw, 170px) 28px;
+  padding: clamp(72px, 11.2vw, 136px) 28px;
   text-align: center;
 }
 .final-cta__bg {
@@ -599,7 +598,7 @@
   margin: 0 auto;
 }
 .final-cta h2 {
-  font-size: clamp(38px, 5vw, 72px);
+  font-size: clamp(25px, 5vw, 72px);
   line-height: 1.15;
   color: var(--cream);
 }
@@ -608,4 +607,118 @@
   font-size: 13px;
   margin-top: 56px;
   white-space: nowrap;
+}
+
+/* ── Mobile: hero labels, whose tracking is what wraps them on a phone ─── */
+@media (max-width: 600px) {
+  .hero__eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    margin-bottom: 18px;
+  }
+  .hero__sub {
+    font-size: 11.5px;
+    letter-spacing: 0.12em;
+    margin: 22px 0 32px;
+  }
+  /* Both calls to action share the row rather than stacking: equal halves,
+     and the tracking comes in so the longer label still fits unwrapped. */
+  .hero__buttons {
+    flex-wrap: nowrap;
+    gap: 10px;
+  }
+  .hero__passes {
+    margin-top: 32px;
+  }
+  .hero__buttons .btn {
+    flex: 1;
+    padding: 15px 8px;
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 0.07em;
+  }
+
+  .service-row__arrow { font-size: 15px; }
+  .process__badge { font-size: 18px; }
+  .process__step h3 { font-size: 20px; }
+  .process__step p { font-size: 13px; }
+  .quote__mark { font-size: 64px; }
+  .quote__btn { font-size: 14px; }
+  .ribbon__item { font-size: 15px; }
+  .faq__icon { font-size: 21px; }
+  .faq__panel p { font-size: 13.5px; }
+
+  /* Two up rather than a single tall column: minmax(200px) cannot fit a pair
+     into the 334px a phone leaves, so the track is set explicitly here. */
+  .stats__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 44px 20px;
+  }
+  .stat__label {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    margin-top: 12px;
+  }
+}
+
+/* The fixed CALL / WHATSAPP bar covers the foot of the viewport wherever it
+   renders. The hero has to clear it with its own bottom padding, the way
+   .footer__legal does, or the buttons jam against it and the slide
+   indicators sit behind it entirely. */
+@media (max-width: 920px) {
+  .hero__content {
+    padding-bottom: 127px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .hero__eyebrow {
+    font-size: 13px;
+  }
+  .hero__sub {
+    font-size: 16px;
+  }
+  .service-row__no,
+  .service-row__tag {
+    font-size: 14px;
+  }
+  .service-row__arrow {
+    font-size: 20px;
+  }
+  .project__meta {
+    font-size: 13px;
+  }
+  .process__badge {
+    font-size: 24px;
+  }
+  .process__step h3 {
+    font-size: 28px;
+  }
+  .process__step p {
+    font-size: 15px;
+  }
+  .stat__label {
+    font-size: 13px;
+  }
+  .quote__author {
+    font-size: 13px;
+  }
+  .quote__btn {
+    font-size: 18px;
+  }
+  .ribbon__label {
+    font-size: 13px;
+  }
+  .ribbon__item {
+    font-size: 22px;
+  }
+  .faq__icon {
+    font-size: 28px;
+  }
+  .faq__panel p {
+    font-size: 16px;
+  }
+  .final-cta .btn {
+    font-size: 14px;
+  }
 }

@@ -2,22 +2,23 @@ import { useMemo, useState } from 'react'
 import Img from '../components/Img'
 import { projectFilters, portfolioProjects } from '../data/content'
 
-/* Shapes cycle by grid position (index mod 6), so the rhythm survives
-   filtering rather than being pinned to a particular project. */
-const SHAPES = [
-  '280px 280px 0 0', // arch top
-  '0 0 200px 200px', // inverted arch
-  '200px', // capsule / oval
-  '0 280px 0 280px', // diagonal curves
-  '280px 0 280px 0', // mirrored diagonals
-  '280px 280px 0 0', // arch top
-]
+/* Every card is a plain rectangle. Kept as a per-position list, cycling by
+   grid position (index mod 6), so a shaped silhouette can be reintroduced
+   without changing how the cards are rendered. */
+const SHAPES = ['0', '0', '0', '0', '0', '0']
 
 /* Heights alternate by position to break the grid line. */
 const HEIGHTS = ['clamp(300px, 62vw, 440px)', 'clamp(260px, 54vw, 380px)']
 
+/* /projects?f=Kitchen opens on that filter; anything unknown is All. */
+const initialFilter = () => {
+  if (typeof window === 'undefined') return 'All'
+  const f = new URLSearchParams(window.location.search).get('f')
+  return f && projectFilters.includes(f) ? f : 'All'
+}
+
 export default function Projects() {
-  const [active, setActive] = useState('All')
+  const [active, setActive] = useState(initialFilter)
 
   const visible = useMemo(
     () =>

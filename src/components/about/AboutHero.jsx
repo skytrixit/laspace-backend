@@ -17,9 +17,9 @@ export default function AboutHero() {
           <Shot
             src={aboutHero.image.src}
             alt={aboutHero.image.alt}
-            radius="400px 400px 0 0"
-            width="440px"
-            height="clamp(360px, 80vw, 580px)"
+            radius="0"
+            width="380px"
+            height="clamp(240px, 58vw, 440px)"
             frameInset="-22px"
             frameOpacity={0.35}
             loading="eager"

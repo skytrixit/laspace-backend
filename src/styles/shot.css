@@ -53,3 +53,10 @@
   height: auto;
   opacity: 0.9;
 }
+
+/* Circle variant: the image takes its height from its width, so neither the
+   clip nor the offset frame can go oval when the column narrows. */
+.shot--circle .shot__clip img {
+  height: auto;
+  aspect-ratio: 1;
+}

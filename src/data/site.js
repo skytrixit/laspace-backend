@@ -15,10 +15,17 @@ export const site = {
   email: 'hello@laspaceinteriors.com',
   emailHref: 'mailto:hello@laspaceinteriors.com',
   address: ['Door No. 1-2-3, Beach Road', 'Visakhapatnam, Andhra Pradesh 530017', 'India'],
+  /* Order is the order they appear in the footer. The label is also the key
+     the icon is looked up by, in src/components/SocialIcon.jsx. */
   social: [
-    { label: 'Instagram', href: 'https://www.instagram.com/laspaceinteriors' },
-    { label: 'Facebook', href: 'https://www.facebook.com/laspaceinteriors' },
-    { label: 'YouTube', href: 'https://www.youtube.com/@laspaceinteriors' },
+    { label: 'Instagram', href: 'https://www.instagram.com/la_space.interiors/' },
+    { label: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61593387699270' },
+    { label: 'YouTube', href: 'https://www.youtube.com/channel/UCvX2XB_exPYWUbZ__vuDidw' },
+    /* The public company page. The /admin/dashboard/ URL is the studio's own
+       console — a visitor following it would land on a permission wall. */
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/company/143581096/' },
+    { label: 'X', href: 'https://x.com/LaSpace2002' },
+    { label: 'Threads', href: 'https://www.threads.com/@la_space.interiors' },
   ],
 }
 
@@ -65,49 +72,17 @@ export const whoWeAreImage = {
 }
 
 export const services = [
-  { no: '01', name: 'Full Home Interiors', tag: 'Turnkey Residences', href: '/services#full-home' },
-  { no: '02', name: 'Modular Kitchens', tag: 'Marble & Champagne', href: '/services#kitchens' },
-  { no: '03', name: 'Wardrobes & Walk-in Closets', tag: 'Leather & Brass', href: '/services#wardrobes' },
-  { no: '04', name: 'Living Spaces', tag: 'Editorial Calm', href: '/services#living' },
-  { no: '05', name: 'False Ceilings', tag: 'Cove & Line Light', href: '/services#ceilings' },
-  { no: '06', name: 'Commercial Interiors', tag: 'Offices & Retail', href: '/services#commercial' },
+  { no: '01', name: 'Full Home Interiors', tag: 'Turnkey Residences', href: '/services#c0' },
+  { no: '02', name: 'Modular Kitchens', tag: 'Marble & Champagne', href: '/services#c1' },
+  { no: '03', name: 'Wardrobes & Walk-in Closets', tag: 'Leather & Brass', href: '/services#c2' },
+  { no: '04', name: 'Living Spaces', tag: 'Editorial Calm', href: '/services#c3' },
+  { no: '05', name: 'False Ceilings', tag: 'Cove & Line Light', href: '/services#c4' },
+  { no: '06', name: 'Commercial Interiors', tag: 'Offices & Retail', href: '/services#c5' },
 ]
 
-export const projects = [
-  {
-    name: 'Villa Marine Drive',
-    meta: 'Visakhapatnam • Full Home Interiors',
-    href: '/projects/villa-marine-drive',
-    shape: 'arch',
-    src: img('project-1.jpg'),
-    alt: 'Double-height living room of a sea-facing villa in cream and walnut',
-  },
-  {
-    name: 'The Kailasagiri Residence',
-    meta: 'Visakhapatnam • Modular Kitchen',
-    href: '/projects/kailasagiri-residence',
-    shape: 'inverted',
-    src: img('project-2.jpg'),
-    alt: 'Galley kitchen with veined marble backsplash and handleless cabinetry',
-  },
-  {
-    name: 'Rushikonda Penthouse',
-    meta: 'Visakhapatnam • Living Spaces',
-    href: '/projects/rushikonda-penthouse',
-    shape: 'capsule',
-    src: img('project-3.jpg'),
-    alt: 'Penthouse lounge with curved seating and floor-to-ceiling glazing',
-  },
-  {
-    name: 'Studio Dwaraka Nagar',
-    meta: 'Visakhapatnam • Commercial Interiors',
-    href: '/projects/studio-dwaraka-nagar',
-    shape: 'diagonal',
-    src: img('project-4.jpg'),
-    alt: 'Boutique office interior with fluted timber partitions and warm lighting',
-  },
-]
-
+/* The home page grid is derived from `portfolioProjects` further down — see
+   the `projects` export there. Home shows a featured subset of the portfolio,
+   exactly as the API-backed data does. */
 export const processSteps = [
   {
     numeral: 'I',
@@ -221,9 +196,9 @@ export const aboutStory = [
       src: img('story-1.jpg'),
       alt: 'Early studio workspace with material samples, drawings and a drafting table',
     },
-    radius: '0 240px 0 240px',
-    width: '480px',
-    height: 'clamp(320px, 70vw, 500px)',
+    radius: '0',
+    width: '400px',
+    height: 'clamp(220px, 52vw, 400px)',
   },
   {
     eyebrow: '— 02 / How We Work',
@@ -233,9 +208,9 @@ export const aboutStory = [
       src: img('story-2.jpg'),
       alt: 'Fitting crew installing finished modular cabinetry on site',
     },
-    radius: '240px',
-    width: '420px',
-    height: 'clamp(360px, 78vw, 560px)',
+    radius: '0',
+    width: '400px',
+    height: 'clamp(220px, 52vw, 400px)',
     flip: true,
   },
 ]
@@ -310,7 +285,7 @@ export const serviceBlocks = [
       'False ceilings, lighting & electrical layout',
       'Soft furnishing, styling & handover cleaning',
     ],
-    radius: '420px 420px 0 0',
+    radius: '0',
     image: {
       src: img('service-1.jpg'),
       alt: 'Completed living and dining area of a turnkey residence in warm neutrals',
@@ -328,7 +303,7 @@ export const serviceBlocks = [
       'Marble, quartz & granite counters and daddos',
       'Tall units, pantry pull-outs & appliance garages',
     ],
-    radius: '0 240px 0 240px',
+    radius: '0',
     image: {
       src: img('service-2.jpg'),
       alt: 'Modular kitchen with marble counters and handleless champagne cabinetry',
@@ -346,7 +321,7 @@ export const serviceBlocks = [
       'Leather, veneer & lacquered glass shutters',
       'Dressing islands, mirrors & accessory drawers',
     ],
-    radius: '260px',
+    radius: '0',
     image: {
       src: img('service-3.jpg'),
       alt: 'Walk-in closet with lit open shelving and leather-panelled shutters',
@@ -364,7 +339,7 @@ export const serviceBlocks = [
       'Bar units, crockery & display cabinets',
       'Curtain, rug & furniture curation',
     ],
-    radius: '0 0 420px 420px',
+    radius: '0',
     image: {
       src: img('service-4.jpg'),
       alt: 'Living room with a fluted feature wall, floating console and layered seating',
@@ -382,7 +357,7 @@ export const serviceBlocks = [
       'Profile lighting with warm-dim control',
       'AC boxing, curtain pelmets & speaker cutouts',
     ],
-    radius: '240px 0 240px 0',
+    radius: '0',
     image: {
       src: img('service-5.jpg'),
       alt: 'Recessed cove lighting and shadow-gap detailing in a gypsum ceiling',
@@ -400,7 +375,7 @@ export const serviceBlocks = [
       'Clinic & hospitality interiors',
       'Brand-matched material & lighting palettes',
     ],
-    radius: '420px 420px 0 0',
+    radius: '0',
     image: {
       src: img('service-6.jpg'),
       alt: 'Boutique retail interior with brand-matched joinery and warm display lighting',
@@ -420,6 +395,7 @@ export const projectFilters = ['All', 'Residential', 'Kitchen', 'Wardrobe', 'Com
 export const portfolioProjects = [
   {
     slug: 'marble-court-kitchen',
+    featured: true,
     name: 'The Marble Court Kitchen',
     location: 'MVP Colony',
     type: 'Modular Kitchen',
@@ -428,6 +404,7 @@ export const portfolioProjects = [
   },
   {
     slug: 'wardrobe-in-grey-leather',
+    featured: true,
     name: 'A Wardrobe in Grey Leather',
     location: 'Madhurawada',
     type: 'Walk-in Closet',
@@ -460,6 +437,7 @@ export const portfolioProjects = [
   },
   {
     slug: 'living-room-at-dusk',
+    featured: true,
     name: 'A Living Room at Dusk',
     location: 'Rushikonda',
     type: 'Living Space',
@@ -500,6 +478,7 @@ export const portfolioProjects = [
   },
   {
     slug: 'atelier-walk-through',
+    featured: true,
     name: 'Atelier Walk-Through',
     location: 'Dwaraka Nagar',
     type: 'Commercial Fit-out',
@@ -515,6 +494,26 @@ export const portfolioProjects = [
     image: img('work-12.jpg'),
   },
 ]
+
+/**
+ * The home page grid: the four the API would mark featured, in the shapes
+ * Portfolio.jsx cycles through. Derived rather than listed separately so the
+ * static fallback behaves like the live data — the home grid is a subset of
+ * the portfolio and shares its names, images and slugs.
+ */
+const HOME_SHAPES = ['arch', 'inverted', 'capsule', 'diagonal']
+
+export const projects = portfolioProjects
+  .filter((p) => p.featured)
+  .slice(0, 4)
+  .map((p, i) => ({
+    name: p.name,
+    meta: `${p.location} • ${p.type}`,
+    href: `/projects/${p.slug}`,
+    shape: HOME_SHAPES[i % HOME_SHAPES.length],
+    src: p.image,
+    alt: `${p.name} — ${p.type} in ${p.location}`,
+  }))
 
 /* ── Contact page ────────────────────────────────────────────────────────── */
 

@@ -2,26 +2,27 @@
 .footer {
   background: var(--black);
   border-top: 1px solid var(--rule-list);
-  padding: 90px 28px 0;
+  padding: 72px 0 0;
 }
 .footer__inner {
   max-width: var(--container);
   margin: 0 auto;
+  padding: 0 var(--gutter);
 }
 
 .footer__wordmark {
   font-family: var(--serif);
   font-weight: 500;
-  font-size: clamp(38px, 7.4vw, 108px);
+  font-size: clamp(26px, 7.4vw, 108px);
   line-height: 1;
   letter-spacing: 0.04em;
-  color: var(--cream);
+  color: var(--gold);
 }
 
 .footer__divider {
   height: 1px;
   background: var(--rule-list);
-  margin: 56px 0;
+  margin: 44px 0;
 }
 
 .footer__cols {
@@ -96,27 +97,42 @@
   line-height: 1.9;
 }
 
+/* Icon row. Six channels wrap to a second line in a narrow column, which
+   is why the row gap is set as well as the column gap. */
 .footer__social {
   display: flex;
-  gap: 22px;
-  margin-top: 12px;
+  gap: 7px;
+  margin-top: 18px;
   flex-wrap: wrap;
 }
+/* 40px keeps the tap target close to the 44px guideline while the glyph
+   itself stays small enough not to shout from a footer corner. */
 .footer__social a {
-  font-family: var(--sans);
-  font-size: 11px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--rule-link);
+  border-radius: 50%;
   color: var(--gold);
+  transition: color 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+}
+.footer__social svg {
+  width: 16px;
+  height: 16px;
+  display: block;
 }
 .footer__social a:hover {
-  color: var(--gold-dark);
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--black);
 }
 
 .footer__legal-divider {
   height: 1px;
   background: var(--rule-list);
-  margin-top: 70px;
+  margin-top: 56px;
 }
 .footer__legal {
   display: flex;
@@ -168,5 +184,47 @@
 @media (max-width: 920px) {
   .footer__legal {
     padding-bottom: 96px;
+  }
+}
+
+/* ── Mobile ───────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .footer__contact p,
+  .footer__contact address {
+    font-size: 13px;
+  }
+  /* The column is the full page width here, so the icons can take the
+     comfortable touch size and still hold one line. */
+  .footer__social {
+    gap: 9px;
+  }
+  .footer__social a {
+    width: 42px;
+    height: 42px;
+  }
+  .footer__social svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* ── Large screens ────────────────────────────────────────────────────────
+   The wordmark is already fluid; everything under it is fixed px and sat at
+   its phone size on a wide display. */
+@media (min-width: 1200px) {
+  .footer__tagline {
+    font-size: 14px;
+  }
+  .footer__heading {
+    font-size: 12px;
+  }
+  .footer__links a,
+  .footer__contact a,
+  .footer__contact p,
+  .footer__contact address {
+    font-size: 15px;
+  }
+  .footer__legal span {
+    font-size: 12px;
   }
 }

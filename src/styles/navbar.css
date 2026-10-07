@@ -70,6 +70,67 @@
   color: var(--black);
 }
 
+/* ── Dropdowns (Services, Projects) ──────────────────────────────────────
+   The trigger and its menu share one hover container that spans the header
+   height, so `top: 100%` is the header's bottom edge and the pointer can
+   travel from the link into the menu without a gap. The menu is always
+   mounted and animates between its two states. */
+.nav__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: var(--nav-h);
+}
+.nav__link[aria-expanded='true'] {
+  color: #c29d62;
+}
+.nav__menu {
+  position: absolute;
+  top: 100%;
+  left: -24px;
+  min-width: 300px;
+  background: #0d0c0a;
+  border: 1px solid rgba(194, 157, 98, 0.32);
+  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.7);
+  padding: 10px 0;
+  border-radius: 0;
+  z-index: 85;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+}
+.nav__menu[data-open='true'] {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.nav__menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 14px 26px;
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 12.5px;
+  letter-spacing: 0.1em;
+  text-transform: none;
+  color: #f2ede6;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+.nav__menu-item:hover,
+.nav__menu-item:focus-visible {
+  background: #c29d62;
+  color: #000000;
+}
+.nav__menu-arrow {
+  font-size: 12px;
+  opacity: 0.75;
+}
+
 /* Hamburger */
 .nav__burger {
   display: none;
@@ -164,10 +225,28 @@
 
 @media (max-width: 920px) {
   .nav__links,
-  .nav__cta--desktop {
+  .nav__cta--desktop,
+  .nav__menu {
     display: none;
   }
   .nav__burger {
     display: flex;
+  }
+}
+
+/* ── Mobile ───────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .nav__panel-link {
+    font-size: 28px;
+  }
+}
+
+/* ── Large screens ──────────────────────────────────────────────────────── */
+@media (min-width: 1200px) {
+  .nav__link {
+    font-size: 13px;
+  }
+  .nav__cta {
+    font-size: 12px;
   }
 }

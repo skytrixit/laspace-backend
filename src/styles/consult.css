@@ -76,7 +76,7 @@
 }
 
 .consult__title {
-  font-size: clamp(30px, 4vw, 44px);
+  font-size: clamp(24px, 4vw, 44px);
   line-height: 1.15;
   color: var(--cream);
   margin-bottom: 14px;
@@ -138,4 +138,34 @@
   font-size: 14px;
   line-height: 1.9;
   color: var(--taupe);
+}
+
+/* ── Mobile ───────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .consult__intro,
+  .consult__done p {
+    font-size: 13px;
+  }
+  .consult__done h3 {
+    font-size: 23px;
+  }
+}
+
+/* ── Large screens ──────────────────────────────────────────────────────── */
+@media (min-width: 1200px) {
+  .consult__eyebrow {
+    font-size: 12px;
+  }
+  .consult__intro {
+    font-size: 15px;
+  }
+  .consult__submit {
+    font-size: 13px;
+  }
+  .consult__alt {
+    font-size: 12px;
+  }
+  .consult__done p {
+    font-size: 15px;
+  }
 }

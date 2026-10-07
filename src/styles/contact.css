@@ -14,7 +14,7 @@
 
 /* Left — details */
 .ct-details {
-  padding: clamp(60px, 9vw, 110px) clamp(24px, 5vw, 48px);
+  padding: clamp(48px, 7.2vw, 88px) clamp(24px, 5vw, 48px);
   box-sizing: border-box;
   border-right: 1px solid rgba(194, 157, 98, 0.15);
 }
@@ -22,13 +22,13 @@
   margin-bottom: 34px;
 }
 .ct-details h1 {
-  font-size: clamp(42px, 4.6vw, 72px);
+  font-size: clamp(27px, 4.6vw, 72px);
   line-height: 1.1;
   color: var(--cream);
   text-wrap: balance;
 }
 .ct-list {
-  margin-top: 64px;
+  margin-top: 52px;
   max-width: 460px;
   border-top: 1px solid var(--rule-list);
 }
@@ -61,7 +61,7 @@ a.ct-list__value:hover {
 
 /* Right — enquiry form */
 .ct-form-col {
-  padding: clamp(60px, 9vw, 110px) clamp(24px, 5vw, 48px);
+  padding: clamp(48px, 7.2vw, 88px) clamp(24px, 5vw, 48px);
   box-sizing: border-box;
   background: var(--off-black);
 }
@@ -106,7 +106,7 @@ a.ct-list__value:hover {
 /* ── B2. Location band — drawn plan, not a map tile ───────────────────── */
 .ct-map {
   position: relative;
-  height: clamp(260px, 48vw, 340px);
+  height: clamp(200px, 48vw, 340px);
   overflow: hidden;
   background: var(--off-black);
 }
@@ -162,4 +162,44 @@ a.ct-list__value:hover {
 .ct-map__link:hover {
   color: var(--gold-dark);
   border-color: var(--gold-dark);
+}
+
+/* ── Mobile ───────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .ct-list__value {
+    font-size: 18px;
+  }
+  .ct-sent {
+    font-size: 13.5px;
+  }
+  .ct-sent strong {
+    font-size: 21px;
+  }
+  .ct-map__name {
+    font-size: 19px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .ct-list__label {
+    font-size: 12px;
+  }
+  .ct-list__value {
+    font-size: 24px;
+  }
+  .ct-form .btn {
+    font-size: 13px;
+  }
+  .ct-sent {
+    font-size: 16px;
+  }
+  .ct-sent strong {
+    font-size: 28px;
+  }
+  .ct-map__name {
+    font-size: 26px;
+  }
+  .ct-map__link {
+    font-size: 12px;
+  }
 }

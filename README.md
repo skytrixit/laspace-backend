@@ -78,6 +78,20 @@ Do not substitute. Colours, sizes and timings are locked to the approved spec in
 cream `#F2EDE6`, taupe `#C4AD93`, black `#000000`, off-black `#0D0C0A`.
 Cormorant Garamond for display, Jost for UI. Single breakpoint: **920px**.
 
+## Header dropdowns
+
+On desktop (above 920px) the `Services` and `Projects` nav items open a
+hover dropdown ([Navbar.jsx](src/components/Navbar.jsx), styles at the end of
+[navbar.css](src/styles/navbar.css)): a `#0D0C0A` panel flush under the header,
+24px left of the label, fading in while dropping 8px (0.3s), items filling
+gold on hover. The menu is always mounted and animates between its two
+states; one is open at a time; keyboard focus opens it and Escape closes it.
+Services lists the published services — the sections on `/services` carry
+`id="c0"…` in display order and the page scrolls to the hash 24px below the
+header on load and on `hashchange`. Projects lists the category filters in
+use; `/projects?f=Kitchen` opens on that filter (unknown → All). Below 920px
+nothing is rendered; the hamburger menu is unchanged.
+
 ## Entry loader
 
 The home page opens on a full-screen black overlay: the monogram dead

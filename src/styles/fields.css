@@ -71,3 +71,15 @@ select:invalid {
   letter-spacing: 0.04em;
   color: var(--gold);
 }
+
+/* ── Large screens ──────────────────────────────────────────────────────── */
+@media (min-width: 1200px) {
+  .ct-field input,
+  .ct-field select,
+  .ct-field textarea {
+    font-size: 16px;
+  }
+  .ct-error {
+    font-size: 12.5px;
+  }
+}

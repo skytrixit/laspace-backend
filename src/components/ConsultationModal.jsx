@@ -3,6 +3,8 @@ import { site, contact, serviceOptions } from '../data/content'
 import { submitEnquiry } from '../lib/api'
 import { track } from '../lib/analytics'
 import { lockScroll, unlockScroll } from '../lib/scrollLock'
+import { currentPath } from '../lib/path'
+import { delayRemaining, hasPrompted, markPrompted } from '../lib/consultPrompt'
 import '../styles/fields.css'
 import '../styles/consult.css'
 
@@ -26,6 +28,9 @@ function validate(values) {
  * CTA by its text, so new "Book a Consultation" buttons work without touching
  * a page template. Each CTA keeps its `href="/contact"`, which is what runs
  * when JavaScript is off.
+ *
+ * It also opens itself once a visit, fifteen seconds in — see
+ * ../lib/consultPrompt.js for how that budget is counted and spent.
  */
 export default function ConsultationModal() {
   const [open, setOpen] = useState(false)
@@ -51,6 +56,29 @@ export default function ConsultationModal() {
     if (trigger && document.contains(trigger)) trigger.focus()
   }, [])
 
+  /**
+   * The single way in, for a clicked CTA (`trigger`) and for the timed
+   * prompt (null) alike. Either way the visitor has now been shown the
+   * form, so the once-a-browser budget is spent here rather than only on
+   * the automatic path — someone who asks for it at second three should
+   * not have it thrown at them again at second fifteen.
+   */
+  const openModal = useCallback((trigger) => {
+    triggerRef.current = trigger
+    // Lock in the same turn that opens — deferring this to an effect loses
+    // the race and the page scrolls behind the dialog.
+    lockScroll()
+    setValues(EMPTY)
+    setErrors({})
+    setSent(false)
+    setReference(null)
+    openedAt.current = Date.now()
+    markPrompted()
+    setOpen(true)
+    // The mobile menu, if it was the source, closes underneath.
+    window.dispatchEvent(new CustomEvent('consultation:open'))
+  }, [])
+
   // Delegated open. Capture phase so it runs before anything else can act.
   useEffect(() => {
     const onClick = (e) => {
@@ -60,23 +88,53 @@ export default function ConsultationModal() {
       if (!CTA_TEXT.test(el.textContent || '')) return
 
       e.preventDefault()
-      triggerRef.current = el
-      // Lock in the same handler that opens — deferring this to an effect
-      // loses the race and the page scrolls behind the dialog.
-      lockScroll()
-      setValues(EMPTY)
-      setErrors({})
-      setSent(false)
-      setReference(null)
-      openedAt.current = Date.now()
-      setOpen(true)
-      // The mobile menu, if it was the source, closes underneath.
-      window.dispatchEvent(new CustomEvent('consultation:open'))
+      openModal(el)
     }
 
     document.addEventListener('click', onClick, true)
     return () => document.removeEventListener('click', onClick, true)
-  }, [])
+  }, [openModal])
+
+  /**
+   * The timed prompt. Fifteen seconds into the visit, once per browser.
+   *
+   * Three things can defer it, because each would waste the one chance
+   * there is: a background tab, where it would be dismissed unseen; a
+   * visitor already typing in a form, where it would eat the keystroke;
+   * and the contact page, where the same fields are already on screen.
+   */
+  useEffect(() => {
+    const delay = delayRemaining()
+    if (delay === null) return undefined
+    if (currentPath() === '/contact') return undefined
+
+    let timer = window.setTimeout(fire, delay)
+
+    function fire() {
+      if (hasPrompted()) return // opened by hand in the meantime
+      if (document.hidden) {
+        document.addEventListener('visibilitychange', onVisible)
+        return
+      }
+      if (document.activeElement?.closest?.('form')) {
+        timer = window.setTimeout(fire, 5000) // wait for them to finish
+        return
+      }
+      track('consultation_prompt', { trigger: 'auto' })
+      openModal(null)
+    }
+
+    function onVisible() {
+      if (document.hidden) return
+      document.removeEventListener('visibilitychange', onVisible)
+      fire()
+    }
+
+    return () => {
+      window.clearTimeout(timer)
+      document.removeEventListener('visibilitychange', onVisible)
+    }
+  }, [openModal])
 
   // Escape to close, Tab trapped inside the panel.
   useEffect(() => {

@@ -4,13 +4,20 @@
   background: var(--black);
   border-bottom: 1px solid var(--rule-section);
 }
+/* Bounded exactly like .container and .svc-blocks — max-width plus the gutter
+   on the same box — so the h1 starts on the line every section below it uses.
+   The background and the rule still run full-bleed. */
 .about-hero__grid {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+  gap: clamp(40px, 6vw, 70px);
   align-items: stretch;
 }
 .about-hero__text {
-  padding: clamp(60px, 9vw, 110px) clamp(24px, 5vw, 48px);
+  padding: clamp(48px, 7.2vw, 88px) 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -19,7 +26,7 @@
   margin-bottom: 34px;
 }
 .about-hero h1 {
-  font-size: clamp(42px, 5vw, 78px);
+  font-size: clamp(27px, 5vw, 78px);
   line-height: 1.1;
   color: var(--cream);
   text-wrap: balance;
@@ -37,18 +44,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(40px, 7vw, 70px) clamp(24px, 5vw, 48px);
+  padding: clamp(32px, 5.6vw, 56px) 0;
 }
 
 /* ── A2. Story — two alternating blocks ───────────────────────────────── */
 .story__stack {
   display: flex;
   flex-direction: column;
-  gap: clamp(64px, 10vw, 110px);
+  gap: clamp(52px, 8vw, 88px);
 }
 .story__block {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
   gap: clamp(40px, 6vw, 70px);
   align-items: center;
 }
@@ -63,7 +70,7 @@
   margin-bottom: 26px;
 }
 .story__copy h2 {
-  font-size: clamp(30px, 3.2vw, 46px);
+  font-size: clamp(21px, 3.2vw, 46px);
   line-height: 1.25;
   color: var(--cream);
   margin-bottom: 26px;
@@ -79,16 +86,14 @@
 
 /* ── A3. Founder ──────────────────────────────────────────────────────── */
 .founder__grid {
-  max-width: 1100px;
-  margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   gap: clamp(40px, 6vw, 70px);
   align-items: center;
 }
 .founder__card {
   justify-self: center;
-  width: min(488px, 100%);
+  width: min(348px, 100%);
 }
 .founder__caption {
   text-align: center;
@@ -120,7 +125,7 @@
   margin-bottom: 26px;
 }
 .founder__copy h2 {
-  font-size: clamp(30px, 3.4vw, 48px);
+  font-size: clamp(21px, 3.4vw, 48px);
   line-height: 1.25;
   color: var(--cream);
 }
@@ -149,10 +154,10 @@
 
 /* ── A4. Why La Space — bordered grid ─────────────────────────────────── */
 .why__title {
-  font-size: clamp(36px, 4.6vw, 64px);
+  font-size: clamp(25px, 4.6vw, 64px);
   line-height: 1.1;
   color: var(--cream);
-  margin-bottom: 70px;
+  margin-bottom: 56px;
 }
 .why__grid {
   display: grid;
@@ -196,7 +201,7 @@
 .about-cta {
   position: relative;
   overflow: hidden;
-  padding: clamp(84px, 12vw, 150px) 28px;
+  padding: clamp(68px, 9.6vw, 120px) 28px;
   text-align: center;
 }
 .about-cta__bg {
@@ -218,7 +223,7 @@
   margin: 0 auto;
 }
 .about-cta h2 {
-  font-size: clamp(36px, 4.6vw, 64px);
+  font-size: clamp(25px, 4.6vw, 64px);
   line-height: 1.15;
   color: var(--cream);
 }
@@ -227,4 +232,144 @@
   font-size: 13px;
   white-space: nowrap;
   margin-top: 52px;
+}
+
+/* ── Mobile ───────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .founder__name {
+    font-size: 24px;
+  }
+  .founder__role,
+  .founder__company {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+  }
+  .why__cell {
+    padding: 32px 24px;
+  }
+  .why__cell h3 {
+    font-size: 21px;
+  }
+  .about-cta .btn {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 600px) {
+  .about-hero__lead,
+  .story__copy p,
+  .founder__copy p {
+    font-size: 13.5px;
+  }
+  .founder__closing {
+    font-size: 16px;
+  }
+}
+
+/* Two-up rows: the shot sits against the outer edge of its column, so each
+   row meets the container on both sides the way its copy column already
+   does. Below this the grids collapse to one column and the shot — which is
+   narrower than its track, to leave room for the offset frame — stays
+   centred instead. */
+@media (min-width: 920px) {
+  /* The gold frame hangs --shot-inset outside the shot box, so each shot is
+     pushed in by exactly that much. The frame then lands on the same line the
+     copy column uses, instead of overhanging it by ~20px. */
+  .about-hero__media {
+    justify-content: flex-end;
+  }
+  .about-hero__media .shot {
+    margin-right: calc(-1 * var(--shot-inset));
+  }
+  .story__block .shot {
+    justify-self: start;
+    margin-left: calc(-1 * var(--shot-inset));
+  }
+  .story__block--flip .shot {
+    justify-self: end;
+    margin-left: 0;
+    margin-right: calc(-1 * var(--shot-inset));
+  }
+  /* The portrait column is sized to the card rather than taking half the
+     row, so the circle and the copy read as one unit instead of two islands
+     with a 300px void between them. */
+  .founder__grid {
+    grid-template-columns: 348px minmax(0, 640px);
+    justify-content: center;
+  }
+  .founder__card {
+    justify-self: start;
+  }
+  .founder__card .shot {
+    margin-left: calc(-1 * var(--shot-inset));
+    margin-right: auto;
+  }
+}
+
+@media (min-width: 1200px) {
+  .about-hero__lead {
+    font-size: 17px;
+  }
+  .story__copy p,
+  .founder__copy p {
+    font-size: 16px;
+  }
+  .founder__closing {
+    font-size: 22px;
+  }
+  .why__cell p {
+    font-size: 14.5px;
+  }
+  .founder__name {
+    font-size: 34px;
+  }
+  .founder__role,
+  .founder__company {
+    font-size: 12px;
+  }
+  .why__cell h3 {
+    font-size: 28px;
+  }
+  .about-cta .btn {
+    font-size: 14px;
+  }
+}
+
+/* ── Wide screens: scale into the space (see services.css) ───────────────── */
+@media (min-width: 1200px) {
+  .about-hero__media .shot {
+    width: min(480px, calc(100% - 48px));
+  }
+  .about-hero__media .shot__clip img {
+    height: 540px;
+  }
+
+  .story__block {
+    grid-template-columns: 500px minmax(0, 1fr);
+  }
+  .story__block--flip {
+    grid-template-columns: minmax(0, 1fr) 500px;
+  }
+  .story__block .shot {
+    width: min(500px, calc(100% - 48px));
+  }
+  .story__block .shot__clip img {
+    height: 500px;
+  }
+
+  .founder__grid {
+    grid-template-columns: 368px minmax(0, 720px);
+  }
+  .founder__card {
+    width: min(368px, 100%);
+  }
+  .founder__card .shot {
+    width: min(320px, calc(100% - 48px));
+  }
+  /* The 38em measure left the paragraphs 200px short of the column the
+     heading already fills; 44em fills it without running past a comfortable
+     line length at this size. */
+  .founder__copy p {
+    max-width: 44em;
+  }
 }

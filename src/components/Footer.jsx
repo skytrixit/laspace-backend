@@ -1,4 +1,5 @@
 import { site, nav, services } from '../data/content'
+import SocialIcon from './SocialIcon'
 import { useIsMobile } from '../hooks/useMediaQuery'
 import { track } from '../lib/analytics'
 import '../styles/footer.css'
@@ -75,8 +76,15 @@ export default function Footer() {
                 </a>
                 <div className="footer__social">
                   {site.social.map((s) => (
-                    <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer">
-                      {s.label}
+                    <a
+                      key={s.label}
+                      href={s.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${site.name} on ${s.label} — opens in a new tab`}
+                      onClick={() => track('social_click', { channel: s.label.toLowerCase() })}
+                    >
+                      <SocialIcon name={s.label} />
                     </a>
                   ))}
                 </div>
