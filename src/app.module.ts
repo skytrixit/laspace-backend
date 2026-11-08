@@ -1,4 +1,5 @@
 import { randomUUID } from 'node:crypto'
+import path from 'node:path'
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { APP_GUARD, RouterModule } from '@nestjs/core'
@@ -24,7 +25,10 @@ const isDev = process.env.NODE_ENV !== 'production'
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, validate: validateEnv }),
+    /* .env sits at the project root, next to package.json. Anchored to this
+       file rather than process.cwd(): the path is computed at import time,
+       before main.ts changes directory. Missing file → process env only. */
+    ConfigModule.forRoot({ isGlobal: true, validate: validateEnv, envFilePath: path.resolve(__dirname, '..', '.env') }),
 
     /* Structured request logs with a request id from day one. Incoming
        x-request-id is honoured so a proxy's id carries through; otherwise

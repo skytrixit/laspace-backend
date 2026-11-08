@@ -6,8 +6,12 @@
   "engines": {
     "node": ">=20"
   },
+  "workspaces": [
+    "web/site"
+  ],
   "scripts": {
-    "build": "nest build",
+    "build": "npm run build:site && nest build",
+    "build:site": "npm run -w web/site images && npm run -w web/site build",
     "start": "node dist/main.js",
     "start:dev": "nest start --watch",
     "typecheck": "tsc --noEmit -p tsconfig.json",
