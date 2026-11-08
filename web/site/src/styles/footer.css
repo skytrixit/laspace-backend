@@ -149,6 +149,15 @@
   text-transform: uppercase;
   color: var(--taupe-legal);
 }
+/* The credit link: a hairline underline, gold on hover like the other footer links. */
+.footer__legal a {
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+  transition: color 0.3s ease;
+}
+.footer__legal a:hover {
+  color: var(--gold);
+}
 
 /* Mobile sticky action bar */
 .action-bar {

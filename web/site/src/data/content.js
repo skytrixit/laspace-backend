@@ -157,6 +157,7 @@ export const partners = D
 /* ── Static copy, unchanged ──────────────────────────────────────────────── */
 
 export const {
+  credit,
   preloader,
   nav,
   heroSlides,

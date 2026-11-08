@@ -33,6 +33,15 @@ export const site = {
   ],
 }
 
+/* The studio that built the site — the footer credit. It has no website yet,
+   so the link opens a WhatsApp chat with it, message ready to send. */
+export const credit = {
+  name: 'SKYTRIX IT Solutions',
+  href: `https://wa.me/917995357141?text=${encodeURIComponent(
+    'Hi SKYTRIX IT Solutions, I found you through the LA Space Interiors website and would like to talk about a website for my business.',
+  )}`,
+}
+
 /**
  * The entry loader on the home page (src/lib/preloader.js). It shows when a
  * visitor arrives from outside the site and on every reload of the home

@@ -1,4 +1,4 @@
-import { site, nav, services } from '../data/content'
+import { site, nav, services, credit } from '../data/content'
 import SocialIcon from './SocialIcon'
 import { useIsMobile } from '../hooks/useMediaQuery'
 import { track } from '../lib/analytics'
@@ -97,7 +97,17 @@ export default function Footer() {
             <span>
               © {year} {site.name}. All rights reserved.
             </span>
-            <span>Designed &amp; built by Mahesh Software Solutions</span>
+            <span>
+              Designed &amp; built by{' '}
+              <a
+                href={credit.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${credit.name} on WhatsApp — opens in a new tab`}
+              >
+                {credit.name}
+              </a>
+            </span>
           </div>
         </div>
       </footer>
