@@ -19,6 +19,9 @@ export enum MediaDriver {
 }
 
 const toInt = () => Transform(({ value }) => (value === '' || value == null ? undefined : Number(value)))
+/* Only for flags that default to true: a missing variable never reaches the
+   transform, so the class initializer stands; anything but true/1 is false. */
+const toBool = () => Transform(({ value }) => value === true || value === 'true' || value === '1')
 
 export class Env {
   @IsEnum(NodeEnv)
@@ -61,6 +64,17 @@ export class Env {
   /* Set true only behind a reverse proxy that sets X-Forwarded-For. */
   @IsOptional() @IsBoolean() @Transform(({ value }) => value === true || value === 'true' || value === '1')
   TRUST_PROXY = false
+
+  /* ── Admin features ──────────────────────────────────────────────────── */
+  /* Sections of the admin panel sold separately — see config/features.ts.
+     false locks one: its /api/admin endpoints answer 403 and the panel
+     hides it. Release by setting true (or dropping the line) and restarting.
+     The public site shows the same content either way. */
+  @IsOptional() @IsBoolean() @toBool()
+  FEATURE_FAQS = true
+
+  @IsOptional() @IsBoolean() @toBool()
+  FEATURE_SITE_SETTINGS = true
 
   @IsOptional() @IsString()
   SMTP_HOST?: string

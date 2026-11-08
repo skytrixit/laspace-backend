@@ -63,6 +63,12 @@ with the images); set `GOOGLE_SITE_VERIFICATION` and they carry the
 Search Console meta tag. Unset, neither is rendered. The website fires a
 `generate_lead` event on every accepted enquiry.
 
+Admin features: `FEATURE_FAQS` and `FEATURE_SITE_SETTINGS` (default true)
+lock the FAQs and Site Details sections of the admin panel when false —
+their `/api/admin` endpoints answer 403 `feature_locked`, the login and
+`/me` responses carry the flags so the panel hides them, and the public
+site is unaffected. Release a section by setting it true and restarting.
+
 The site's own dev server (`vite dev`, port 5173) has no `__DATA__`
 block and falls back to the static copy in `src/data/site.js` — use it
 for design work; use the API for anything content-related.

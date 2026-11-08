@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Put } from '@nestjs/common'
+import { Feature } from '../common/decorators/feature.decorator'
 import { SiteSettingsDto } from './dto/site-settings.dto'
 import { SettingsService } from './settings.service'
 
@@ -13,6 +14,7 @@ export class PublicSettingsController {
   }
 }
 
+@Feature('siteSettings')
 @Controller('admin/settings')
 export class AdminSettingsController {
   constructor(private readonly settings: SettingsService) {}

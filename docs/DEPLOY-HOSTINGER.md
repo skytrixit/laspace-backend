@@ -100,6 +100,11 @@ TRUST_PROXY=true
 # ADMIN_DIST alone — no admin build here, so /admin is not mounted.
 SITE_URL=https://www.laspaceinteriors.in
 
+# Admin sections not released to the studio yet: the API answers 403 and the
+# panel hides them. Set true (or remove the line) and restart to release.
+FEATURE_FAQS=false
+FEATURE_SITE_SETTINGS=false
+
 MEDIA_DRIVER=local
 MEDIA_LOCAL_PATH=/srv/laspace/storage
 # Blank: this process serves its own media, so image URLs stay same-origin.

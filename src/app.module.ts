@@ -16,6 +16,7 @@ import { ProjectsModule } from './projects/projects.module'
 import { ServicesModule } from './services/services.module'
 import { SettingsModule } from './settings/settings.module'
 import { TestimonialsModule } from './testimonials/testimonials.module'
+import { FeatureGuard } from './common/guards/feature.guard'
 import { SessionGuard } from './common/guards/session.guard'
 import { Env, validateEnv } from './config/env'
 import { dataSourceOptions } from './database/data-source'
@@ -86,6 +87,8 @@ const isDev = process.env.NODE_ENV !== 'production'
     /* Order matters: the cheap rate limit runs before the database lookup. */
     { provide: APP_GUARD, useClass: ThrottlerGuard },
     { provide: APP_GUARD, useClass: SessionGuard },
+    /* After the session guard: a locked section still asks for a sign-in first. */
+    { provide: APP_GUARD, useClass: FeatureGuard },
   ],
 })
 export class AppModule {}

@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, ParseIntPipe, Patch, Post, Put } from '@nestjs/common'
+import { Feature } from '../common/decorators/feature.decorator'
 import { PublishDto } from '../common/dto/publish.dto'
 import { ReorderDto } from '../common/dto/reorder.dto'
 import { CreateFaqDto } from './dto/create-faq.dto'
@@ -15,6 +16,7 @@ export class PublicFaqsController {
   }
 }
 
+@Feature('faqs')
 @Controller('admin/faqs')
 export class AdminFaqsController {
   constructor(private readonly faqs: FaqsService) {}

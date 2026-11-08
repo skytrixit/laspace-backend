@@ -59,6 +59,7 @@ Rollback: keep the previous `dist/` directories, restart on them, and
 | Check the database matches the seed | `npm run seed:prod -- --verify` |
 | Turn analytics on | set `GA4_MEASUREMENT_ID` (and `GOOGLE_SITE_VERIFICATION`), restart |
 | Enquiry alerts | set `SMTP_*` and `ALERT_TO`, restart; a failed send never fails the enquiry |
+| Release a locked admin section (FAQs, Site Details) | set `FEATURE_FAQS=true` / `FEATURE_SITE_SETTINGS=true` (or remove the line), restart; the public site is unaffected either way |
 
 ## When something is wrong
 
