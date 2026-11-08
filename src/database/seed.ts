@@ -39,7 +39,7 @@ type SiteData = {
   faqs: { q: string; a: string }[]
 }
 
-const WEBSITE_DIR = path.resolve(process.env.WEBSITE_DIR ?? path.join(process.cwd(), '..', 'la_space_website'))
+const WEBSITE_DIR = path.resolve(process.env.WEBSITE_DIR ?? path.join(process.cwd(), 'web', 'site'))
 const VERIFY = process.argv.includes('--verify')
 
 /** site.js is an ES module in an ESM package; a child node process imports it and hands back JSON. */
