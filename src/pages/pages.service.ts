@@ -26,7 +26,7 @@ export type PageName = (typeof PAGES)[number]
 type Rendered = { status: number; html: string }
 
 const FALLBACK_STATIC: StaticSiteData = {
-  site: { name: 'LA Space Interiors', url: 'https://www.laspaceinteriors.com' },
+  site: { name: 'LA Space Interiors', url: 'https://www.laspaceinteriors.in' },
   founder: { name: 'Balachandu', role: 'Founder & CEO' },
   whyLaSpace: [],
 }

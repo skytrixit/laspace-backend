@@ -92,14 +92,14 @@ if (!hasBuild) console.warn('pages e2e skipped: no website build at SITE_DIST')
     const [{ slug, title }] = (await ds.query('SELECT slug, title FROM project WHERE is_published = 1 ORDER BY display_order, id LIMIT 1')) as { slug: string; title: string }[]
     const res = await request(app.getHttpServer()).get(`/projects/${slug}`).expect(200)
     expect(res.text).toContain(`<title>${title} | LA Space Interiors</title>`)
-    expect(res.text).toContain(`<link rel="canonical" href="https://www.laspaceinteriors.com/projects/${slug}" />`)
+    expect(res.text).toContain(`<link rel="canonical" href="https://www.laspaceinteriors.in/projects/${slug}" />`)
     expect(res.text).not.toContain('__PROJECT_')
     const d = data(res.text)
     expect(d.project.slug).toBe(slug)
     expect(Array.isArray(d.project.gallery)).toBe(true)
     const work = ld(res.text).find((g) => g['@type'] === 'CreativeWork') as { name: string; url: string }
     expect(work.name).toBe(title)
-    expect(work.url).toBe(`https://www.laspaceinteriors.com/projects/${slug}`)
+    expect(work.url).toBe(`https://www.laspaceinteriors.in/projects/${slug}`)
   })
 
   it('answers an unknown project with a 404 page', async () => {
@@ -116,9 +116,9 @@ if (!hasBuild) console.warn('pages e2e skipped: no website build at SITE_DIST')
   it('lists every published project in the sitemap', async () => {
     const res = await request(app.getHttpServer()).get('/sitemap.xml').expect(200).expect('Content-Type', /application\/xml/)
     const [{ n }] = (await ds.query('SELECT COUNT(*) AS n FROM project WHERE is_published = 1 AND deleted_at IS NULL')) as { n: string | number }[]
-    const projectUrls = res.text.match(/<loc>https:\/\/www\.laspaceinteriors\.com\/projects\/[^<]+<\/loc>/g) ?? []
+    const projectUrls = res.text.match(/<loc>https:\/\/www\.laspaceinteriors\.in\/projects\/[^<]+<\/loc>/g) ?? []
     expect(projectUrls).toHaveLength(Number(n))
-    expect(res.text).toContain('<loc>https://www.laspaceinteriors.com/services</loc>')
+    expect(res.text).toContain('<loc>https://www.laspaceinteriors.in/services</loc>')
   })
 
   it('shows an admin edit on the next request', async () => {

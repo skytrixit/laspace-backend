@@ -118,7 +118,7 @@ export class Env {
 
   /** Canonical origin for JSON-LD, sitemap and social meta. */
   @IsUrl({ require_tld: false })
-  SITE_URL = 'https://www.laspaceinteriors.com'
+  SITE_URL = 'https://www.laspaceinteriors.in'
 
   /** The admin panel's build, served at /admin with the SPA fallback. */
   @IsString()
