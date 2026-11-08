@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import { site, founder, whyLaSpace, preloader } from './src/data/site.js'
 
@@ -8,7 +8,7 @@ import { site, founder, whyLaSpace, preloader } from './src/data/site.js'
  * (services, projects, FAQs, contact details) comes from the database, so
  * the API is the one place that builds structured data now.
  */
-function emitStaticData() {
+function emitStaticData(siteUrl) {
   return {
     name: 'la-space-static-data',
     generateBundle() {
@@ -17,7 +17,7 @@ function emitStaticData() {
         fileName: 'site-data.json',
         source: JSON.stringify(
           {
-            site: { name: site.name, url: site.url },
+            site: { name: site.name, url: siteUrl },
             founder: { name: founder.name, role: founder.role },
             whyLaSpace: whyLaSpace.map(({ title, body }) => ({ title, body })),
           },
@@ -63,23 +63,34 @@ function cleanUrls() {
   }
 }
 
-export default defineConfig({
-  plugins: [react(), emitStaticData(), preloaderSwitches(), cleanUrls()],
-  // Same-origin /api in the browser, forwarded to the studio API in dev.
-  // Same-origin /api and /media in the browser, forwarded to the studio API in dev.
-  server: { proxy: { '/api': 'http://localhost:4000', '/media': 'http://localhost:4000' } },
-  build: {
-    target: 'es2019',
-    cssCodeSplit: false,
-    rollupOptions: {
-      input: {
-        main: 'index.html',
-        about: 'about.html',
-        services: 'services.html',
-        projects: 'projects.html',
-        contact: 'contact.html',
-        project: 'project.html',
+export default defineConfig(({ mode }) => {
+  // .env and .env.<mode> in the project root — see .env.example for every key.
+  const env = loadEnv(mode, process.cwd(), '')
+  const apiTarget = env.VITE_API_PROXY_TARGET || 'http://localhost:4000'
+  // site.js is imported above in Node, where import.meta.env is not applied,
+  // so the canonical origin is resolved here for the emitted site-data.json.
+  const siteUrl = env.VITE_SITE_URL || site.url
+
+  return {
+    plugins: [react(), emitStaticData(siteUrl), preloaderSwitches(), cleanUrls()],
+    server: {
+      port: Number(env.VITE_DEV_PORT) || 5173,
+      // Same-origin /api and /media in the browser, forwarded to the studio API in dev.
+      proxy: { '/api': apiTarget, '/media': apiTarget },
+    },
+    build: {
+      target: 'es2019',
+      cssCodeSplit: false,
+      rollupOptions: {
+        input: {
+          main: 'index.html',
+          about: 'about.html',
+          services: 'services.html',
+          projects: 'projects.html',
+          contact: 'contact.html',
+          project: 'project.html',
+        },
       },
     },
-  },
+  }
 })

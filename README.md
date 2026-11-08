@@ -14,6 +14,18 @@ npm run preview
 npm run images   # re-process public/images after adding client photography
 ```
 
+## Environment
+
+Copy `.env.example` to `.env` and adjust. Only `VITE_`-prefixed values reach
+browser code, and they are baked in at build time, so a change means a rebuild.
+
+| Variable | Default | What it does |
+|---|---|---|
+| `VITE_DEV_PORT` | `5173` | Dev server port |
+| `VITE_API_PROXY_TARGET` | `http://localhost:4000` | Where the dev server forwards `/api` and `/media` |
+| `VITE_API_BASE` | `/api` | Where the browser posts enquiries. Same-origin in production, where the API serves the site |
+| `VITE_SITE_URL` | `https://www.laspaceinteriors.in` | Canonical origin for `site.url` and the emitted `site-data.json` |
+
 ## Where things live
 
 | Path | What |
@@ -214,7 +226,7 @@ so no enquiry is lost.
 
 ## Before launch
 
-1. **Domain** — replace `https://www.laspaceinteriors.com` in `index.html`,
+1. **Domain** — replace `https://www.laspaceinteriors.in` in `index.html`,
    `src/data/site.js`, `public/robots.txt` and `public/sitemap.xml`.
 2. **Contact details** — phone, WhatsApp number, email and postal address are
    placeholders in `src/data/site.js` and in the JSON-LD in `index.html`.

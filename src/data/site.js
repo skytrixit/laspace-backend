@@ -4,16 +4,20 @@
 // photography — replacing a file with the client's own, under the same name,
 // is the whole swap. See public/images/README.md.
 
+import { apiUrl } from '../lib/api.js'
+
 const img = (name) => `/images/${name}`
 
 export const site = {
   name: 'LA Space Interiors',
-  url: 'https://www.laspaceinteriors.com',
+  // Canonical origin. VITE_SITE_URL in .env overrides it; guarded because
+  // vite.config.js imports this file in Node, where import.meta.env is absent.
+  url: import.meta.env?.VITE_SITE_URL || 'https://www.laspaceinteriors.in',
   phone: '+91 90000 00000',
   phoneHref: 'tel:+919000000000',
   whatsappHref: 'https://wa.me/919000000000',
-  email: 'hello@laspaceinteriors.com',
-  emailHref: 'mailto:hello@laspaceinteriors.com',
+  email: 'hello@laspaceinteriors.in',
+  emailHref: 'mailto:hello@laspaceinteriors.in',
   address: ['Door No. 1-2-3, Beach Road', 'Visakhapatnam, Andhra Pradesh 530017', 'India'],
   /* Order is the order they appear in the footer. The label is also the key
      the icon is looked up by, in src/components/SocialIcon.jsx. */
@@ -521,10 +525,11 @@ export const contact = {
   hours: 'Mon – Sat, 10:00 – 19:00',
   // Replace with the studio's real Google Maps listing URL.
   mapsUrl: 'https://www.google.com/maps/search/?api=1&query=LA+Space+Interiors+Visakhapatnam',
-  // Where both enquiry forms post — the studio API, same origin. Set to null
-  // to fall back to a pre-filled email; the forms also do that on their own
-  // whenever the API does not accept a submission.
-  formEndpoint: '/api/enquiries',
+  // Where both enquiry forms post — the studio API, same origin by default
+  // (VITE_API_BASE in .env points elsewhere). Set to null to fall back to a
+  // pre-filled email; the forms also do that on their own whenever the API
+  // does not accept a submission.
+  formEndpoint: apiUrl('enquiries'),
 }
 
 export const serviceOptions = [

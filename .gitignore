@@ -7,3 +7,8 @@ dist
 public/images/*.w[0-9]*.avif
 public/images/*.w[0-9]*.webp
 public/images/*.w[0-9]*.jpg
+
+# environment — .env.example is the template and stays tracked
+.env
+.env.*
+!.env.example
