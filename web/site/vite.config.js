@@ -1,0 +1,96 @@
+import { defineConfig, loadEnv } from 'vite'
+import react from '@vitejs/plugin-react'
+import { site, founder, whyLaSpace, preloader } from './src/data/site.js'
+
+/**
+ * The static copy the studio API needs when it injects JSON-LD — the studio
+ * name and URL, the founder, the "why us" list. Everything content-driven
+ * (services, projects, FAQs, contact details) comes from the database, so
+ * the API is the one place that builds structured data now.
+ */
+function emitStaticData(siteUrl) {
+  return {
+    name: 'la-space-static-data',
+    generateBundle() {
+      this.emitFile({
+        type: 'asset',
+        fileName: 'site-data.json',
+        source: JSON.stringify(
+          {
+            site: { name: site.name, url: siteUrl },
+            founder: { name: founder.name, role: founder.role },
+            whyLaSpace: whyLaSpace.map(({ title, body }) => ({ title, body })),
+          },
+          null,
+          2
+        ),
+      })
+    },
+  }
+}
+
+/**
+ * The entry loader's switch (src/data/site.js → `preloader.enabled`) applied
+ * to index.html: disabled → the overlay, its styles and its script are
+ * removed entirely.
+ */
+function preloaderSwitches() {
+  return {
+    name: 'la-space-preloader',
+    transformIndexHtml(html) {
+      return preloader.enabled ? html : html.replace(/\s*<!-- preloader:start[\s\S]*?<!-- preloader:end -->/g, '')
+    },
+  }
+}
+
+/**
+ * Serves `/about` and `/services` in dev and preview the way a static host
+ * does in production, so local URLs match the canonicals.
+ */
+function cleanUrls() {
+  const middleware = (req, _res, next) => {
+    const [pathname, query = ''] = req.url.split('?')
+    if (/\.[a-z0-9]+$/i.test(pathname) || pathname === '/' || pathname.startsWith('/api/') || pathname.startsWith('/media/')) return next()
+    const candidate = `${pathname.replace(/\/+$/, '')}.html`
+    req.url = query ? `${candidate}?${query}` : candidate
+    next()
+  }
+
+  return {
+    name: 'la-space-clean-urls',
+    configureServer: (server) => () => server.middlewares.use(middleware),
+    configurePreviewServer: (server) => () => server.middlewares.use(middleware),
+  }
+}
+
+export default defineConfig(({ mode }) => {
+  // .env and .env.<mode> in the project root — see .env.example for every key.
+  const env = loadEnv(mode, process.cwd(), '')
+  const apiTarget = env.VITE_API_PROXY_TARGET || 'http://localhost:4000'
+  // site.js is imported above in Node, where import.meta.env is not applied,
+  // so the canonical origin is resolved here for the emitted site-data.json.
+  const siteUrl = env.VITE_SITE_URL || site.url
+
+  return {
+    plugins: [react(), emitStaticData(siteUrl), preloaderSwitches(), cleanUrls()],
+    server: {
+      port: Number(env.VITE_DEV_PORT) || 5173,
+      // Same-origin /api and /media in the browser, forwarded to the studio API in dev.
+      proxy: { '/api': apiTarget, '/media': apiTarget },
+    },
+    build: {
+      target: 'es2019',
+      cssCodeSplit: false,
+      rollupOptions: {
+        input: {
+          main: 'index.html',
+          about: 'about.html',
+          services: 'services.html',
+          projects: 'projects.html',
+          contact: 'contact.html',
+          project: 'project.html',
+        },
+      },
+    },
+  }
+})

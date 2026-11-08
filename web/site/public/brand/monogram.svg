@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="LA Space Interiors monogram">
+  <circle cx="100" cy="100" r="96" fill="#000000"/>
+  <circle cx="100" cy="100" r="88" fill="none" stroke="#C29D62" stroke-opacity="0.55" stroke-width="1.5"/>
+  <text x="100" y="122" text-anchor="middle" fill="#C29D62" font-family="Cormorant Garamond, Garamond, serif" font-size="78" letter-spacing="2">LA</text>
+  <text x="100" y="150" text-anchor="middle" fill="#C4AD93" font-family="Jost, Helvetica, Arial, sans-serif" font-size="11" letter-spacing="5">SPACE</text>
+</svg>

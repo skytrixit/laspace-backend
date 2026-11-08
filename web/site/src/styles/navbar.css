@@ -1,0 +1,271 @@
+/* ── Navbar (fixed, shared) ───────────────────────────────────────────── */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 80;
+  background: var(--black);
+  border-bottom: 1px solid var(--rule-nav);
+  height: var(--nav-h);
+  transition: box-shadow 0.4s ease;
+}
+.nav.is-scrolled {
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.6);
+}
+
+.nav__inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+/* flex-shrink would otherwise override `width: auto` and squash the lockup
+   horizontally in the band just above the burger breakpoint. */
+.nav__logo {
+  flex-shrink: 0;
+}
+.nav__logo img {
+  height: clamp(38px, 3.1vw, 52px);
+  width: auto;
+}
+
+.nav__links {
+  display: flex;
+  gap: 38px;
+  align-items: center;
+}
+
+/* The last stretch before the burger takes over at 920: the five labels and
+   the button no longer fit beside the mark at the full rhythm, so the row
+   closes up rather than overflowing or shrinking the logo. */
+@media (min-width: 920.02px) and (max-width: 1080px) {
+  .nav__links {
+    gap: 22px;
+  }
+  .nav__cta {
+    padding: 11px 18px;
+    letter-spacing: 0.16em;
+  }
+}
+
+.nav__link {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--cream);
+  border-bottom: 1px solid transparent;
+  transition: color 0.3s ease;
+}
+.nav__link:hover {
+  color: var(--gold);
+}
+.nav__link.is-active {
+  color: var(--gold);
+  border-bottom: 1px solid var(--gold);
+}
+
+.nav__cta {
+  white-space: nowrap;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  padding: 12px 26px;
+  transition: all 0.3s ease;
+}
+.nav__cta:hover {
+  background: var(--gold);
+  color: var(--black);
+}
+
+/* ── Dropdowns (Services, Projects) ──────────────────────────────────────
+   The trigger and its menu share one hover container that spans the header
+   height, so `top: 100%` is the header's bottom edge and the pointer can
+   travel from the link into the menu without a gap. The menu is always
+   mounted and animates between its two states. */
+.nav__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: var(--nav-h);
+}
+.nav__link[aria-expanded='true'] {
+  color: #c29d62;
+}
+.nav__menu {
+  position: absolute;
+  top: 100%;
+  left: -24px;
+  min-width: 300px;
+  background: #0d0c0a;
+  border: 1px solid rgba(194, 157, 98, 0.32);
+  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.7);
+  padding: 10px 0;
+  border-radius: 0;
+  z-index: 85;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+}
+.nav__menu[data-open='true'] {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.nav__menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 14px 26px;
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 12.5px;
+  letter-spacing: 0.1em;
+  text-transform: none;
+  color: #f2ede6;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+.nav__menu-item:hover,
+.nav__menu-item:focus-visible {
+  background: #c29d62;
+  color: #000000;
+}
+.nav__menu-arrow {
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+/* Hamburger */
+.nav__burger {
+  display: none;
+  background: transparent;
+  border: none;
+  padding: 10px;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 44px;
+  min-height: 44px;
+  justify-content: center;
+}
+.nav__burger span {
+  display: block;
+  height: 1px;
+  width: 26px;
+  background: var(--gold);
+}
+.nav__burger span:nth-child(3) {
+  width: 18px;
+  margin-left: auto;
+}
+
+/* Full-screen mobile panel */
+.nav__panel {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: var(--black);
+  display: flex;
+  flex-direction: column;
+  padding: 28px;
+  box-sizing: border-box;
+  transform: translateX(105%);
+  visibility: hidden;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.45s;
+}
+.nav__panel.is-open {
+  transform: translateX(0);
+  visibility: visible;
+}
+
+.nav__panel-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+.nav__panel-top img {
+  height: 56px;
+  width: auto;
+}
+
+.nav__close {
+  width: 48px;
+  height: 48px;
+  background: transparent;
+  border: 1px solid var(--rule-close);
+  color: var(--gold);
+  font-size: 20px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav__panel-link {
+  display: block;
+  font-family: var(--serif);
+  font-size: 40px;
+  font-weight: 500;
+  color: var(--cream);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule-menu);
+}
+.nav__panel-link.is-active {
+  color: var(--gold);
+}
+
+.nav__panel-cta {
+  margin-top: auto;
+  display: block;
+  background: var(--gold);
+  color: var(--black);
+  padding: 18px 26px;
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+@media (max-width: 920px) {
+  .nav__links,
+  .nav__cta--desktop,
+  .nav__menu {
+    display: none;
+  }
+  .nav__burger {
+    display: flex;
+  }
+}
+
+/* ── Mobile ───────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .nav__panel-link {
+    font-size: 28px;
+  }
+}
+
+/* ── Large screens ──────────────────────────────────────────────────────── */
+@media (min-width: 1200px) {
+  .nav__link {
+    font-size: 13px;
+  }
+  .nav__cta {
+    font-size: 12px;
+  }
+}

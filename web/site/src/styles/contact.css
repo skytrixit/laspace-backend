@@ -1,0 +1,205 @@
+/* ── B1. Split hero — details + form ──────────────────────────────────── */
+.ct-hero {
+  padding: 80px 0 0;
+  background: var(--black);
+  border-bottom: 1px solid var(--rule-section);
+}
+.ct-hero__grid {
+  max-width: var(--container);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 0; /* the two halves meet on a single hairline */
+}
+
+/* Left — details */
+.ct-details {
+  padding: clamp(48px, 7.2vw, 88px) clamp(24px, 5vw, 48px);
+  box-sizing: border-box;
+  border-right: 1px solid rgba(194, 157, 98, 0.15);
+}
+.ct-details .eyebrow {
+  margin-bottom: 34px;
+}
+.ct-details h1 {
+  font-size: clamp(27px, 4.6vw, 72px);
+  line-height: 1.1;
+  color: var(--cream);
+  text-wrap: balance;
+}
+.ct-list {
+  margin-top: 52px;
+  max-width: 460px;
+  border-top: 1px solid var(--rule-list);
+}
+.ct-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 20px;
+  padding: 22px 4px;
+  border-bottom: 1px solid var(--rule-menu);
+}
+.ct-list__label {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--gold);
+  flex: none;
+}
+.ct-list__value {
+  font-family: var(--serif);
+  font-size: 22px;
+  color: var(--cream);
+  text-align: right;
+  transition: color 0.3s ease;
+}
+a.ct-list__value:hover {
+  color: var(--gold);
+}
+
+/* Right — enquiry form */
+.ct-form-col {
+  padding: clamp(48px, 7.2vw, 88px) clamp(24px, 5vw, 48px);
+  box-sizing: border-box;
+  background: var(--off-black);
+}
+.ct-form-col .eyebrow {
+  margin-bottom: 50px;
+}
+.ct-form {
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+}
+.ct-pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 44px;
+}
+
+.ct-form .btn {
+  align-self: flex-start;
+  padding: 19px 46px;
+  font-size: 12px;
+}
+
+.ct-sent {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--taupe);
+  border-top: 1px solid var(--rule-list);
+  padding-top: 28px;
+}
+.ct-sent strong {
+  display: block;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 26px;
+  color: var(--cream);
+  margin-bottom: 12px;
+}
+
+/* ── B2. Location band — drawn plan, not a map tile ───────────────────── */
+.ct-map {
+  position: relative;
+  height: clamp(200px, 48vw, 340px);
+  overflow: hidden;
+  background: var(--off-black);
+}
+.ct-map__grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background-image: linear-gradient(rgba(194, 157, 98, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(194, 157, 98, 0.12) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+.ct-map__vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.85) 100%);
+}
+.ct-map__inner {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+  padding: 0 28px;
+}
+.ct-map__pin {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--gold);
+  /* Both halo rings are drawn by shadow alone. */
+  box-shadow: 0 0 0 12px rgba(194, 157, 98, 0.15), 0 0 0 26px rgba(194, 157, 98, 0.06);
+}
+.ct-map__name {
+  font-family: var(--serif);
+  font-size: 24px;
+  color: var(--cream);
+  margin-top: 10px;
+}
+.ct-map__link {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border-bottom: 1px solid var(--rule-link);
+  padding-bottom: 6px;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+.ct-map__link:hover {
+  color: var(--gold-dark);
+  border-color: var(--gold-dark);
+}
+
+/* ── Mobile ───────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .ct-list__value {
+    font-size: 18px;
+  }
+  .ct-sent {
+    font-size: 13.5px;
+  }
+  .ct-sent strong {
+    font-size: 21px;
+  }
+  .ct-map__name {
+    font-size: 19px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .ct-list__label {
+    font-size: 12px;
+  }
+  .ct-list__value {
+    font-size: 24px;
+  }
+  .ct-form .btn {
+    font-size: 13px;
+  }
+  .ct-sent {
+    font-size: 16px;
+  }
+  .ct-sent strong {
+    font-size: 28px;
+  }
+  .ct-map__name {
+    font-size: 26px;
+  }
+  .ct-map__link {
+    font-size: 12px;
+  }
+}

@@ -1,0 +1,231 @@
+/* ── Footer ───────────────────────────────────────────────────────────── */
+.footer {
+  background: var(--black);
+  border-top: 1px solid var(--rule-list);
+  padding: 72px 0 0;
+}
+.footer__inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.footer__wordmark {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(26px, 7.4vw, 108px);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: var(--gold);
+}
+
+.footer__divider {
+  height: 1px;
+  background: var(--rule-list);
+  margin: 44px 0;
+}
+
+.footer__cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 48px;
+  align-items: start;
+}
+
+.footer__seal {
+  width: 118px;
+  height: 118px;
+  border-radius: 50%;
+  border: 1px solid var(--rule-link);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.footer__seal img {
+  width: 76px;
+  height: auto;
+}
+.footer__tagline {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  line-height: 2;
+  color: var(--taupe);
+  margin-top: 26px;
+}
+
+.footer__heading {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0 0 26px;
+}
+
+.footer__links {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.footer__links a,
+.footer__contact a,
+.footer__contact p {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  color: var(--cream);
+  transition: color 0.3s ease;
+}
+.footer__links a:hover,
+.footer__contact a:hover {
+  color: var(--gold);
+}
+.footer__contact {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.footer__contact address {
+  font-style: normal;
+  color: var(--taupe);
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+/* Icon row. Six channels wrap to a second line in a narrow column, which
+   is why the row gap is set as well as the column gap. */
+.footer__social {
+  display: flex;
+  gap: 7px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+/* 40px keeps the tap target close to the 44px guideline while the glyph
+   itself stays small enough not to shout from a footer corner. */
+.footer__social a {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--rule-link);
+  border-radius: 50%;
+  color: var(--gold);
+  transition: color 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+}
+.footer__social svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+.footer__social a:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--black);
+}
+
+.footer__legal-divider {
+  height: 1px;
+  background: var(--rule-list);
+  margin-top: 56px;
+}
+.footer__legal {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 26px 0;
+}
+.footer__legal span {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--taupe-legal);
+}
+
+/* Mobile sticky action bar */
+.action-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 70;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--rule-frame);
+}
+.action-bar a {
+  padding: 17px 10px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+}
+.action-bar__call {
+  background: var(--black);
+  color: var(--gold);
+}
+.action-bar__whatsapp {
+  background: var(--gold);
+  color: var(--black);
+}
+
+@media (max-width: 920px) {
+  .footer__legal {
+    padding-bottom: 96px;
+  }
+}
+
+/* ── Mobile ───────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .footer__contact p,
+  .footer__contact address {
+    font-size: 13px;
+  }
+  /* The column is the full page width here, so the icons can take the
+     comfortable touch size and still hold one line. */
+  .footer__social {
+    gap: 9px;
+  }
+  .footer__social a {
+    width: 42px;
+    height: 42px;
+  }
+  .footer__social svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* ── Large screens ────────────────────────────────────────────────────────
+   The wordmark is already fluid; everything under it is fixed px and sat at
+   its phone size on a wide display. */
+@media (min-width: 1200px) {
+  .footer__tagline {
+    font-size: 14px;
+  }
+  .footer__heading {
+    font-size: 12px;
+  }
+  .footer__links a,
+  .footer__contact a,
+  .footer__contact p,
+  .footer__contact address {
+    font-size: 15px;
+  }
+  .footer__legal span {
+    font-size: 12px;
+  }
+}

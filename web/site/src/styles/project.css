@@ -1,0 +1,125 @@
+/* ── Project detail ──────────────────────────────────────────────────────── */
+
+.prj-hero {
+  background: var(--black);
+}
+
+.prj-hero__inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: calc(var(--nav-h) + 48px) var(--gutter) 36px;
+}
+
+.prj-back {
+  display: inline-block;
+  margin-bottom: 34px;
+}
+
+.prj-hero h1 {
+  margin: 22px 0 16px;
+}
+
+.prj-hero__meta {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--taupe);
+  margin: 0;
+}
+
+.prj-hero__cover {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.prj-hero__cover img {
+  display: block;
+  width: 100%;
+  height: clamp(220px, 38vw, 460px);
+  object-fit: cover;
+}
+
+.prj-story {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: clamp(44px, 6.4vw, 76px) var(--gutter);
+}
+
+.prj-story p {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 17px;
+  line-height: 1.9;
+  color: var(--taupe);
+  margin: 0 0 22px;
+}
+
+.prj-tags {
+  font-size: 12px !important;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--taupe-muted) !important;
+}
+
+.prj-gallery {
+  background: var(--off-black);
+  padding: clamp(44px, 6.4vw, 76px) 0;
+}
+
+.prj-gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr));
+  gap: 24px;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.prj-gallery__item {
+  margin: 0;
+}
+
+.prj-gallery__item img {
+  display: block;
+  width: 100%;
+  height: clamp(180px, 30vw, 380px);
+  object-fit: cover;
+}
+
+/* The closing call to action reuses the services page band. */
+.svc-cta {
+  background: var(--black);
+  padding: clamp(58px, 8vw, 96px) var(--gutter);
+  text-align: center;
+}
+
+.svc-cta__inner {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.svc-cta h2 {
+  margin: 0 0 32px;
+}
+
+/* ── Mobile ───────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .prj-story p {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .prj-story p {
+    font-size: 18px;
+  }
+  .prj-hero__meta {
+    font-size: 14px;
+  }
+  .prj-tags {
+    font-size: 13px !important;
+  }
+}

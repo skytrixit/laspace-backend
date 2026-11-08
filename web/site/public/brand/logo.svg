@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 108" width="420" height="108" role="img" aria-label="LA Space Interiors">
+  <rect width="420" height="108" fill="none"/>
+  <g fill="#C29D62" font-family="Cormorant Garamond, Garamond, serif">
+    <text x="0" y="62" font-size="54" letter-spacing="4">LA SPACE</text>
+  </g>
+  <text x="2" y="90" fill="#C4AD93" font-family="Jost, Helvetica, Arial, sans-serif" font-size="13" letter-spacing="7.5">INTERIORS</text>
+  <line x1="0" y1="72" x2="420" y2="72" stroke="#C29D62" stroke-opacity="0.35" stroke-width="1"/>
+</svg>

@@ -1,0 +1,73 @@
+/* ── Shot: the signature image device ─────────────────────────────────────
+   A curved silhouette wrapped in an offset gold outline frame that echoes
+   the same radius. Per-instance geometry comes in as custom properties so
+   there is one rule rather than one per shape.
+   ----------------------------------------------------------------------- */
+.shot {
+  position: relative;
+  justify-self: center;
+  /* Reserve room for the offset frame (inset -20/-22px plus its border), so
+     the outline stays intact instead of being clipped on a narrow column.
+     No effect wherever the column is wide enough for the full --shot-w. */
+  width: min(var(--shot-w, 460px), calc(100% - 48px));
+}
+
+.shot__frame {
+  position: absolute;
+  inset: var(--shot-inset, -20px);
+  border: 1px solid var(--shot-frame, rgba(194, 157, 98, 0.3));
+  border-radius: var(--shot-r);
+  pointer-events: none;
+}
+
+.shot__clip {
+  display: block;
+  overflow: hidden;
+  border-radius: var(--shot-r);
+}
+
+.shot__clip img {
+  display: block;
+  width: 100%;
+  height: var(--shot-h);
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .shot:hover .shot__clip img {
+    transform: scale(1.05);
+  }
+}
+
+/* Placeholder variant — holds the monogram until real photography arrives. */
+.shot__clip--placeholder {
+  height: var(--shot-h);
+  background: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.shot__clip--placeholder img {
+  width: 200px;
+  height: auto;
+  opacity: 0.9;
+}
+
+/* Circle variant: the image takes its height from its width, so neither the
+   clip nor the offset frame can go oval when the column narrows. */
+.shot--circle .shot__clip img {
+  height: auto;
+  aspect-ratio: 1;
+}
+
+/* Portrait variant: a vertical rectangle whose height follows its width, so
+   the clip and the offset frame hold their proportion as the column narrows.
+   3:4 is the founder photograph's own frame, so the crop takes nothing.
+   `height: auto` is what lets aspect-ratio decide — a definite length on both
+   axes would win over it. */
+.shot--portrait .shot__clip img,
+.shot--portrait .shot__clip--placeholder {
+  height: auto;
+  aspect-ratio: 3 / 4;
+}

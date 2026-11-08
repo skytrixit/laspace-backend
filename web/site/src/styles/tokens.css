@@ -1,0 +1,35 @@
+/* ── Design tokens ─────────────────────────────────────────────────────────
+   Exact values from the approved spec. Do not substitute.
+   ------------------------------------------------------------------------ */
+:root {
+  /* Colour */
+  --black: #000000;
+  --off-black: #0d0c0a;
+  --gold: #c29d62;
+  --gold-dark: #8a6d3f;
+  --cream: #f2ede6;
+  --taupe: #c4ad93;
+
+  /* Derived alphas */
+  --rule-section: rgba(194, 157, 98, 0.2);
+  --rule-list: rgba(194, 157, 98, 0.22);
+  --rule-process: rgba(194, 157, 98, 0.25);
+  --rule-frame: rgba(194, 157, 98, 0.35);
+  --rule-link: rgba(194, 157, 98, 0.5);
+  --rule-btn: rgba(194, 157, 98, 0.65);
+  --rule-nav: rgba(194, 157, 98, 0.18);
+  --rule-menu: rgba(194, 157, 98, 0.15);
+  --rule-close: rgba(194, 157, 98, 0.4);
+  --taupe-muted: rgba(196, 173, 147, 0.45);
+  --taupe-legal: rgba(196, 173, 147, 0.55);
+
+  /* Type */
+  --serif: 'Cormorant Garamond', Garamond, 'Times New Roman', serif;
+  --sans: 'Jost', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  /* Layout */
+  --container: 1400px;
+  --gutter: 28px;
+  --nav-h: 80px;
+  --section-y: clamp(44px, 8.4vw, 104px);
+}
