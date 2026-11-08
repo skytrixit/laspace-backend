@@ -1,5 +1,12 @@
 # Deploying to a Hostinger VPS — laspaceinteriors.in
 
+> **Current target: Hostinger shared hosting, Node.js Web App.** The host
+> builds the app from the GitHub repository (`npm install`, `npm run build`,
+> `npm start`); environment variables are set in hPanel rather than in a
+> `.env` file; `PORT` is injected by the host; and the process is restarted
+> from the hPanel dashboard after each deploy or env change. The VPS steps
+> below are kept for reference only.
+
 One Node process serves the public site, the admin panel at `/admin`, the
 JSON API at `/api` and the uploaded media at `/media`. MySQL 8 holds the
 data. nginx terminates HTTPS in front. Nothing else runs.
@@ -9,8 +16,8 @@ stays the reference for day-to-day operations once the server is up.
 
 > **Not a static host.** The site cannot be deployed as static files: project
 > pages, the sitemap, the admin content and the enquiry API are all produced
-> by this process at request time. Shared/web hosting plans cannot keep a Node
-> process running — this needs a KVM VPS.
+> by this process at request time. It needs a host that runs a Node process:
+> Hostinger's Node.js Web App (the note above) or a KVM VPS (this document).
 
 ## 0. What you need first
 
@@ -18,7 +25,7 @@ stays the reference for day-to-day operations once the server is up.
 | --- | --- |
 | VPS | Hostinger KVM, Ubuntu 24.04. 2 vCPU / 4 GB is comfortable — the image pipeline (sharp) is the memory-hungry part |
 | DNS | `laspaceinteriors.in` A record → the VPS IP, plus `www` |
-| Repositories | `laspace-backend`, `laspace-website`, `laspace-adminUI` — all three pushed, including the latest commits |
+| Repositories | `laspace-backend`, pushed with the latest commits — it carries the website at `web/site`. `laspace-adminUI` is deployed separately on its own subdomain |
 | Mail | SMTP credentials for enquiry alerts (optional; the form still works without them) |
 
 Open ports 80 and 443 in the hPanel firewall. Leave 3306 closed — MySQL is
@@ -47,16 +54,15 @@ adduser --system --group --home /srv/laspace laspace
 mkdir -p /srv/laspace && chown laspace:laspace /srv/laspace
 ```
 
-## 2. Clone the three repositories side by side
+## 2. Clone the repository
 
-The backend finds the other two by relative path, so the layout matters.
+The website is inside it at `web/site`; the admin panel is deployed
+separately on its own subdomain.
 
 ```bash
 sudo -u laspace -H bash
 cd /srv/laspace
 git clone https://github.com/skytrixit/laspace-backend.git  la_space_backend
-git clone https://github.com/skytrixit/laspace-website.git  la_space_website
-git clone https://github.com/skytrixit/laspace-adminUI.git  la_space_admin
 ```
 
 ## 3. Configure `.env`
@@ -76,9 +82,9 @@ Edit it. The values that differ from the development defaults:
 NODE_ENV=production
 PORT=4000
 
-# Same origin now — the site, the admin and the API share one host.
+# The site and the API share one host; the admin panel is on its own subdomain.
 PUBLIC_ORIGIN=https://www.laspaceinteriors.in
-ADMIN_ORIGIN=https://www.laspaceinteriors.in
+ADMIN_ORIGIN=https://admin.laspaceinteriors.in
 
 # Two passwords you choose now; db-bootstrap.sh creates the users with them.
 DB_PASSWORD=<a long random password>
@@ -87,9 +93,9 @@ DB_MIGRATE_PASSWORD=<a different long random password>
 # nginx is in front, so rate limits must read X-Forwarded-For.
 TRUST_PROXY=true
 
-# Absolute, because systemd's working directory is not assumed.
-SITE_DIST=/srv/laspace/la_space_website/dist
-ADMIN_DIST=/srv/laspace/la_space_admin/dist
+# SITE_DIST keeps its default, ./web/site/dist: relative paths resolve from
+# the project root. Leave ADMIN_DIST alone — no admin build here, so /admin
+# is not mounted.
 SITE_URL=https://www.laspaceinteriors.in
 
 MEDIA_DRIVER=local
@@ -128,14 +134,12 @@ connects as the first. The script is safe to re-run — every statement is
 
 ## 5. Build
 
-Three builds, in this order. The website's `images` step generates the
-responsive image ladder and is the slow one.
+One command. `build:site` generates the responsive image ladder (the slow
+step) and the website's `web/site/dist`; then `nest build` emits `dist/`.
 
 ```bash
-cd /srv/laspace
-(cd la_space_website && npm ci && npm run images && npm run build)
-(cd la_space_admin   && npm ci && npm run build)
-(cd la_space_backend && npm ci && npm run build)
+cd /srv/laspace/la_space_backend
+npm ci && npm run build
 ```
 
 ## 6. Schema, content and the first login
@@ -220,8 +224,8 @@ curl -s https://www.laspaceinteriors.in/about | grep -o 'rel="canonical" href="[
 curl -s https://www.laspaceinteriors.in/sitemap.xml | head -5
 ```
 
-Then in a browser: a project card opens its detail page, `/admin` shows the
-login, and a test enquiry appears in the admin panel.
+Then in a browser: a project card opens its detail page, and a test enquiry
+appears in the admin panel on its own subdomain.
 
 ## 10. Nightly backups
 
@@ -240,11 +244,9 @@ Keeps `BACKUP_KEEP_DAYS` (30) of dumps. Rehearse a restore with
 
 ```bash
 sudo -u laspace -H bash
-cd /srv/laspace
-for r in la_space_website la_space_admin la_space_backend; do (cd $r && git pull); done
-(cd la_space_website && npm ci && npm run images && npm run build)
-(cd la_space_admin   && npm ci && npm run build)
-(cd la_space_backend && npm ci && npm run build && npm run migration:run:prod)
+cd /srv/laspace/la_space_backend
+git pull
+npm ci && npm run build && npm run migration:run:prod
 exit
 systemctl restart laspace
 ```

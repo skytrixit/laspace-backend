@@ -9,7 +9,9 @@ import { configureApp } from '../src/app.setup'
 /* Security headers on every response, and the admin panel served at /admin with its SPA fallback. */
 describe('security headers and the admin panel', () => {
   let app: INestApplication
-  const adminBuilt = existsSync(path.resolve(process.env.ADMIN_DIST ?? '../la_space_admin/dist', 'index.html'))
+  /* The admin panel is deployed separately, so by default no build is here and
+     the /admin cases are skipped; point ADMIN_DIST at a panel build to run them. */
+  const adminBuilt = existsSync(path.resolve(process.env.ADMIN_DIST ?? './no-admin-build', 'index.html'))
 
   beforeAll(async () => {
     process.loadEnvFile?.('.env')

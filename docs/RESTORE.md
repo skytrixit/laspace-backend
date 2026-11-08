@@ -5,7 +5,8 @@ content, admin users and sessions, media records) and, with the local media
 driver, a tar of the uploaded files. Both are written by `scripts/backup.sh`
 to `BACKUP_DIR` (default `./backups`) and named by UTC time:
 `laspace-20260930T151200Z.sql.gz`, `media-20260930T151200Z.tar.gz`. The
-website's own photography is in the website repository, not in the backup.
+website's own photography is in the repository (`web/site/public/images`),
+not in the backup.
 
 Enquiries are the sales pipeline. Losing the database loses them; nothing
 else in this system is irreplaceable.
@@ -28,14 +29,16 @@ brought back.
 
 Time: about 20 minutes plus the copy of the media archive.
 
-1. Install Node 20+ and MySQL 8; clone the three repositories side by side;
+1. Install Node 20+ and MySQL 8; clone this repository (the website is
+   inside it at `web/site`);
    create `.env` from `.env.example` with the production values.
 2. `scripts/db-bootstrap.sh` — creates the empty database and the two users.
 3. `scripts/restore.sh backups/laspace-<stamp>.sql.gz backups/media-<stamp>.tar.gz`
    — loads the schema and the rows, unpacks the files into `MEDIA_LOCAL_PATH`.
    The dump carries the migrations table, so `npm run migration:run:prod`
    afterwards applies only migrations newer than the backup.
-4. Build and start as in the runbook (website, admin, API).
+4. Build and start as in the runbook (`npm run build` covers the website
+   and the API).
 5. Verify: `/health` is 200 with `"db":"ok"`; `/projects` lists the projects;
    log in to `/admin` and open the enquiry inbox; open one uploaded image.
 

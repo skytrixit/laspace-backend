@@ -23,7 +23,7 @@ import { dataSourceOptions, dbEnvFromProcess } from './data-source'
      npm run seed             # import
      npm run seed -- --verify # compare the database to site.js, exit 1 on drift
 
-   WEBSITE_DIR points at la_space_website; defaults to the sibling folder.
+   WEBSITE_DIR points at the website checkout; defaults to web/site in this repo.
    ------------------------------------------------------------------------ */
 
 type Img = { src: string; alt: string }

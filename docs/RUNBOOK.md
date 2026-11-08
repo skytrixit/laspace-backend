@@ -7,7 +7,7 @@ data. No queue, no cache server, no other service.
 
 | | Where |
 | --- | --- |
-| Code | `la_space_backend` (API + serving), `la_space_website` (site build), `la_space_admin` (panel build) — three repositories side by side |
+| Code | `la_space_backend` — the API, the serving layer and the website at `web/site` (a git subtree of the website repository). The admin panel is a separate repository, deployed on its own subdomain |
 | Configuration | `la_space_backend/.env` (see `.env.example`); never committed |
 | Database | MySQL 8, database `laspace`; `laspace_app` reads and writes rows, `laspace_migrate` changes the schema |
 | Uploads | `MEDIA_LOCAL_PATH` (default `./storage`) or an S3-compatible bucket behind a CDN |
@@ -21,9 +21,7 @@ data. No queue, no cache server, no other service.
 cd la_space_backend && cp .env.example .env    # fill in the values
 scripts/db-bootstrap.sh
 
-# builds
-(cd ../la_space_website && npm ci && npm run images && npm run build)   # dist/, incl. the image ladder
-(cd ../la_space_admin   && npm ci && npm run build)                      # dist/
+# build: the website (web/site/dist, incl. the image ladder), then the API (dist/)
 npm ci && npm run build
 
 # schema, first content, first admin
@@ -42,10 +40,8 @@ limits see the real client address. The process serves `/`, `/admin` and
 ## Each release
 
 ```bash
-git pull              # in each of the three repositories
-(cd ../la_space_website && npm ci && npm run images && npm run build)
-(cd ../la_space_admin   && npm ci && npm run build)
-npm ci && npm run build && npm run migration:run:prod
+git pull
+npm ci && npm run build && npm run migration:run:prod    # website and API
 # restart the process; it re-reads the site build and requeues unfinished media jobs
 ```
 

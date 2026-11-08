@@ -1,10 +1,9 @@
 # Checking the production setup on one machine
 
 Everything the host will run can be exercised locally: MySQL 8 and Node 20+
-on this machine, the three repositories side by side
-(`la_space_backend`, `la_space_website`, `la_space_admin`). Commands run
-from `la_space_backend` unless a path says otherwise. Each step says what
-"good" looks like.
+on this machine and a checkout of `la_space_backend`, which carries the
+website at `web/site`. Commands run from the repository root unless a path
+says otherwise. Each step says what "good" looks like.
 
 ## 1. Least-privilege database users
 
@@ -27,10 +26,11 @@ npm run migration:show                                                       # â
 ## 2. Build everything
 
 ```bash
-(cd ../la_space_website && npm run images && npm run build)   # dist/ with the image ladder
-(cd ../la_space_admin && npm run build)                        # dist/ served at /admin
-npm run build                                                  # dist/main.js
+npm run build        # web/site/dist with the image ladder, then dist/main.js
 ```
+
+The admin panel is deployed separately. To check `/admin` here as well, build
+the admin repository next to this one (`ADMIN_DIST`, default `../la_space_admin/dist`).
 
 ## 3. Run the way production runs
 
@@ -69,7 +69,7 @@ curl -s http://localhost:4000/ | grep -o "google-site-verification\|gtag/js?id=G
 
 ```bash
 npm test             # unit, no database
-npm run test:e2e     # boots the real app against the .env database as laspace_app; needs the two builds
+npm run test:e2e     # boots the real app against the .env database as laspace_app; needs the website build
 ```
 
 Good: all suites pass. The e2e suites cover auth, enquiries, content,
@@ -104,7 +104,7 @@ is served from the restored files â€” then drops the copy.
 With the API running (step 3):
 
 ```bash
-(cd ../la_space_website && npm run budget)
+npm run -w web/site budget
 ```
 
 Good: `PASS  /projects  performance 9x (budget 90) ...` and `PASS  /  performance 8x (budget 80) ...`.
@@ -117,7 +117,7 @@ git ls-files | grep -E '^\.env'                 # only .env.example
 git log --all -p | grep -inE "password|secret" | head   # only test fixtures ('correct horse battery', 'secret')
 ```
 
-Repeat in the other two repositories.
+Repeat in the admin repository.
 
 ## What this cannot cover on a laptop
 

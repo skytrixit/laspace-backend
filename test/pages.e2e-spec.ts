@@ -18,7 +18,7 @@ const ld = (html: string) =>
   [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1]) as Record<string, unknown>)
 const data = (html: string) => JSON.parse(html.match(/<script id="__DATA__" type="application\/json">([\s\S]*?)<\/script>/)![1]) as Record<string, any>
 
-const hasBuild = existsSync(path.resolve(process.env.SITE_DIST ?? '../la_space_website/dist', 'index.html'))
+const hasBuild = existsSync(path.resolve(process.env.SITE_DIST ?? './web/site/dist', 'index.html'))
 if (!hasBuild) console.warn('pages e2e skipped: no website build at SITE_DIST')
 
 ;(hasBuild ? describe : describe.skip)('public pages', () => {

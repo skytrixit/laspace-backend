@@ -31,17 +31,20 @@ npm run test:e2e          # boots the real app against the .env database (needs 
 
 ## Public site
 
-The API is also the web server. It serves the website's build from
-`SITE_DIST` (default `../la_space_website/dist`): the hashed assets and
-images as static files, and the six pages through `src/pages`, which
+The API is also the web server. The website lives in this repository at
+`web/site` (a git subtree of the website repository); `npm run build:site`
+builds it, and `npm run build` runs that before the API build. The API
+serves the website's build from `SITE_DIST` (default `web/site/dist`): the
+hashed assets and images as static files, and the six pages through
+`src/pages`, which
 injects the published rows as a `<script id="__DATA__">` block and builds
 the JSON-LD graphs and `/sitemap.xml` from the same rows. Anything an
 admin saves clears the rendered-page cache, so it is on the site at the
 next request.
 
 ```bash
-(cd ../la_space_website && npm run build)   # dist/ — pages, assets, site-data.json
-npm run start:dev                           # http://localhost:4000/ is the website
+npm run build:site        # web/site/dist — pages, assets, site-data.json, image ladder
+npm run start:dev         # http://localhost:4000/ is the website
 ```
 
 Routes: `/`, `/about`, `/services`, `/projects`, `/projects/:slug`,
@@ -59,10 +62,13 @@ The site's own dev server (`vite dev`, port 5173) has no `__DATA__`
 block and falls back to the static copy in `src/data/site.js` — use it
 for design work; use the API for anything content-related.
 
-The admin panel's build (`ADMIN_DIST`, default `../la_space_admin/dist`)
-is served at `/admin` on the same origin, hashed assets immutable, with
-the SPA fallback so a deep link such as `/admin/projects/1` works on a
-fresh load. Every response carries a Content-Security-Policy that allows
+The admin panel is a separate repository, deployed on its own subdomain
+(`ADMIN_ORIGIN`). When a build of it exists at `ADMIN_DIST` (default
+`../la_space_admin/dist`, a local convenience) it is also served at
+`/admin` on this origin, hashed assets immutable, with the SPA fallback so
+a deep link such as `/admin/projects/1` works on a fresh load; without
+one, `/admin` is not mounted. Every response carries a
+Content-Security-Policy that allows
 scripts only from this origin (plus Google's tag when GA4 is configured;
 the two inline blocks the server writes are allowed by hash) — see
 `src/security/csp.ts`.
