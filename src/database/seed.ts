@@ -24,6 +24,8 @@ import { dataSourceOptions, dbEnvFromProcess } from './data-source'
      npm run seed -- --verify # compare the database to site.js, exit 1 on drift
 
    WEBSITE_DIR points at the website checkout; defaults to web/site in this repo.
+   The seed needs the website's source — src/data/site.js, imageMeta.json and
+   public/images — not the build that `npm run build` copies into dist/site.
    ------------------------------------------------------------------------ */
 
 type Img = { src: string; alt: string }
@@ -198,6 +200,13 @@ async function run() {
     process.loadEnvFile('.env')
   } catch {
     /* env may come from the host */
+  }
+  if (!existsSync(path.join(WEBSITE_DIR, 'src', 'data', 'site.js'))) {
+    throw new Error(
+      `Website source not found at ${WEBSITE_DIR}. The seed reads the checkout's web/site ` +
+        '(src/data/site.js, src/data/imageMeta.json, public/images), which npm run build does not ship ' +
+        "in dist/ — set WEBSITE_DIR to the checkout's web/site.",
+    )
   }
   const site = loadSite()
   const p = plan(site)

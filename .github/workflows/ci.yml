@@ -39,7 +39,7 @@ jobs:
       MEDIA_DRIVER: local
       MEDIA_LOCAL_PATH: ./storage
       CDN_BASE_URL: http://localhost:4000
-      SITE_DIST: ./web/site/dist
+      SITE_DIST: ./dist/site
       ADMIN_DIST: ./no-admin-build
     steps:
       - uses: actions/checkout@v4

@@ -2,7 +2,7 @@
   "name": "la-space-studio-api",
   "private": true,
   "version": "0.1.0",
-  "description": "LA Space Interiors — studio API (NestJS + TypeORM + MySQL).",
+  "description": "LA Space Interiors \u2014 studio API (NestJS + TypeORM + MySQL).",
   "engines": {
     "node": ">=20"
   },
@@ -10,7 +10,7 @@
     "web/site"
   ],
   "scripts": {
-    "build": "npm run build:site && nest build",
+    "build": "npm run build:site && nest build && node scripts/copy-site.mjs",
     "build:site": "npm run -w web/site images && npm run -w web/site build",
     "start": "node dist/main.js",
     "start:dev": "nest start --watch",

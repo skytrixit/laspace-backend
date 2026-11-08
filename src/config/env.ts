@@ -112,9 +112,9 @@ export class Env {
   CDN_BASE_URL?: string
 
   /* ── Public site ─────────────────────────────────────────────────────── */
-  /** The website's build (web/site, `npm run build:site`); the API serves its pages and assets. */
+  /** The website's build, copied into dist/site by `npm run build`; the API serves its pages and assets. */
   @IsString()
-  SITE_DIST = './web/site/dist'
+  SITE_DIST = './dist/site'
 
   /** Canonical origin for JSON-LD, sitemap and social meta. */
   @IsUrl({ require_tld: false })

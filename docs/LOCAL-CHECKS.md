@@ -26,7 +26,7 @@ npm run migration:show                                                       # â
 ## 2. Build everything
 
 ```bash
-npm run build        # web/site/dist with the image ladder, then dist/main.js
+npm run build        # web/site/dist with the image ladder, dist/main.js, then the site copied into dist/site
 ```
 
 The admin panel is deployed separately. To check `/admin` here as well, build

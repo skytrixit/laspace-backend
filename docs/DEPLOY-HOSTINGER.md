@@ -2,7 +2,9 @@
 
 > **Current target: Hostinger shared hosting, Node.js Web App.** The host
 > builds the app from the GitHub repository (`npm install`, `npm run build`,
-> `npm start`); environment variables are set in hPanel rather than in a
+> `npm start`) and hands the runtime only `dist/`, `node_modules/` and
+> `package.json` — which is why `npm run build` copies the website build
+> into `dist/site`. Environment variables are set in hPanel rather than in a
 > `.env` file; `PORT` is injected by the host; and the process is restarted
 > from the hPanel dashboard after each deploy or env change. The VPS steps
 > below are kept for reference only.
@@ -93,9 +95,9 @@ DB_MIGRATE_PASSWORD=<a different long random password>
 # nginx is in front, so rate limits must read X-Forwarded-For.
 TRUST_PROXY=true
 
-# SITE_DIST keeps its default, ./web/site/dist: relative paths resolve from
-# the project root. Leave ADMIN_DIST alone — no admin build here, so /admin
-# is not mounted.
+# SITE_DIST keeps its default, ./dist/site — `npm run build` copies the website
+# build there, so dist/ alone carries everything the process serves. Leave
+# ADMIN_DIST alone — no admin build here, so /admin is not mounted.
 SITE_URL=https://www.laspaceinteriors.in
 
 MEDIA_DRIVER=local
@@ -135,7 +137,8 @@ connects as the first. The script is safe to re-run — every statement is
 ## 5. Build
 
 One command. `build:site` generates the responsive image ladder (the slow
-step) and the website's `web/site/dist`; then `nest build` emits `dist/`.
+step) and the website's `web/site/dist`; `nest build` emits `dist/`; then
+the site build is copied into `dist/site`, so `dist/` carries everything.
 
 ```bash
 cd /srv/laspace/la_space_backend

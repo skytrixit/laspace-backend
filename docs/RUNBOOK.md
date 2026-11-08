@@ -21,7 +21,7 @@ data. No queue, no cache server, no other service.
 cd la_space_backend && cp .env.example .env    # fill in the values
 scripts/db-bootstrap.sh
 
-# build: the website (web/site/dist, incl. the image ladder), then the API (dist/)
+# build: the website (incl. the image ladder), the API, then the site copied into dist/site
 npm ci && npm run build
 
 # schema, first content, first admin
@@ -65,7 +65,7 @@ Rollback: keep the previous `dist/` directories, restart on them, and
 | Symptom | Meaning | Do |
 | --- | --- | --- |
 | `/health` 503, `"db":"down"` | MySQL unreachable or credentials wrong | check MySQL, then `.env` `DB_*` |
-| Pages answer 503 "Back in a moment" | no website build at `SITE_DIST` | build the website, restart |
+| Pages answer 503 "Back in a moment" | no website build at `SITE_DIST` | `npm run build` (copies the site into dist/site), restart |
 | Upload stuck in "processing" | worker died mid-job | restart; unfinished jobs are re-queued at boot |
 | Images 404 | `CDN_BASE_URL` points elsewhere, or files missing | check the env, then the storage path / bucket |
 | Login 429 | 5 failed logins in 15 minutes from one address | wait, or reset the password |

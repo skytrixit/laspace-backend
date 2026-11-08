@@ -32,20 +32,25 @@ npm run test:e2e          # boots the real app against the .env database (needs 
 ## Public site
 
 The API is also the web server. The website lives in this repository at
-`web/site` (a git subtree of the website repository); `npm run build:site`
-builds it, and `npm run build` runs that before the API build. The API
-serves the website's build from `SITE_DIST` (default `web/site/dist`): the
-hashed assets and images as static files, and the six pages through
-`src/pages`, which
+`web/site` (a git subtree of the website repository). `npm run build` builds
+it (`build:site`), builds the API, and copies the site build into
+`dist/site`, so `dist/` alone carries everything the process serves. The
+API serves that build from `SITE_DIST` (default `dist/site`): the hashed
+assets and images as static files, and the six pages through `src/pages`,
+which
 injects the published rows as a `<script id="__DATA__">` block and builds
 the JSON-LD graphs and `/sitemap.xml` from the same rows. Anything an
 admin saves clears the rendered-page cache, so it is on the site at the
 next request.
 
 ```bash
-npm run build:site        # web/site/dist — pages, assets, site-data.json, image ladder
-npm run start:dev         # http://localhost:4000/ is the website
+npm run build             # web/site/dist → dist/site: pages, assets, site-data.json, image ladder
+npm start                 # http://localhost:4000/ is the website
 ```
+
+`npm run start:dev` empties `dist/` as its compiler starts, taking the copy
+with it. For the watcher, set `SITE_DIST=./web/site/dist` in `.env` and
+build the site with `npm run build:site`.
 
 Routes: `/`, `/about`, `/services`, `/projects`, `/projects/:slug`,
 `/contact`, `/sitemap.xml`; `/<page>.html` redirects to the clean URL.
