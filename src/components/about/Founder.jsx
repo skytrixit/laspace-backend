@@ -22,10 +22,9 @@ export default function Founder() {
                   ? `${founder.name}, ${founder.role} of LA Space Interiors`
                   : ''
               }
-              className="shot--circle"
-              radius="50%"
+              className="shot--portrait"
+              radius="20px"
               width="260px"
-              height="260px"
               frameInset="-18px"
               frameOpacity={0.35}
             />
