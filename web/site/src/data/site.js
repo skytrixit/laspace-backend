@@ -33,6 +33,12 @@ export const site = {
   ],
 }
 
+/* What a visitor's WhatsApp opens with when they tap the studio's number.
+   Appended to whatsappHref by content.js (URL-encoded there), so the stored
+   link stays the bare number and the studio can edit it on its own. */
+export const whatsappMessage =
+  'Hi LA Space Interiors, I found you through your website and would like to discuss interiors for my home.'
+
 /* The studio that built the site — the footer credit. It has no website yet,
    so the link opens a WhatsApp chat with it, message ready to send. */
 export const credit = {

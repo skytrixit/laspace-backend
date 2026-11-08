@@ -33,6 +33,12 @@ const tagline = (text) => {
 
 /* ── Studio details ──────────────────────────────────────────────────────── */
 
+/* The WhatsApp link with the ready message. The stored link is the bare
+   number, whether from the studio's settings or site.js; a link that already
+   carries a query is left alone. */
+const withMessage = (href) =>
+  href && !href.includes('?') ? `${href}?text=${encodeURIComponent(s.whatsappMessage)}` : href
+
 /** Which settings field, if any, the studio uses for each channel. */
 const API_SOCIAL = { Instagram: 'instagramUrl', Facebook: 'facebookUrl', YouTube: 'youtubeUrl' }
 
@@ -41,7 +47,7 @@ export const site = D
       ...s.site,
       phone: D.settings.phone,
       phoneHref: D.settings.phoneHref,
-      whatsappHref: D.settings.whatsappHref,
+      whatsappHref: withMessage(D.settings.whatsappHref),
       email: D.settings.email,
       emailHref: `mailto:${D.settings.email}`,
       address: [D.settings.addressLine1, D.settings.addressLine2, D.settings.addressLine3].filter(Boolean),
@@ -56,7 +62,7 @@ export const site = D
         })
         .filter((c) => c.href),
     }
-  : s.site
+  : { ...s.site, whatsappHref: withMessage(s.site.whatsappHref) }
 
 export const contact = D
   ? { ...s.contact, hours: D.settings.hours || s.contact.hours, mapsUrl: D.settings.mapsUrl || s.contact.mapsUrl }
